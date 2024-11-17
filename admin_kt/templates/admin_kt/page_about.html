@@ -1,0 +1,183 @@
+{% block content %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'src/styles.css' %}">
+<html>
+    
+     <!-- Include the header -->
+     {% include 'base_kt/admin_header.html' %}
+
+     <body>
+        <div class="flex">
+           
+            {% include 'base_kt/admin_sidebar.html' %}
+            <div class="flex-grow p-4 bg-gray-100 h-min-screen">
+
+                <!-- First Row (Metrics in One Row) -->
+                <div class="rounded-md">
+                
+                    <!-- Third Row (Below Second Row) -->
+                    <div class="grid grid-cols-1 gap-4 mt-2">
+                
+                        <!-- Second Column, Second Row: Another Sales Breakdown -->
+                        <div class="bg-white shadow-md p-6 rounded-md">
+                            <h2 class="text-2xl font-bold mb-4">About Us</h2>
+                            <table class="min-w-full table-auto">
+                                <thead>
+                                    <tr>
+                                        <th class="px-4 py-2 text-left text-gray-600 font-semibold">No</th>
+                                        <th class="px-4 py-2 text-left text-gray-600 font-semibold">Introduction</th>
+                                        <th class="px-4 py-2 text-left text-gray-600 font-semibold">Page</th>
+                                        <th class="px-4 py-2 text-left text-gray-600 font-semibold">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for about in main_about %}
+                                    <tr>
+                                        <td class="px-4 py-2 text-gray-700">{{ forloop.counter }}</td>
+                                        <td class="px-4 py-2 text-gray-700">{{ about.intro }}</td>
+                                        <td class="px-4 py-2 text-gray-700">{{ about.page }}</td>
+                                        <td class="px-4 py-2 text-center">
+                                            <button 
+                                                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md flex items-center space-x-2">
+                                                <i class="fas fa-edit"></i>
+                                                <span>Edit</span>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Second Column, Second Row: Another Sales Breakdown -->
+                        <div class="bg-white shadow-md p-6 rounded-md">
+                            <h2 class="text-2xl font-bold mb-4">Objective</h2>
+                            <table class="min-w-full table-auto">
+                                <thead>
+                                    <tr>
+                                        <th class="px-4 py-2 text-left text-gray-600 font-semibold">No</th>
+                                        <th class="px-4 py-2 text-left text-gray-600 font-semibold">Objective</th>
+                                        <th class="px-4 py-2 text-left text-gray-600 font-semibold">Page</th>
+                                        <th class="px-4 py-2 text-left text-gray-600 font-semibold">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for about in main_about %}
+                                    <tr>
+                                        <td class="px-4 py-2 text-gray-700">{{ forloop.counter }}</td>
+                                        <td class="px-4 py-2 text-gray-700">{{ about.objective }}</td>
+                                        <td class="px-4 py-2 text-gray-700">{{ about.page }}</td>
+                                        <td class="px-4 py-2 text-center">
+                                            <button 
+                                                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md flex items-center space-x-2">
+                                                <i class="fas fa-edit"></i>
+                                                <span>Edit</span>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="bg-white shadow-md p-6 rounded-md">
+                            <h2 class="text-2xl font-bold mb-4">Vission</h2>
+                            <table class="min-w-full table-auto">
+                                <thead>
+                                    <tr>
+                                        <th class="px-4 py-2 text-left text-gray-600 font-semibold">No</th>
+                                        <th class="px-4 py-2 text-left text-gray-600 font-semibold">Vission</th>
+                                        <th class="px-4 py-2 text-left text-gray-600 font-semibold">Page</th>
+                                        <th class="px-4 py-2 text-left text-gray-600 font-semibold">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for about in main_about %}
+                                    <tr>
+                                        <td class="px-4 py-2 text-gray-700">{{ forloop.counter }}</td>
+                                        <td class="px-4 py-2 text-gray-700">{{ about.vision }}</td>
+                                        <td class="px-4 py-2 text-gray-700">{{ about.page }}</td>
+                                        <td class="px-4 py-2 text-center">
+                                            <button 
+                                                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md flex items-center space-x-2">
+                                                <i class="fas fa-edit"></i>
+                                                <span>Edit</span>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="bg-white shadow-md p-6 rounded-md">
+                            <h2 class="text-2xl font-bold mb-4">Mission</h2>
+                            <table class="min-w-full table-auto">
+                                <thead>
+                                    <tr>
+                                        <th class="px-4 py-2 text-left text-gray-600 font-semibold">No</th>
+                                        <th class="px-4 py-2 text-left text-gray-600 font-semibold">Mission</th>
+                                        <th class="px-4 py-2 text-left text-gray-600 font-semibold">Page</th>
+                                        <th class="px-4 py-2 text-left text-gray-600 font-semibold">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for about in main_about %}
+                                    <tr>
+                                        <td class="px-4 py-2 text-gray-700">{{ forloop.counter }}</td>
+                                        <td class="px-4 py-2 text-gray-700">{{ about.mission }}</td>
+                                        <td class="px-4 py-2 text-gray-700">{{ about.page }}</td>
+                                        <td class="px-4 py-2 text-center">
+                                            <button 
+                                                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md flex items-center space-x-2">
+                                                <i class="fas fa-edit"></i>
+                                                <span>Edit</span>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Second Column, Second Row: Another Sales Breakdown -->
+                        <div class="bg-white shadow-md p-6 rounded-md">
+                            <h2 class="text-2xl font-bold mb-4">Contact Us</h2>
+                            <table class="min-w-full table-auto">
+                                <thead>
+                                    <tr>
+                                        <th class="px-4 py-2 text-left text-gray-600 font-semibold">No</th>
+                                        <th class="px-4 py-2 text-left text-gray-600 font-semibold">Email</th>
+                                        <th class="px-4 py-2 text-left text-gray-600 font-semibold">Phone</th>
+                                        <th class="px-4 py-2 text-left text-gray-600 font-semibold">Phone 2</th>
+                                        <th class="px-4 py-2 text-left text-gray-600 font-semibold">Page</th>
+                                        <th class="px-4 py-2 text-left text-gray-600 font-semibold">Actions</th>
+                                    </tr>
+                                    <tbody>
+                                        {% for contact in main_contact %}
+                                        <tr>
+                                            <td class="px-4 py-2 text-gray-700">{{ forloop.counter }}</td>
+                                            <td class="px-4 py-2 text-gray-700">{{ contact.email }}</td>
+                                            <td class="px-4 py-2 text-gray-700">{{ contact.phone }}</td>
+                                            <td class="px-4 py-2 text-gray-700">{{ contact.phone_2 }}</td>
+                                            <td class="px-4 py-2 text-gray-700">{{ contact.page }}</td>
+                                            <td class="px-4 py-2 text-center">
+                                                <button 
+                                                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md flex items-center space-x-2">
+                                                    <i class="fas fa-edit"></i>
+                                                    <span>Edit</span>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </html>
+</body>
+{% endblock %}

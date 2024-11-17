@@ -1,0 +1,206 @@
+<!-- tabs.html -->
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <title>Dynamic Tabs with Rows</title> -->
+    <link href="{% static 'src/styles.css' %}" rel="stylesheet">
+</head>
+<body>
+    <div class="w-full grid gap-4 pb-3">
+        <div class="w-full md:w-auto  bg-white mx-auto rounded-lg  pb-1">
+            
+            <!-- Tabs -->
+            <ul class="flex flex-wrap justify-center pt-1 space-x-0 space-y-2 sm:space-y-0 sm:space-x-2 px-2">
+                <li>
+                    <a class="tab-link inline-block py-2 px-4 text-blue-600 font-semibold border-transparent rounded-lg  active-tab" data-tab="hotel"><i class="fas fa-hotel mr-2"></i>HOTEL</a>
+                </li>
+                <!-- <li>
+                    <a href="javascript:void(0)" class="tab-link inline-block py-2 px-4 text-blue-600 font-semibold border-transparent rounded-lg " data-tab="flight"><i class="fa fa-plane mr-2"></i>FLIGHT</a>
+                </li>
+                <li>
+                    <a href="javascript:void(0)" class="tab-link inline-block py-2 px-4 text-blue-600 font-semibold  border-transparent rounded-lg " data-tab="train"><i class="fa fa-train mr-2"></i>TRAIN</a>
+                </li> -->
+                <!-- <li>
+                    <a href="javascript:void(0)" class="tab-link inline-block py-2 px-4 text-blue-600 font-semibold  border-transparent  rounded-lg " data-tab="ferry"><i class="fa fa-ship mr-2"></i>FERRY</a>
+                </li> -->
+                <!-- <li>
+                    <a href="javascript:void(0)" class="tab-link inline-block py-2 px-4 text-blue-600 font-semibold  border-transparent  rounded-lg" data-tab="roro"><i class="fa fa-ship mr-2"></i>RORO</a>
+                </li> -->
+                <li>
+                    <a href="javascript:void(0)" class="tab-link inline-block py-2 px-4 text-blue-600 font-semibold  border-transparent rounded-lg " data-tab="rental"><i class="fa fa-car mr-2"></i>CAR RENTAL</a>
+                </li>
+                <li>
+                    <a href="javascript:void(0)" class="tab-link inline-block py-2 px-4 text-blue-600 font-semibold  border-transparent rounded-lg " data-tab="attrac"><i class="fa fa-camera-retro mr-2"></i>ATTRACTION</a>
+                </li>
+            </ul>
+        </div>
+        
+        
+    </div>
+
+    <div class="w-full grid gap-4 pb-4">
+        <div class="w-full lg:w-4/5 md:w-4/6   mx-auto">
+            <!-- Tab Content -->
+            <div id="tab-content">
+                <!-- Hotel Content -->
+                <div class="tab-content" data-tab="hotel" >
+                    <div class="grid grid-cols-8 gap-2 pt-1 items-center">
+                        <div class="col-span-2">
+                            <p for="hotel" class=" px-2 text-left font-semibold color-text">Destination</p>
+                        </div>
+                        <div class="col-span-2">
+                            <p for="dateRange" class=" px-2 text-left font-semibold color-text">Check-in & Check-out</p>
+                        </div>
+                        <div class="col-span-1">
+                            <p for="duration" class=" px-2 text-left font-semibold color-text">Duration</p>
+                        </div>
+                        <div class="col-span-2">
+                            <p for="duration" class=" px-2 text-left font-semibold color-text">Customer</p>
+                        </div>
+                        
+                    </div>
+                   
+                   
+                    <div class="grid grid-cols-8 gap-2 pt-2 items-center">
+                
+                        <!-- Input Field for Destination -->
+                        <div class="col-span-2 relative">
+                            <input 
+                                class="w-full p-3 border-2 custom-border rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                                id="hotel" name="hotel" placeholder="Enter destination" type="text"
+                            >
+                            <!-- Dropdown List for Autocomplete Suggestions -->
+                            <ul id="suggestions" class="hidden"></ul>
+                        </div>
+                    
+                       <!-- Date Range Column -->
+                        <div class="col-span-2">
+                            <!-- <label for="dateRange" class="block text-gray-800 font-semibold mb-2">Check-in & Check-out</label> -->
+                            <input class="w-full p-3 custom-border border-2 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                                id="dateRange" name="dateRange" placeholder="Select Check-in and Check-out" type="text">
+                        </div>
+
+                        <div class="col-span-1">
+                            <!-- <label for="duration" class="block text-gray-800 font-semibold mb-2">Duration</label> -->
+                            <input class="w-full p-3 custom-border border-2 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none bg-gray-300"
+                                   id="duration" name="duration" placeholder="0 days" type="text" style="text-align: center;" disabled>
+                        </div>
+                
+                        <!-- Another Destination Column -->
+                        <div class="col-span-2 relative">
+                            <!-- Input Field -->
+                            <input 
+                                class="w-full p-3 border-2 custom-border rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none cursor-pointer"
+                                id="roomDetails" name="roomDetails" readonly value="1 Room, 2 Adults, 0 Children"
+                                onclick="toggleDropdown()"
+                            >
+                            
+                            <!-- Dropdown List for Room, Adult, and Child Selection -->
+                            <div id="roomDropdown" class="absolute z-10 w-full bg-white border border-gray-200 rounded-lg shadow-lg mt-2 hidden">
+                                <!-- Room Selector -->
+                                <div class="flex items-center justify-between p-3 border-b">
+                                    <span>Rooms</span>
+                                    <div class="flex items-center">
+                                        <button type="button" class="decrease-room bg-gray-200 p-2 rounded-lg" onclick="updateCount('room', -1)">-</button>
+                                        <input type="text" id="roomCount" value="1" class="w-12 text-center mx-2 p-2 border-2 rounded-xl" readonly>
+                                        <button type="button" class="increase-room bg-gray-200 p-2 rounded-lg" onclick="updateCount('room', 1)">+</button>
+                                    </div>
+                                </div>
+                                <!-- Adult Selector -->
+                                <div class="flex items-center justify-between p-3 border-b">
+                                    <span>Adults</span>
+                                    <div class="flex items-center">
+                                        <button type="button" class="decrease-adult bg-gray-200 p-2 rounded-lg" onclick="updateCount('adult', -1)">-</button>
+                                        <input type="text" id="adultCount" value="2" class="w-12 text-center mx-2 p-2 border-2 rounded-xl" readonly>
+                                        <button type="button" class="increase-adult bg-gray-200 p-2 rounded-lg" onclick="updateCount('adult', 1)">+</button>
+                                    </div>
+                                </div>
+                                <!-- Children Selector -->
+                                <div class="flex items-center justify-between p-3 border-b">
+                                    <span>Children</span>
+                                    <div class="flex items-center">
+                                        <button type="button" class="decrease-child bg-gray-200 p-2 rounded-lg" onclick="updateCount('child', -1)">-</button>
+                                        <input type="text" id="childCount" value="0" class="w-12 text-center mx-2 p-2 border-2 rounded-xl" readonly>
+                                        <button type="button" class="increase-child bg-gray-200 p-2 rounded-lg" onclick="updateCount('child', 1)">+</button>
+                                    </div>
+                                </div>
+                                <!-- Dynamic Child Age Dropdowns -->
+                                <div id="childAgeContainer" class="p-3"></div>
+                                
+                                <!-- Done Button -->
+                                <div class="p-3">
+                                    <button class="w-full bg-blue-500 text-white p-3 rounded-lg" onclick="doneSelection()">Done</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+
+                        <div class="col-span-1">
+                           
+                                <a href="{% url 'main_hotel' %}" class="w-full">
+                                    <button class="w-full p-3 custom-border border-2 rounded-xl text-white font-semibold focus:outline-none custom-bg" id="durationh" name="durationh">
+                                        Search
+                                    </button>
+                                </a>
+                        </div>
+                    </div>
+                </div>
+
+                
+             
+
+
+
+
+
+
+
+              
+            </div>
+        </div>
+    </div>
+    <!-- Include the JavaScript file -->
+    <script src="{% static 'javascript/tabs.js' %}"></script>
+
+<!-- Include Flatpickr CSS and JS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+<!-- Include Font Awesome for Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+
+   
+</body>
+
+
+</html>
+
+
+
+<!-- Include Flatpickr CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
+<!-- Include Flatpickr JS -->
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+
+<script>
+    // Initialize Flatpickr on both date inputs
+    flatpickr("#departureDate", {
+        dateFormat: "d/m/Y", // Set the date format to dd/mm/yyyy
+    });
+
+    flatpickr("#returnDate", {
+        dateFormat: "d/m/Y", // Set the date format to dd/mm/yyyy
+    });
+</script>
+
+<!-- Include Flatpickr CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
+<!-- Include Flatpickr JS -->
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>

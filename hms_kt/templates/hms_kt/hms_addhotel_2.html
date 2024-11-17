@@ -1,0 +1,174 @@
+{% block content %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'src/styles.css' %}">
+<html>
+    
+     <!-- Include the header -->
+     {% include 'base_kt/hms_header.html' %}
+
+     <body>
+        <div class="flex">
+            <!-- Sidebar -->
+            {% include 'base_kt/hms_sidebar.html' %}
+            <div class="flex-grow p-4 bg-gray-100 h-min-screen">
+                <div class="relative">
+                    <div class="block pb-2">
+                        <div class="w-full h-4 bg-gray-400 rounded-full">
+                            <div class="w-1/6 h-full text-center text-xs text-white bg-blue-600 rounded-full font-semibold ">
+                                25%
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-4 flex h-8 overflow-hidden rounded bg-gray-100 text-md">
+                        <div class="flex justify-center items-center bg-green-700 border-r-2" style="width: 25%; height: 100%;">
+                            <a href="{% url 'register_hotel' hotel.id %}" class="block w-full text-center py-2">
+                                <span class="font-semibold text-white">Register</span>
+                            </a>
+                        </div>
+                        <div class="flex justify-center items-center bg-green-700 border-r-2" style="width: 25%; height: 100%;">
+                            <a href="{% url 'hms-register2' hotel.id  %}" class="block w-full text-center py-2">
+                                <span class="font-semibold text-white">Hotel Details</span>
+                            </a>
+                        </div>
+                        <div class="flex flex-col justify-center bg-white border-r-2" style="width: 25%;">
+                            <span class="text-center">Room Details</span>
+                          </div>
+                      <div class="flex flex-col justify-center bg-white border-r-2" style="width: 25%;">
+                        <span class="text-center">Description</span>
+                      </div>
+                      <div class="flex flex-col justify-center bg-white border-r-2" style="width: 25%;">
+                        <span class="text-center">Details</span>
+                      </div>
+                      <div class="flex flex-col justify-center bg-white" style="width: 25%;">
+                        <span class="text-center">Approval</span>
+                      </div>
+                    </div>
+                    
+                </div>
+
+                    <div class="bg-white p-6 rounded-lg shadow-lg w-full">
+                        <h2 class="text-2xl font-bold mb-4">Details Hotel</h2>
+                        <form method="POST" action="{% url 'hms-register2' hotel.id %}">
+                            {% csrf_token %}
+                            
+                            <div class="mb-4">
+                                <label for="description" class="block text-gray-700 font-semibold">Description:</label>
+                                <textarea id="description" name="description" required class="mt-1 p-2 border border-gray-300 rounded w-full">{{ hotel.description }}</textarea>
+                            </div>
+                            
+                            <!-- Dropdown for Hotel Type -->
+                            <div class="mb-4">
+                                <label for="hotel_type" class="block text-gray-700 font-semibold mb-2">Hotel Type</label>
+                                <select name="hotel_type" id="hotel_type" class="border rounded border-gray-300 px-3 py-2 w-full">
+                                    <option value="" disabled>Select Hotel Type</option>
+                                    {% for hotel_type in hotel_types %}
+                                        <option value="{{ hotel_type.id }}" {% if hotel.hotel_type.id == hotel_type.id %}selected{% endif %}>{{ hotel_type }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+            
+                            <!-- Dropdown for Hotel Facilities -->
+                            <div class="mb-4">
+                                <label class="block text-gray-700 font-semibold mb-2">Hotel Facilities</label>
+                                <!-- Search Input -->
+                                <input type="text" id="facilitySearch" placeholder="Search Facilities..." class="border rounded border-gray-300 px-3 py-2 mb-4 w-full" onkeyup="filterFacilities()">
+                                
+                                <div id="facilities_container" class="grid grid-cols-3 gap-4 ml-2">
+                                    {% for facility in facilities %}
+                                        <div class="flex items-center facility-item">
+                                            <input type="checkbox" id="facility_{{ facility.id }}" name="hotel_facilities" value="{{ facility.id }}" 
+                                                   {% if facility.id in selected_facilities %}checked{% endif %} class="mr-2">
+                                            <label for="facility_{{ facility.id }}" class="flex items-center cursor-pointer">
+                                                <i class="{{ facility.icon_main }} custom-icon-size" style="color: #009A00;"></i>
+                                                <span class="ml-2">{{ facility.type_name }}</span>
+                                            </label>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+            
+                            <div class="flex justify-between mt-6">
+                                <!-- Back button -->
+                                <a href="{% url 'register_hotel' hotel.id %}" class="bg-red-700 text-white px-4 py-2 rounded hover:bg-red-600 mr-2 font-semibold">
+                                    <i class="fas fa-arrow-left mr-2"></i> <!-- Font Awesome left arrow icon -->
+                                    Back
+                                </a>
+                                <div class="flex space-x-2">
+                                    <!-- Submit button -->
+                                    <button type="submit" class="bg-blue-700 text-white px-4 py-2 rounded hover:bg-blue-600 font-semibold">
+                                        <i class="fas fa-paper-plane mr-2"></i> <!-- Submit icon -->Submit</button>
+                                    
+                                    <!-- Next button linking to Select Room form -->
+                                    <a href="{% url 'hms-register3' hotel.id %}" class="bg-green-700 text-white px-4 py-2 rounded hover:bg-green-600 font-semibold">
+                                        Next
+                                        <i class="fas fa-arrow-right ml-2"></i> <!-- Right arrow icon --></a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </body>
+</html>
+
+<script>
+    // Initialize CKEditor
+    CKEDITOR.replace('description');
+
+    // Set hotelId for the fetch URL
+    var hotelId = "{{ hotel.id }}";
+
+    function filterFacilities() {
+        const searchInput = document.getElementById('facilitySearch').value.toLowerCase();
+        const facilityItems = document.querySelectorAll('.facility-item'); // Select all facility items
+
+        facilityItems.forEach(item => {
+            const facilityName = item.querySelector('label span').innerText.toLowerCase(); // Get the facility name
+            
+            // Check if the facility name includes the search query
+            if (facilityName.includes(searchInput)) {
+                item.style.display = ''; // Show the item if it matches
+            } else {
+                item.style.display = 'none'; // Hide the item if it doesn't match
+            }
+        });
+    }
+
+</script>
+<style>
+    .flex.items-center {
+    height: 40px; /* Set a consistent height for checkboxes */
+}
+    .custom-icon-size {
+    font-size: 20px; /* Adjust the size of the icons */
+    width: 24px; /* Width for consistent spacing */
+    height: 24px; /* Height for consistent spacing */
+}
+
+input[type="checkbox"] {
+    appearance: none; /* Remove default checkbox styling */
+    width: 20px; /* Custom width */
+    height: 20px; /* Custom height */
+    /* border: 2px solid #009A00; Custom border color */
+    border-radius: 4px; /* Rounded corners */
+    margin-right: 8px; /* Spacing between checkbox and label */
+    cursor: pointer; /* Change cursor on hover */
+}
+
+input[type="checkbox"]:checked {
+    background-color: #009A00; /* Change background when checked */
+    border: none; /* Remove border */
+}
+
+input[type="checkbox"]:checked::after {
+    content: "✓"; /* Show a checkmark */
+    color: white; /* Checkmark color */
+    position: absolute; /* Positioning */
+    left: 2px; /* Positioning */
+    top: -2px; /* Positioning */
+    font-size: 18px; /* Checkmark size */
+}
+</style>
+{% endblock %}

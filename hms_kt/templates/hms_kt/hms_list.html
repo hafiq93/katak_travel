@@ -1,0 +1,139 @@
+{% block content %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'src/styles.css' %}">
+<html>
+    
+     <!-- Include the header -->
+     {% include 'base_kt/hms_header.html' %}
+
+     <body>
+        <div class="flex">
+            <!-- Sidebar -->
+            {% include 'base_kt/hms_sidebar.html' %}
+            <div class="flex-grow p-4 bg-gray-100 h-screen">
+                <!-- First Row (Metrics in One Row) -->
+                <div class="rounded-md">
+                    <!-- Room Button -->
+                    <div class="flex justify-end items-center">
+                        <a href="{% url 'register_hotel' %}"   class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition">
+                            Register Hotel
+                        </a>
+                    </div>
+                    <!-- Third Row (Below Second Row) -->
+                    <div class="grid grid-cols-1 gap-4 mt-2">
+                
+                        <!-- Second Column, Second Row: Another Sales Breakdown -->
+                        <div class="bg-white shadow-md p-6 rounded-md">
+                            <h2 class="text-2xl font-bold mb-4">Hotel</h2>
+                       
+                         <!-- Table to display the permission list -->
+                        <table class="min-w-full table-auto">
+                            <thead>
+                                <tr>
+                                    <th class="px-4 py-2 text-left text-gray-600 font-semibold">No</th>
+                                    <th class="px-4 py-2 text-left text-gray-600 font-semibold">Hotel Name</th>
+                                    <th class="px-4 py-2 text-left text-gray-600 font-semibold">Address</th>
+                                    <th class="px-4 py-2 text-left text-gray-600 font-semibold">Location</th>   
+                                    <th class="px-4 py-2 text-left text-gray-600 font-semibold">Poscode</th>      
+                                    <th class="px-4 py-2 text-left text-gray-600 font-semibold">City</th>  
+                                    <th class="px-4 py-2 text-left text-gray-600 font-semibold">Region</th>    
+                                    <th class="px-4 py-2 text-left text-gray-600 font-semibold">Country</th>                                 
+                                    <th class="px-4 py-2 text-left text-gray-600 font-semibold">Status</th>
+                                    <th class="px-4 py-2 text-left text-gray-600 font-semibold"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for permission in permissions %}
+                                <tr class="border-b">
+                                    <td class="px-4 py-2">{{ forloop.counter }}</td>
+                                    <td class="px-4 py-2">{{ permission.permission_name }}</td>
+                                    <td class="px-4 py-2">{{ permission.permission_name }}</td>
+                                    <td class="px-4 py-2">{{ permission.permission_name }}</td>
+                                    <td class="px-4 py-2">{{ permission.permission_name }}</td>
+                                    <td class="px-4 py-2">{{ permission.permission_name }}</td>
+                                    <td class="px-4 py-2">{{ permission.permission_name }}</td>
+                                    <td class="px-4 py-2">{{ permission.permission_name }}</td>
+                                    <td class="px-4 py-2">{{ permission.permission_name }}</td>
+                                    <td class="px-4 py-2"></td>
+                                    <td class="px-4 py-2">
+                                        <!-- Details Button to open the modal -->
+                                        <button onclick="openModal('{{ permission.id }}', '{{ permission.permission_name }}', '{{ permission.description }}')" class="bg-blue-500 text-white px-4 py-2 rounded">Details</button>
+                                    </td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="4" class="text-center py-4">No Hotel found.</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Modal Background (Hidden by Default) -->
+            <div id="hotelModal" class="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center hidden">
+                <!-- Modal Content -->
+                <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md h-auto overflow-y-auto" style="max-width: 700px; max-height: 700px;">
+                    <h2 class="text-2xl font-bold mb-4">Add Hotel</h2>
+                    
+                    <!-- Add Hotel Form -->
+                    <form method="POST" action="">
+                        {% csrf_token %}
+                        <div class="mb-4">
+                            <label for="hotel_name" class="block text-gray-700">Hotel Name:</label>
+                            <input type="text" id="hotel_name" name="hotel_name" required class="mt-1 p-2 border border-gray-300 rounded w-full">
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="address" class="block text-gray-700">Address:</label>
+                            <textarea  id="address" name="address" required class="mt-1 p-2 border border-gray-300 rounded w-full"></textarea>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="location" class="block text-gray-700">Location:</label>
+                            <input type="textform" id="location" name="location" required class="mt-1 p-2 border border-gray-300 rounded w-full">
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="poscode" class="block text-gray-700">Poscode:</label>
+                            <input type="text" id="poscode" name="poscode" required class="mt-1 p-2 border border-gray-300 rounded w-full">
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="city" class="block text-gray-700">City:</label>
+                            <input type="text" id="city" name="city" required class="mt-1 p-2 border border-gray-300 rounded w-full">
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="region" class="block text-gray-700">Region:</label>
+                            <input type="text" id="region" name="region" required class="mt-1 p-2 border border-gray-300 rounded w-full">
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="country" class="block text-gray-700">Country:</label>
+                            <input type="text" id="country" name="country" required class="mt-1 p-2 border border-gray-300 rounded w-full">
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label for="description" class="block text-gray-700">Description:</label>
+                            <textarea id="description" name="description" rows="4" class="mt-1 p-2 border border-gray-300 rounded w-full"></textarea>
+                        </div>
+                        
+                        <div class="flex justify-end mt-6">
+                            <button type="button" onclick="toggleModal()" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-gray-600 mr-2">Cancel</button>
+                            <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-blue-600">Add Hotel</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
+<script>
+    function toggleModal() {
+        var modal = document.getElementById("hotelModal");
+        modal.classList.toggle("hidden");
+    }
+    </script>
+{% endblock %}

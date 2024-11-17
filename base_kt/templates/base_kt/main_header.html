@@ -1,0 +1,130 @@
+{% load static %}
+{% load static tailwind_tags %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% tailwind_css %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KATAK TRAVEL</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="{% static 'src/styles.css' %}" rel="stylesheet">
+    <link href="{% static 'fonts-6/css/all.css' %}" rel="stylesheet">
+    <script src="{% static 'javascript/dropdown_header.js' %}" defer></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+</head>
+
+<body>
+    <header class="bg-white border-b-2" style="color: #009A00;">
+        <div class="container mx-auto p-2 sm:px-4 md:px-8">
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 items-center">
+                <!-- Left side: Logo and Site Title -->
+                <div class="flex items-center justify-center sm:justify-start ml-6 px-5">
+                    <img src="{% static 'images/KATAK_2.jpg' %}" alt="Company Logo" class="h-12 w-15">
+                    <h1 class="text-2xl font-bold ml-4">KATAK TRAVEL</h1>
+                </div>
+
+                <!-- Center: Navigation and currency selector -->
+                <div class="flex items-center justify-center sm:justify-center space-x-4 sm:space-x-8">
+                    <!-- Navigation Menu (Hidden on small screens) -->
+                    <nav class="md:flex space-x-4">
+                        <a href="{% url 'home' %}" class="text-lg font-medium">Home</a>
+
+                        <!-- Support Dropdown -->
+                        <div class="relative">
+                            <button type="button" class="inline-flex items-center text-lg font-medium">
+                                Support
+                                <svg class="ml-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M5.292 7.293a1 1 0 011.415 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                </svg>
+                            </button>
+                            <div id="dropdown-menu" class="absolute mt-2 w-48 rounded-md shadow-lg bg-white hidden">
+                                <a href="/support/faq" class="block px-4 py-2 text-sm hover:bg-gray-100">FAQ</a>
+                                <a href="/contact" class="block px-4 py-2 text-sm hover:bg-gray-100">Contact Us</a>
+                                <a href="/support" class="block px-4 py-2 text-sm hover:bg-gray-100">Live Chat</a>
+                            </div>
+                        </div>
+
+                        <!-- Currency Selector -->
+                        <div class="flex">
+                            <select id="country-select" class="border p-1 rounded-md text-lg">
+                                <option value="MYR" data-currency="MYR">MYR</option>
+                                <option value="USD" data-currency="USD">USD</option>
+                                <option value="EUR" data-currency="EUR">EUR</option>
+                                <option value="GBP" data-currency="GBP">GBP</option>
+                            </select>
+                        </div>
+                    </nav>
+                </div>
+
+                <!-- Right side: Search, Profile, Cart, Notifications -->
+                <div class="flex items-center justify-center sm:justify-end space-x-4">
+                    <!-- Search Bar -->
+                    <div class="hidden sm:block relative">
+                        <input type="text" class="pl-10 pr-4 py-2 w-full rounded-lg border border-gray-300" placeholder="Search...">
+                        <div class="absolute inset-y-0 left-0 flex items-center pl-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16a6 6 0 100-12 6 6 0 000 12zM21 21l-4.35-4.35" />
+                            </svg>
+                        </div>
+                    </div>
+
+                    <!-- Profile and other buttons -->
+                    {% if user.is_authenticated %}
+                    <!-- Show profile and logout options -->
+                    <div class="relative">
+                        <button id="profileButton" class="flex items-center space-x-2">
+                            <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80" alt="Profile picture" class="w-8 h-8 rounded-full">
+                            <i class="fas fa-chevron-down ml-2"></i>
+                        </button>
+                        <div id="dropdownMenu" class="absolute right-0 mt-2 py-2 w-36 bg-white hidden">
+                            <p class="px-4 py-2">{{ user.username }}</p>
+                            <a href="{% url 'profile' %}" class="block px-4 py-2">Profile</a>
+                            <a href="{% url 'logout' %}" class="block px-4 py-2">Log Out</a>
+                        </div>
+                    </div>
+                {% else %}
+                    <!-- Show login and register options -->
+                    <a href="{% url 'login' %}" class="py-2 px-5 bg-blue-500 text-white rounded font-semibold">Login</a>
+                    <a href="{% url 'register' %}" class="py-2 px-5 bg-blue-500 text-white rounded font-semibold">Register</a>
+                {% endif %}
+<!-- 
+                    <a href="{% url 'login' %}" class="py-2 px-5 bg-blue-500 text-white rounded font-semibold">Login</a>
+                    <a href="{% url 'register' %}" class="py-2 px-5 bg-blue-500 text-white rounded font-semibold">Register</a> -->
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- JavaScript to handle dropdown and responsiveness -->
+    <script>
+        const profileButton = document.getElementById('profileButton');
+        const dropdownMenu = document.getElementById('dropdownMenu');
+
+        profileButton.addEventListener('click', function () {
+            dropdownMenu.classList.toggle('hidden');
+        });
+
+        document.addEventListener('click', function (event) {
+            if (!profileButton.contains(event.target) && !dropdownMenu.contains(event.target)) {
+                dropdownMenu.classList.add('hidden');
+            }
+        });
+
+        const countrySelect = document.getElementById('country-select');
+        const currencyDisplay = document.getElementById('currency-display');
+
+        countrySelect.addEventListener('change', function () {
+            const selectedOption = countrySelect.options[countrySelect.selectedIndex];
+            const selectedCurrency = selectedOption.getAttribute('data-currency');
+            currencyDisplay.textContent = selectedCurrency;
+        });
+    </script>
+</body>
+
+</html>

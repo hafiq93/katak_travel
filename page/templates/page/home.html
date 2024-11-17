@@ -1,0 +1,127 @@
+{% block content %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'src/styles.css' %}">
+
+
+<html lang="en">
+
+<body class="flex flex-col min-h-screen bg-gray-100">
+
+    <!-- Header -->
+    {% include 'base_kt/page_header.html' %}
+
+    <!-- Hero Section -->
+    <div class="w-full background-cover flex flex-col items-center justify-center text-center py-16">
+        <img src="{% static 'images/KATAK_3.png' %}" alt="Katak Logo" class="h-40 mb-4">
+        <h1 class="text-4xl lg:text-5xl font-bold text-white mb-4" style="color: #009A00;">
+            Embark on New Adventures: Where Every Journey Begins
+        </h1>
+        <p class="text-lg font-semibold " style="color: #009A00;">
+            Katak Travel: Your Gateway to Explore, Review, and Book the World's Most Amazing Places.
+        </p>
+    </div>
+
+     <!-- About Section -->
+     <div class="w-full bg-white py-4 px-6">
+        <div class="container mx-auto text-center">
+            <h2 class="text-4xl font-bold mb-6">COMING SOON!!!</h2>
+            
+        </div>
+    </div>
+
+    <!-- About Section -->
+    <div class="w-full bg-white  px-6">
+        <div class="container mx-auto text-center">
+            <h2 class="text-3xl lg:text-4xl font-bold mb-6">What is Katak Travel?</h2>
+            <p class="text-gray-600 mb-8 text-2xl">
+                Katak Travel is a next-generation booking system that connects you to exciting travel destinations worldwide. 
+                From reviews of breathtaking places to an intuitive booking experience, we've got you covered.
+            </p>
+            
+            <!-- Three Images Side by Side -->
+            <div class="flex justify-center gap-4">
+                <div class="w-1/3">
+                    <img src="{% static 'images/travel.jpg' %}" alt="Travel 1" class="rounded-lg shadow-md w-full h-64 object-cover">
+                </div>
+                <div class="w-1/3">
+                    <img src="{% static 'images/travel_2.jpg' %}" alt="Travel 2" class="rounded-lg shadow-md w-full h-64 object-cover">
+                </div>
+                <div class="w-1/3">
+                    <img src="{% static 'images/travel_3.jpg' %}" alt="Travel 3" class="rounded-lg shadow-md w-full h-64 object-cover">
+                </div>
+            </div>
+        </div>
+    </div>
+
+   <!-- Features Section -->
+    <div class="w-full bg-gray-50 py-12 px-6">
+        <div class="container mx-auto text-center">
+            <h2 class="text-3xl lg:text-4xl font-bold mb-6">Why Choose Katak Travel?</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Feature 1: Discover Amazing Places -->
+                <div class="p-6 bg-white rounded-lg shadow-md">
+                    <h3 class="text-xl font-bold mb-2 text-green-700">Discover Amazing Places</h3>
+                    <p class="text-gray-600">Explore reviews and insights about the best travel destinations.</p>
+                </div>
+
+                <!-- Feature 2: Seamless Booking -->
+                <div class="p-6 bg-white rounded-lg shadow-md">
+                    <h3 class="text-xl font-bold mb-2 text-green-700">Seamless Booking</h3>
+                    <p class="text-gray-600">Experience an intuitive booking system for your next trip.</p>
+                </div>
+
+                <!-- Feature 3: Personalized Recommendations -->
+                <div class="p-6 bg-white rounded-lg shadow-md">
+                    <h3 class="text-xl font-bold mb-2 text-green-700">Personalized Recommendations</h3>
+                    <p class="text-gray-600">Get suggestions based on your interests and preferences.</p>
+                </div>
+
+                <!-- Feature 4: Interest Packages -->
+                <div class="p-6 bg-white rounded-lg shadow-md">
+                    <h3 class="text-xl font-bold mb-2 text-green-700">Interest Packages</h3>
+                    <p class="text-gray-600">Choose from specially curated travel packages based on your interests, whether it's adventure, relaxation, or culture.</p>
+                </div>
+
+                <!-- Feature 5: Give Suggestions to Others -->
+                <div class="p-6 bg-white rounded-lg shadow-md">
+                    <h3 class="text-xl font-bold mb-2 text-green-700">Give Suggestions to Others</h3>
+                    <p class="text-gray-600">Share your travel experiences and help others plan their perfect trip with your suggestions and tips.</p>
+                </div>
+
+                <!-- Feature 6: Write Reviews -->
+                <div class="p-6 bg-white rounded-lg shadow-md">
+                    <h3 class="text-xl font-bold mb-2 text-green-700">Write Reviews</h3>
+                    <p class="text-gray-600">Write reviews about places you've visited to guide fellow travelers in their decision-making process.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Call-to-Action -->
+    <div class="w-full bg-white py-12 px-6">
+        <div class="container mx-auto text-center">
+            <h2 class="text-3xl lg:text-4xl font-bold mb-6">Coming Soon!</h2>
+            <p class="text-gray-600 mb-4">Stay tuned for our official launch.</p>
+            <button class="bg-green-600 text-white py-3 px-6 rounded-lg shadow-md hover:bg-green-700">
+                Notify Me
+            </button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    {% include 'base_kt/page_footer.html' %}
+
+</body>
+</html>
+
+<style>
+    .background-cover {
+        background-image: url('{% static "images/travel_1.jpg" %}');
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center;
+        height: 40vh;
+    }
+</style>
+{% endblock %}

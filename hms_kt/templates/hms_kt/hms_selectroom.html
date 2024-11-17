@@ -1,0 +1,62 @@
+{% block content %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'src/styles.css' %}">
+<html>
+    
+     <!-- Include the header -->
+     {% include 'base_kt/hms_header.html' %}
+
+     <body>
+        <div class="flex">
+            <!-- Sidebar -->
+            {% include 'base_kt/hms_sidebar.html' %}
+            <div class="flex-grow p-4 bg-gray-100 h-min-screen">
+                <div class="relative">
+                    <div class="block pb-2">
+                        <div class="w-full h-4 bg-gray-400 rounded-full">
+                            <div class="w-3/6 h-full text-center text-xs text-white bg-blue-600 rounded-full font-semibold ">
+                                48%
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-4 flex h-8 overflow-hidden rounded bg-gray-100 text-md">
+                        <div class="flex justify-center items-center bg-green-700 border-r-2" style="width: 25%; height: 100%;">
+                            <a href="{% url 'register_hotel' hotel.id %}" class="block w-full text-center py-2">
+                                <span class="font-semibold text-white">Register</span>
+                            </a>
+                        </div>
+                        <div class="flex justify-center items-center bg-green-700 border-r-2" style="width: 25%; height: 100%;">
+                            <a href="{% url 'hms-register2' hotel.id  %}" class="block w-full text-center py-2">
+                                <span class="font-semibold text-white">Hotel Details</span>
+                            </a>
+                        </div>
+                        <div class="flex justify-center items-center bg-green-700 border-r-2" style="width: 25%; height: 100%;">
+                            <a href="{% url 'hms-register3' hotel.id  %}" class="block w-full text-center py-2">
+                                <span class="font-semibold text-white">Picture</span>
+                            </a>
+                        </div>
+                        <div class="flex justify-center items-center bg-green-700 border-r-2" style="width: 25%; height: 100%;">
+                            <a href="{% url 'hms-register4' hotel.id  %}" class="block w-full text-center py-2">
+                                <span class="font-semibold text-white">Room Details</span>
+                            </a>
+                        </div>
+                      <div class="flex flex-col justify-center bg-white border-r-2" style="width: 25%;">
+                        <span class="text-center">Details</span>
+                      </div>
+                      <div class="flex flex-col justify-center bg-white" style="width: 25%;">
+                        <span class="text-center">Approval</span>
+                      </div>
+                    </div>
+                    
+                </div>
+
+                <div class="bg-white p-6 rounded-lg shadow-lg w-full">
+                    <h2 class="text-2xl font-bold mb-4">Room Details</h2>
+                    <form method="POST" action="{% url 'hms-register4' hotel.id %}" enctype="multipart/form-data">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
+{% endblock %}

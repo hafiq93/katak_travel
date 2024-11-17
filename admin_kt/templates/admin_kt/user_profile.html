@@ -1,0 +1,131 @@
+{% block content %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'src/styles.css' %}">
+<html>
+    
+     <!-- Include the header -->
+     {% include 'base_kt/admin_header.html' %}
+
+     <body>
+        <div class="flex">
+            <!-- Sidebar -->
+            {% include 'base_kt/admin_sidebar.html' %}
+            <div class="flex-grow p-4 bg-gray-100 ">
+                <div class="rounded-md">    
+                    <div class="col-span-3 w-full bg-white  p-4 text-left rounded-md">
+                        <h2 class="text-2xl px-6 font-semibold mb-6 text-gray-800">Public Profile</h2>
+                    
+                        <!-- Center the profile picture at the top -->
+                        <div class="flex flex-col items-center mb-6">
+                            <img class="object-cover w-32 h-32 sm:w-40 sm:h-40 rounded-full border-4 border-indigo-300"
+                                src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fGZhY2V8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=500&q=60"
+                                alt="Profile picture">
+                    
+                            <!-- Buttons for changing/deleting the picture -->
+                        
+                        </div>
+                    
+                        <!-- Form Section -->
+                        <form method="post" id="profile-form" class="p-6 w-full">
+                            {% csrf_token %}
+                            <div class="grid grid-cols-2 sm:grid-cols-2 gap-6">
+                                <!-- First name -->
+                                <div class="col-span-1">
+                                    <label for="first_name" class="text-md font-semibold w-1/3">First Name:</label>
+                                    <input type="text" id="first_name" name="first_name" value="{{ user.first_name }}"
+                                        class="block w-full bg-gray-100 px-3 border rounded-lg shadow-sm text-gray-900" disabled />
+                                </div>
+                        
+                                <!-- Last name -->
+                                <div class="col-span-1">
+                                    <label for="last_name" class="text-md font-semibold w-1/3">Last Name:</label>
+                                    <input type="text" id="last_name" name="last_name" value="{{ user.last_name }}"
+                                        class="block w-full bg-gray-100 px-3 py-2 border rounded-lg shadow-sm text-gray-900" disabled />
+                                </div>
+                        
+                            
+                                    <!-- identity_type -->
+                                    <div class="col-span-1">
+                                        <label for="identity_type" class="text-md font-semibold">Identity Type:</label>
+                                        <input type="text" id="identity_type" name="identity_type" value="{{ user.profile.identity_type }}"
+                                            class="block w-full bg-gray-100 px-3 py-2 border rounded-lg shadow-sm text-gray-900" disabled />
+                                    </div>
+                                
+                                    <!-- identity_no -->
+                                    <div class="col-span-1">
+                                        <label for="identity_no" class="text-md font-semibold">Identity No:</label>
+                                        <input type="text" id="identity_no" name="identity_no" value="{{ user.profile.identity_no }}"
+                                            class="block w-full bg-gray-100 px-3 py-2 border rounded-lg shadow-sm text-gray-900" disabled />
+                                    </div>
+                            
+
+
+                                <!-- Email -->
+                                <div class="col-span-2">
+                                    <label for="email" class="text-md font-semibold w-1/3">Email:</label>
+                                    <input type="text" id="email" name="email" value="{{ user.email }}"
+                                        class="block w-full bg-gray-100  px-3 py-2 border rounded-lg shadow-sm text-gray-900" disabled />
+                                </div>
+
+                                 <!-- Phone number -->
+                                 <div class="col-span-2">
+                                    <label for="phone" class="text-md font-semibold w-1/3">Gender:</label>
+                                    <input type="text" id="gender" name="gender" value="{{ user.profile.gender }}"
+                                        class="block w-full bg-gray-100 px-3 py-2 border rounded-lg shadow-sm text-gray-900" disabled />
+                                </div>
+                        
+                                <!-- Phone number -->
+                                <div class="col-span-2">
+                                    <label for="phone" class="text-md font-semibold w-1/3">Phone No.:</label>
+                                    <input type="text" id="phone" name="phone" value="{{ user.profile.phone }}"
+                                        class="block w-full bg-gray-100 px-3 py-2 border rounded-lg shadow-sm text-gray-900" disabled />
+                                </div>
+                        
+                                <!-- Address -->
+                                <div class="col-span-2">
+                                    <label for="address" class="text-md font-semibold w-1/3">Address:</label>
+                                    <textarea id="address" rows="3" placeholder="Write your address.." name="address"
+                                        class="block w-full bg-gray-100 px-3 py-2 border rounded-lg shadow-sm text-gray-900" disabled>{{ user.profile.address }}</textarea>
+                                </div>
+
+                                <div class="col-span-1">
+                                    <label for="country" class="text-md font-semibold w-1/3">Postcode:</label>
+                                    <input type="text" id="postcode" name="postcode" value="{{ user.profile.postcode }}"
+                                        class="block w-full bg-gray-100 px-3 py-2 border rounded-lg shadow-sm text-gray-900" disabled />
+                                </div>
+
+
+                                <div class="col-span-1">
+                                    <label for="country" class="text-md font-semibold w-1/3">City:</label>
+                                    <input type="text" id="city" name="city" value="{{ user.profile.city }}"
+                                        class="block w-full bg-gray-100 px-3 py-2 border rounded-lg shadow-sm text-gray-900" disabled />
+                                </div>
+
+                                <div class="col-span-1">
+                                    <label for="country" class="text-md font-semibold w-1/3">State:</label>
+                                    <input type="text" id="state" name="state" value="{{ user.profile.state }}"
+                                        class="block w-full bg-gray-100 px-3 py-2 border rounded-lg shadow-sm text-gray-900" disabled />
+                                </div>
+                                <!-- Country -->
+                                <div class="col-span-1">
+                                    <label for="country" class="text-md font-semibold w-1/3">Country:</label>
+                                    <input type="text" id="country" name="country" value="{{ user.profile.country }}"
+                                        class="block w-full bg-gray-100 px-3 py-2 border rounded-lg shadow-sm text-gray-900" disabled />
+                                </div>
+                        
+                                <!-- Save/Edit Buttons -->
+                                <div class="mt-2 flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-4">
+                                    <button type="button" id="edit-btn"><a href="" class="bg-blue-600 text-white px-4 py-2 rounded">Edit</a></button>
+                                    <!-- <button type="submit" id="save-btn" class="bg-green-700 text-white px-4 py-2 font-semibold rounded hover:bg-green-600 text-center hidden">Save</button> -->
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
+
+{% endblock %}
+    

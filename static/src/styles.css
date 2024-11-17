@@ -1,0 +1,189 @@
+.background-cover {
+    background-image: url('{% static "images/travel_1.jpg" %}');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+
+
+.background-cover2 {
+    background-image: url('{% static "images/bg_jom.jpg" %}');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed; /* Optional: Makes background image fixed in viewport */
+}
+
+.picture-cover {
+    background-image: url('{% static "images/bg_jom.jpg" %}');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed; /* Optional: Makes background image fixed in viewport */
+}
+
+@media (max-width: 600px) {
+    .background-cover {
+        background-size: contain; /* Use contain to fit smaller screens */
+    }
+}
+
+@media (min-width: 601px) and (max-width: 1024px) {
+    .background-cover {
+        background-size: cover; /* Use cover for medium screens */
+    }
+}
+
+@media (min-width: 1025px) {
+    .background-cover {
+        background-size: cover; /* Use cover for larger screens */
+    }
+}
+
+.color-text {
+    color:  #009A00;
+}
+
+.hover {
+    background-color: #009A00;
+  }
+
+  .custom-border {
+    border-color: #009A00 !important;
+  }
+
+  .star {
+    display: inline-block;
+    width: 0;
+    height: 0;
+    border-left: 50px solid transparent;
+    border-right: 50px solid transparent;
+    border-bottom: 100px solid #FFD700; /* Yellow color */
+    position: relative;
+    margin: 10px;
+}
+
+.star:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -50px;
+    width: 0;
+    height: 0;
+    border-left: 50px solid transparent;
+    border-right: 50px solid transparent;
+    border-bottom: 100px solid #FFD700; /* Yellow color */
+    transform: rotate(-35deg);
+    transform-origin: bottom;
+}
+
+.star:after {
+    content: "";
+    position: absolute;
+    top: 25px;
+    left: -50px;
+    width: 0;
+    height: 0;
+    border-left: 50px solid transparent;
+    border-right: 50px solid transparent;
+    border-bottom: 100px solid #FFD700; /* Yellow color */
+    transform: rotate(70deg);
+    transform-origin: bottom;
+}
+.star-icon {
+    color: #FFD700; /* Yellow color */
+    font-size: 1rem; /* Adjust size as needed */
+}
+
+.tab-link {
+    border-color: #009A00; /* Default border color */
+    transition: background-color 0.3s, color 0.3s; /* Smooth transition for hover effects */
+}
+
+.tab-link:hover {
+    background-color: #009A00; /* Background color on hover */
+    color: white; /* Text color on hover */
+    border-color: #009A00; /* Keep border color the same on hover */
+}
+.active-tab{
+    background-color: #009A00; /* Background color on hover */
+    color: white; /* Text color on hover */
+}
+
+.custom-bg{
+    background-color: #009A00; /* Background color on hover */
+}
+
+/* Optional styling to adjust the icon size */
+i.fas.fa-calendar-alt {
+    font-size: 1.40rem; /* Adjust size as needed */
+}
+
+#suggestions {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    position: absolute; /* Ensure the dropdown is positioned correctly */
+    background: white; /* Background color of the dropdown */
+    border: 1px solid #ccc; /* Border color of the dropdown */
+    max-height: 200px; /* Maximum height of the dropdown */
+    overflow-y: auto; /* Scroll if content exceeds max height */
+    width: 100%; /* Full width of the input field */
+    z-index: 1000; /* High z-index to ensure dropdown is on top */
+}
+#suggestions li {
+    padding: 8px; /* Padding inside each item */
+    border-bottom: 1px solid #ddd; /* Border between items */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background 0.3s; /* Smooth transition for background color */
+}
+#suggestions li:last-child {
+    border-bottom: none; /* Remove border from the last item */
+}
+#suggestions li:hover {
+    background: #f0f0f0; /* Background color on hover */
+}
+.hidden {
+    display: none; /* Hide the dropdown when not needed */
+}
+
+.field-icon {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
+@media (min-width: 768px) {
+    .md\\:block {
+      display: block;
+    }
+  }
+
+
+  .description-text {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis !important;
+    max-height: calc(10 * 1.5em) !important; /* Adjust this based on your line height */
+    line-height: 1.5em; /* Set your line height */
+}
+
+.line-clamp-20 {
+    -webkit-line-clamp: 10 !important; /* Number of lines to display */
+}
+
+#myModal {
+    display: flex;                  /* Enable flexbox layout */
+    align-items: center;           /* Center items vertically */
+    justify-content: center;       /* Center items horizontally */
+    position: fixed;               /* Position it fixed to the viewport */
+    top: 0;                        /* Align to the top */
+    left: 0;                       /* Align to the left */
+    width: 100%;                   /* Full width */
+    height: 100%;                  /* Full height */
+    background-color: rgba(0, 0, 0, 0.8); /* Background with opacity */
+    z-index: 1000;                 /* Higher z-index to stay on top */
+}

@@ -1,0 +1,118 @@
+{% block content %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'src/styles.css' %}">
+<html>
+    
+     <!-- Include the header -->
+     {% include 'base_kt/merchant_header.html' %}
+
+     <body>
+        <div class="flex">
+            <!-- Sidebar -->
+            {% include 'base_kt/merchant_sidebar.html' %}
+            <div class="flex-grow p-4 bg-gray-100 h-screen">
+
+                <!-- First Row (Metrics in One Row) -->
+                <div class="rounded-md">
+                    <!-- Grid layout with 1 row and 6 columns -->
+                    <div class="grid grid-cols-1 sm:grid-cols-6 gap-4">
+                        <!-- First Column -->
+                        <div class="bg-green-500 p-4 rounded-md">
+                            <h3 class="text-md font-semibold mb-2 text-white">Total Sale</h3>
+                            <p>Some additional data for metric 1 can go here.</p>
+                        </div>
+            
+                        <!-- Second Column -->
+                        <div class="bg-blue-500 p-4 rounded-md">
+                            <h3 class="text-md font-semibold mb-2 text-white">Total Customer</h3>
+                            <p>Some additional data for metric 2 can go here.</p>
+                        </div>
+            
+                        <!-- Third Column -->
+                        <div class="bg-red-500 p-4 rounded-md">
+                            <h3 class="text-md font-semibold mb-2 text-white">Booking </h3>
+                            <p>Some additional data for metric 3 can go here.</p>
+                        </div>
+            
+                        <!-- Fourth Column -->
+                        <div class="bg-purple-500 p-4 rounded-md">
+                            <h3 class="text-md font-semibold mb-2">Laundry Report</h3>
+                            <p>Some additional data for metric 4 can go here.</p>
+                        </div>
+            
+                        <!-- Fifth Column -->
+                        <div class="bg-orange-500 p-4 rounded-md">
+                            <h3 class="text-lg font-semibold mb-2">Room</h3>
+                            <p>Some additional data for metric 5 can go here.</p>
+                        </div>
+            
+                        <!-- Sixth Column -->
+                        <div class="bg-yellow-500 p-4 rounded-md">
+                            <h3 class="text-lg font-semibold mb-2">Rooms</h3>
+                            <p>Some additional data for metric 6 can go here.</p>
+                        </div>
+                    </div>
+                </div>
+            
+                <!-- Second Row (Below First Row) -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">  <!-- Added margin-top (mt-6) for spacing -->
+                    <!-- First Column, First Row: Total Sales by Month -->
+                    <div class="bg-white shadow-md p-4 rounded-md">
+                        <h2 class="text-2xl font-bold mb-4">Total Sales by Month</h2>
+                        <canvas id="salesChart" class="w-full h-64"></canvas> <!-- Chart will be displayed here -->
+                    </div>
+            
+                    <!-- Second Column, First Row: Sales Breakdown -->
+                    <div class="bg-white shadow-md p-6 rounded-md">
+                        <h2 class="text-2xl font-bold mb-4">Sales Breakdown</h2>
+                        <p>Sales breakdown can go here.</p>
+                    </div>
+                </div>
+            
+                <!-- Third Row (Below Second Row) -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+                    <!-- First Column, Second Row: Customer Feedback -->
+                    <div class="bg-white shadow-md p-4 rounded-md">
+                        <h2 class="text-2xl font-bold mb-4">Customer Feedback</h2>
+                        <p>Display customer feedback here.</p>
+                    </div>
+            
+                    <!-- Second Column, Second Row: Another Sales Breakdown -->
+                    <div class="bg-white shadow-md p-6 rounded-md">
+                        <h2 class="text-2xl font-bold mb-4">Sales Breakdown</h2>
+                        <p>Sales breakdown can go here.</p>
+                    </div>
+                </div>
+            </div>
+            
+            
+        </div>
+    </body>
+    
+</html>
+<!-- Chart.js Script -->
+<script>
+    var ctx = document.getElementById('salesChart').getContext('2d');
+    var salesChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+            datasets: [{
+                label: 'Sales (in USD)',
+                data: [5000, 7000, 6000, 8000, 12000, 15000, 13000, 14000, 11000, 9000, 10000, 12500],
+                backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>
+{% endblock %}

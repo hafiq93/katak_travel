@@ -1,0 +1,19 @@
+{% block content %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'src/styles.css' %}">
+<html>
+    
+    <!-- Include the header -->
+    {% include 'base_kt/admin_header.html' %}
+
+    <body>
+        <div class="flex h-screen">
+            <!-- Sidebar -->
+            {% include 'base_kt/admin_sidebar.html' %}
+            <div class="flex-grow p-4 bg-gray-100 h-min-screen">
+            </div>
+        </div>
+    </body>
+</html>
+
+{% endblock %}

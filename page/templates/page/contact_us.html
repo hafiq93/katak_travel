@@ -1,0 +1,53 @@
+{% block content %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'src/styles.css' %}">
+
+<html lang="en">
+
+<body class="flex flex-col min-h-screen bg-white">
+
+    <!-- Header -->
+    {% include 'base_kt/page_header.html' %}
+
+    <!-- About Section -->
+    
+
+    <!-- Contact Section -->
+    <div class="w-full py-12 px-24 bg-white">
+        <div class="container mx-auto max-w-7xl">
+            <!-- Header -->
+            <div class="text-center mb-8">
+                <h2 class="text-4xl font-bold">Get in Touch</h2>
+                <p class="text-lg text-gray-700">
+                    Have questions or need assistance? Reach out to us!
+                </p>
+            </div>
+            <!-- Grid Layout -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                <!-- Image Section -->
+                <div>
+                    <img src="{% static 'images/travel.jpg' %}" alt="Introduction to Katak Travel"
+                        class="rounded-lg shadow-md w-full h-64 object-cover">
+                </div>
+                <!-- Contact Info -->
+                <div class="flex items-center">
+                    <div>
+                        <p class="text-gray-600 mb-4">
+                            We’re here to help you make the most of your travel experiences. Contact us via email or phone, and we’ll be happy to assist you.
+                        </p>
+                        <p class="text-lg font-bold text-green-700">Email:</p>
+                        <p class="text-gray-600 mb-4">support@kataktravel.com</p>
+                        <p class="text-lg font-bold text-green-700">Phone:</p>
+                        <p class="text-gray-600">+6013-5 817530</p>
+                        <p class="text-gray-600">+6013-6 817530</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Footer -->
+    {% include 'base_kt/page_footer.html' %}
+</body>
+
+</html>
+{% endblock %}

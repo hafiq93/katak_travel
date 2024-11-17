@@ -1,0 +1,125 @@
+{% block content %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'src/styles.css' %}">
+
+<html lang="en">
+
+<body class="flex flex-col min-h-screen bg-gray-200 " >
+
+    <!-- Header -->
+    {% include 'base_kt/page_header.html' %}
+
+    <!-- About Section -->
+    <div class="container mx-auto py-12 px-6 w-full ">
+        <div class="text-center mb-12">
+            <h2 class="text-4xl font-bold mb-8 inline-block bg-green-200 text-green-900 px-6 py-3 rounded-lg max-w-4xl w-full mx-auto">
+                Welcome to Katak Travel
+            </h2>
+        </div>
+        <p class="text-lg text-black text-center max-w-2xl mx-auto ">
+            At Katak Travel, we’re dedicated to helping you discover the world. Whether you’re looking for unforgettable destinations,
+            the best accommodations, or seamless booking experiences, we’ve got you covered.
+        </p>
+    </div>
+
+    <!-- Introduction Section -->
+    <div class="bg-white w-full py-12 px-24">
+        <div class="container mx-auto max-w-7xl">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                <!-- Introduction Text -->
+                <div class="flex items-center">
+                    <div>
+                        <h3 class="text-2xl font-bold text-green-700 mb-4">Introduction</h3>
+                        <p class="text-gray-600 mb-4">
+                            Katak Travel is your trusted partner in exploring the world’s most breathtaking locations.
+                            We provide expert recommendations, curated travel packages, and reliable booking services.
+                        </p>
+                        <p class="text-gray-600">
+                            Our goal is to make travel planning simple, enjoyable, and tailored to your preferences. Join us to turn your travel dreams into reality!
+                        </p>
+                    </div>
+                </div>
+                <!-- Introduction Image -->
+                <div>
+                    <img src="{% static 'images/travel.jpg' %}" alt="Introduction to Katak Travel"
+                        class="rounded-lg shadow-md w-full h-80 object-cover">
+                </div>
+            </div>
+        </div>
+    </div>
+
+   <!-- Objectives Section -->
+    <div class="w-full bg-gray-200 py-12 px-24">
+        <div class="container mx-auto max-w-7xl">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                <!-- Objectives Image -->
+                <div>
+                    <img src="{% static 'images/malaysia.jpeg' %}" alt="Objectives of Katak Travel"
+                        class="rounded-lg shadow-md w-full h-80 object-cover">
+                </div>
+                <!-- Objectives Text -->
+                <div class="flex items-center">
+                    <div>
+                        <h3 class="text-2xl font-bold text-green-700 mb-4">Our Objectives</h3>
+                        <ul class="list-disc list-inside text-black">
+                            <li>Provide tailored travel solutions to meet individual needs.</li>
+                            <li>Ensure a smooth and secure booking process.</li>
+                            <li>Promote eco-friendly and sustainable tourism practices.</li>
+                            <li>Partner with top-rated accommodations and services worldwide.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mission and Vision Section -->
+    <div class="w-full bg-white py-12 px-24">
+        <div class="container mx-auto max-w-7xl">
+            <!-- Section Header -->
+            <div class="text-center mb-8">
+                <h2 class="text-4xl font-bold bg-green-200 text-green-900 px-6 py-3 rounded-lg inline-block">
+                    Our Mission & Vision
+                </h2>
+                <p class="text-lg text-gray-700 mt-4">
+                    At Katak Travel, we envision a world where travel inspires and connects people globally. Our mission is to simplify travel and deliver exceptional experiences.
+                </p>
+            </div>
+            <!-- Grid Layout -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                <!-- Mission -->
+                <div class="flex items-center">
+                    <div>
+                        <h3 class="text-2xl font-bold text-green-700 mb-4">Mission</h3>
+                        <p class="text-gray-600">
+                            Our mission is to revolutionize travel planning by offering personalized services,
+                            innovative technology, and unmatched customer support.
+                        </p>
+                    </div>
+                </div>
+                <div>
+                    <img src="{% static 'images/travel_2.jpg' %}" alt="Our Mission" class="rounded-lg shadow-md w-full h-48 object-cover">
+                </div>
+
+                <!-- Vision -->
+                <div>
+                    <img src="{% static 'images/travel_3.jpg' %}" alt="Our Vision" class="rounded-lg shadow-md w-full h-48 object-cover">
+                </div>
+                <div class="flex items-center">
+                    <div>
+                        <h3 class="text-2xl font-bold text-green-700 mb-4">Vision</h3>
+                        <p class="text-gray-600">
+                            We aim to be a leading travel platform globally, connecting millions of travelers with
+                            unique experiences and fostering a love for exploration.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% include 'base_kt/page_footer.html' %}
+</body>
+
+</html>
+{% endblock %}

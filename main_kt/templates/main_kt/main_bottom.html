@@ -1,0 +1,447 @@
+
+<div class="w-full bg-white">
+        <div class="container mx-auto grid grid-cols-1 md:grid-cols-1 lg:grid-cols-1 gap-10 text-center md:text-left lg:px-20 ">
+            <!-- Grid for Rows -->
+            <div class="grid gap-3 bg-white rounded-t-lg">
+                <!-- Row 1 -->
+                <div class="row-span-1 pt-2">
+                    <h2 class="text-2xl font-semibold mb-2">Offers</h2>
+                    <p class="text-md font-semibold mb-2">Promotions,deals and special offers for you</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4 ">
+                       
+                        <div class="custom-bg shadow-lg rounded-lg p-2">
+                            <div class="relative">
+                                <img src="{% static 'images/bg_jom.png' %}" alt="Sample" class="w-full h-48 object-cover rounded-lg">
+                                <div class="absolute inset-0 bg-black bg-opacity-50 rounded-lg flex flex-col justify-center items-center text-white">
+                                <h3 class="text-xl font-bold">Seize the moment</h3>
+                                <p class="mt-2">Save 20% or more when you book and stay</br>before 31 December 2024 .</p>
+                                <button class="mt-4 custom-bg hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                    Find more discount
+                                </button>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="custom-bg shadow-lg rounded-lg p-2">
+                            <div class="relative">
+                                <img src="{% static 'images/bg_jom.png' %}" alt="Sample Image" class="w-full h-48 object-cover rounded-lg">
+                                <div class="absolute inset-0 bg-black bg-opacity-50 rounded-lg flex flex-col justify-center items-center text-white">
+                                <h3 class="text-xl font-bold">Seize the moment</h3>
+                                <p class="mt-2">Save 20% or more when you book and stay</br>before 31 December 2024 .</p>
+                                <button class="mt-4 custom-bg hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                    find more discount
+                                </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Row 2 -->
+                <div class="row-span-1 mt-4"> <!-- Reduced bottom margin to 4 -->
+                    <h2 class="text-2xl font-semibold mb-2 pb-2">Discover more about Asia</h2>
+                    <div class="grid grid-cols-1 lg:grid-cols-4 gap-4">
+                        <div class="custom-bg shadow-lg rounded-lg p-2">
+                            <div class="relative">
+                                <img src="{% static 'images/malaysia.jpeg' %}" alt="Sample Image" class="w-full h-48 object-cover rounded-lg">
+                                <div class="absolute inset-0 bg-black bg-opacity-50 rounded-lg flex flex-col justify-start items-start text-white p-4">
+                                    <a href="https://www.example.com">
+                                        <h3 class="text-xl font-bold hover:underline">Malaysia</h3>
+                                    </a>
+                                    <p class="mt-2">8371 accommodations</p>
+                                </div>
+                            </div>
+                        </div> 
+                        
+                        <div class="custom-bg shadow-lg rounded-lg p-2">
+                            <div class="relative">
+                                <img src="{% static 'images/thailand.jpg' %}" alt="Sample Image" class="w-full h-48 object-cover rounded-lg">
+                                <div class="absolute inset-0 bg-black bg-opacity-50 rounded-lg flex flex-col justify-start items-start text-white p-4">
+                                    <a href="https://www.example.com">
+                                        <h3 class="text-xl font-bold hover:underline">Thailand</h3>
+                                    </a>
+                                    <p class="mt-2">8371 accommodations</p>
+                                </div>
+                            </div>
+                        </div> 
+
+                        <div class="custom-bg shadow-lg rounded-lg p-2">
+                            <div class="relative">
+                                <img src="{% static 'images/vietnam.jpg' %}" alt="Sample Image" class="w-full h-48 object-cover rounded-lg">
+                                <div class="absolute inset-0 bg-black bg-opacity-50 rounded-lg flex flex-col justify-start items-start text-white p-4">
+                                    <a href="https://www.example.com">
+                                        <h3 class="text-xl font-bold hover:underline">Vietnam</h3>
+                                    </a>
+                                    <p class="mt-2">8371 accommodations</p>
+                                </div>
+                            </div>
+                        </div> 
+
+                        <div class="custom-bg shadow-lg rounded-lg p-2">
+                            <div class="relative">
+                                <img src="{% static 'images/bg_jom2.jpg' %}" alt="Sample Image" class="w-full h-48 object-cover rounded-lg">
+                                <div class="absolute inset-0 bg-black bg-opacity-50 rounded-lg flex flex-col justify-center items-center text-white p-4">
+                                    <h3 class="text-xl font-bold hover:underline">Explore more </br> destination</h3>
+                                    <button class="mt-4 custom-bg hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                        Lets Go!!!
+                                    </button>
+                                </div>
+                            </div>
+                        </div> 
+                    </div>
+                </div>
+                
+                <!-- Row 3 -->
+                <div class="row-span-1 mt-4"> 
+                    <h2 class="text-2xl font-semibold mb-2">Explore Malaysia</h2>
+                    <p class="text-md font-semibold mb-2">These popular destinations have a lot to offer.</p>
+                    <div class="bg-teal-300 p-2 rounded-lg ">
+                        <div class="w-full md:w-auto pb-1">
+                            <!-- Tabs -->
+                            <ul class="flex flex-wrap justify-start pt-1 space-x-0 space-y-2 sm:space-y-0 sm:space-x-2  pb-2">
+                                <li>
+                                    <a href="javascript:void(0)" class="tab-link inline-block py-2 px-4 rounded-lg font-semibold border-2 active-tab" data-tab="flight">Kuala Lumpur</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:void(0)" class="tab-link inline-block py-2 px-4 rounded-lg font-semibold border-2" data-tab="flight">Penang</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:void(0)" class="tab-link inline-block py-2 px-4 rounded-lg font-semibold border-2" data-tab="flight">Selangor</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:void(0)" class="tab-link inline-block py-2 px-4 rounded-lg font-semibold border-2" data-tab="flight">Sabah</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:void(0)" class="tab-link inline-block py-2 px-4 rounded-lg font-semibold border-2" data-tab="flight">Sarawak</a>
+                                </li>
+                              
+                            </ul>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-5 lg:grid-cols-5 gap-4 ">
+                            <!-- Content for row 3 goes here -->
+                            <div class="shadow-lg rounded-lg p-2 bg-white">
+                                    <div class="relative">
+                                        <!-- Image at the top -->
+                                        <img src="{% static 'images/central.jpg' %}" alt="Sample Image" class="w-full h-64 object-cover rounded-lg">
+                                    </div>
+                                <!-- Text and button below the image -->
+                                <div class="mt-4 text-left">
+                                    <h3 class="text-lg font-semibold " style="color: #72c1fa;">Central Market</h3>
+                                    <p class="mt-2 font-semibold"> <i class="fas fa-star star-icon mr-2"></i>4.3/5.0</p>
+                                </div>
+                            </div> 
+
+
+                            <div class="shadow-lg rounded-lg p-2 bg-white">
+                                <div class="relative">
+                                    <!-- Image at the top -->
+                                    <img src="{% static 'images/klcc.jpg' %}" alt="Sample Image" class="w-full h-64 object-cover rounded-lg">
+                                </div>
+                                <!-- Text and button below the image -->
+                                <div class="mt-4 text-left">
+                                    <h3 class="text-lg font-semibold " style="color: #72c1fa;">Petronas Twin Tower</h3>
+                                    <p class="mt-2 font-semibold"> <i class="fas fa-star star-icon mr-2"></i>4.3/5.0</p>
+                                </div>
+                            </div>
+
+                            <div class="shadow-lg rounded-lg p-2 bg-white">
+                                <div class="relative">
+                                    <!-- Image at the top -->
+                                    <img src="{% static 'images/masjid.jpg' %}" alt="Sample Image" class="w-full h-64 object-cover rounded-lg">
+                                </div>
+                            <!-- Text and button below the image -->
+                                <div class="mt-4 text-left">
+                                    <h3 class="text-lg font-semibold " style="color: #72c1fa;">National Mosque</h3>
+                                    <p class="mt-2 font-semibold"> <i class="fas fa-star star-icon mr-2"></i>4.3/5.0</p>
+                                </div>
+                            </div>
+
+                            <div class="shadow-lg rounded-lg p-2 bg-white">
+                                <div class="relative">
+                                    <!-- Image at the top -->
+                                    <img src="{% static 'images/tugu.jpg' %}" alt="Sample Image" class="w-full h-64 object-cover rounded-lg">
+                                </div>
+                            <!-- Text and button below the image -->
+                                <div class="mt-4 text-left">
+                                    <h3 class="text-lg font-semibold " style="color: #72c1fa;">National Monument</h3>
+                                    <p class="mt-2 font-semibold"> <i class="fas fa-star star-icon mr-2"></i>4.3/5.0</p>
+                                </div>
+                            </div>
+
+                            <div class="shadow-lg rounded-lg p-3 bg-white">
+                                <div class="relative">
+                                    <img src="{% static 'images/explore.jpg' %}" alt="Sample Image" class="w-full h-80 object-cover rounded-lg">
+                                    <div class="absolute inset-0 bg-black bg-opacity-50 rounded-lg flex flex-col justify-center items-center text-white p-4">
+                                        <h3 class="text-xl font-bold hover:underline">Explore more </br> destination</h3>
+                                        <button class="mt-4 custom-bg hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                            Lets Go!!!
+                                        </button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+              
+                <!-- Row 4 -->
+                <div class="row-span-1 mt-4"> 
+                    <h2 class="text-2xl font-semibold mb-2">Deals on popular routes</h2>
+                    <div class="bg-red-300 p-2 rounded-lg">
+                        <div class="w-full md:w-auto pb-1 rounded-lg">
+                            <!-- Tabs -->
+                            <ul class="flex flex-wrap justify-start pt-1 space-x-0 space-y-2 sm:space-y-0 sm:space-x-2 pb-2">
+                                <li>
+                                    <a href="javascript:void(0)" class="tab-link inline-block py-2 px-4 rounded-lg font-semibold border-2 active-tab" data-tab="flight">Kuala Lumpur</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:void(0)" class="tab-link inline-block py-2 px-4 rounded-lg font-semibold border-2" data-tab="flight">Penang</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:void(0)" class="tab-link inline-block py-2 px-4 rounded-lg font-semibold border-2" data-tab="flight">Sabah</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:void(0)" class="tab-link inline-block py-2 px-4 rounded-lg font-semibold border-2" data-tab="flight">Sarawak</a>
+                                </li>
+                              
+                            </ul>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-5 lg:grid-cols-5 gap-4 ">
+                            <!-- Content for row 3 goes here -->
+                            <div class="shadow-lg rounded-lg p-2 bg-white">
+                                    <div class="relative">
+                                        <!-- Image at the top -->
+                                        <img src="{% static 'images/bg_jom2.jpg' %}" alt="Sample Image" class="w-full h-64 object-cover rounded-lg">
+                                </div>
+                                <!-- Text and button below the image -->
+                                <div class="mt-4 text-left">
+                                    <p class="text-lg font-semibold " style="color: #72c1fa;">Kuala Lumpur<i class="fas fa-plane  mr-2"></i>
+                                    <p class="text-lg font-semibold " style="color: #72c1fa;">Langkawi</p>
+                                    <!-- <button class="mt-4 text-white font-bold py-2 px-4 rounded" style="background-color: #72c1fa;">
+                                        Find more
+                                    </button> -->
+                                </div>
+                            </div> 
+
+
+                            <div class="shadow-lg rounded-lg p-2 bg-white">
+                                <div class="relative">
+                                    <!-- Image at the top -->
+                                    <img src="{% static 'images/penang.jpg' %}" alt="Sample Image" class="w-full h-64 object-cover rounded-lg">
+                                </div>
+                                <!-- Text and button below the image -->
+                                <div class="mt-4 text-left">
+                                    <p class="text-lg font-semibold " style="color: #72c1fa;">Kuala Lumpur<i class="fas fa-plane  mr-2"></i>
+                                    <p class="text-lg font-semibold " style="color: #72c1fa;">Penang</p>
+                                    <!-- <button class="mt-4 text-white font-bold py-2 px-4 rounded" style="background-color: #72c1fa;">
+                                        Find more
+                                    </button> -->
+                                </div>
+                            </div>
+
+                            <div class="shadow-lg rounded-lg p-2 bg-white">
+                                <div class="relative">
+                                    <!-- Image at the top -->
+                                    <img src="{% static 'images/kuching.jpg' %}" alt="Sample Image" class="w-full h-64 object-cover rounded-lg">
+                                </div>
+                            <!-- Text and button below the image -->
+                                <div class="mt-4 text-left">
+                                    <p class="text-lg font-semibold " style="color: #72c1fa;">Kuala Lumpur<i class="fas fa-plane  mr-2"></i>
+                                        <p class="text-lg font-semibold " style="color: #72c1fa;">Kuching</p>
+                                    <!-- <button class="mt-4 text-white font-bold py-2 px-4 rounded" style="background-color: #72c1fa;">
+                                        Find more
+                                    </button> -->
+                                </div>
+                            </div>
+
+                            <div class="shadow-lg rounded-lg p-2 bg-white">
+                                <div class="relative">
+                                    <!-- Image at the top -->
+                                    <img src="{% static 'images/kota.jpg' %}" alt="Sample Image" class="w-full h-64 object-cover rounded-lg">
+                                </div>
+                            <!-- Text and button below the image -->
+                                <div class="mt-4 text-left">
+                                    <p class="text-lg font-semibold " style="color: #72c1fa;">Kuala Lumpur<i class="fas fa-plane  mr-2"></i>
+                                    <p class="text-lg font-semibold " style="color: #72c1fa;">Kot Kinabalu</p>
+                                    <!-- <button class="mt-4 text-white font-bold py-2 px-4 rounded" style="background-color: #72c1fa;">
+                                        Find more
+                                    </button> -->
+                                </div>
+                            </div>
+
+                            <div class="shadow-lg rounded-lg p-3 bg-white">
+                                <div class="relative">
+                                    <img src="{% static 'images/island.png' %}" alt="Sample Image" class="w-full h-80 object-cover rounded-lg">
+                                    <div class="absolute inset-0 bg-black bg-opacity-50 rounded-lg flex flex-col justify-center items-center text-white p-4">
+                                        <h3 class="text-xl font-bold hover:underline">Choose cheap </br> travel</h3>
+                                        <button class="mt-4 custom-bg hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                            Lets Go!!!
+                                        </button>
+                                    </div>
+                                </div>
+                           
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Row 5 -->
+                <div class="row-span-1 mt-4"> 
+                    <h2 class="text-2xl font-semibold mb-2">Your favorite hotels on sale</h2>
+                    <p class="text-md font-semibold mb-2">Get the best deals for the most searched hotels in Malaysia.</p>
+                    <div class="bg-purple-300 p-2 rounded-lg ">
+                        <div class="w-full md:w-auto pb-1">
+                            <!-- Tabs -->
+                            <ul class="flex flex-wrap justify-start pt-1 space-x-0 space-y-2 sm:space-y-0 sm:space-x-2  pb-2">
+                                <li>
+                                    <a href="javascript:void(0)" class="tab-link inline-block py-2 px-4 rounded-lg font-semibold border-2 active-tab" data-tab="flight">Kuala Lumpur</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:void(0)" class="tab-link inline-block py-2 px-4 rounded-lg font-semibold border-2" data-tab="flight">Penang</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:void(0)" class="tab-link inline-block py-2 px-4 rounded-lg font-semibold border-2" data-tab="flight">Sabah</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:void(0)" class="tab-link inline-block py-2 px-4 rounded-lg font-semibold border-2" data-tab="flight">Sarawak</a>
+                                </li>
+                              
+                            </ul>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-5 lg:grid-cols-5 gap-4 ">
+                            <!-- Content for row 3 goes here -->
+                            <div class="shadow-lg rounded-lg p-2 bg-white">
+                                    <div class="relative">
+                                        <!-- Image at the top -->
+                                        <img src="{% static 'images/mid.jpg' %}" alt="Sample Image" class="w-full h-64 object-cover rounded-lg">
+                                </div>
+                                <!-- Text and button below the image -->
+                                <div class="mt-4 text-left">
+                                    <p class="text-md font-semibold " style="color: #72c1fa;">Cititel Mid Valley Hotel</p>
+                                    <p class="text-sm font-semibold " style="color: #72c1fa;">RM 220</p>
+                                    <p class="mt-2 font-semibold"> <i class="fas fa-star star-icon mr-2"></i>8/10</p>
+                                </div>
+                            </div> 
+
+
+                            <div class="shadow-lg rounded-lg p-2 bg-white">
+                                <div class="relative">
+                                    <!-- Image at the top -->
+                                    <img src="{% static 'images/ideaz.jpg' %}" alt="Sample Image" class="w-full h-64 object-cover rounded-lg">
+                                </div>
+                                <!-- Text and button below the image -->
+                                <div class="mt-4 text-left">
+                                    <p class="text-md font-semibold " style="color: #72c1fa;">IDEAS Kuala Lumpur</p>
+                                    <p class="text-sm font-semibold " style="color: #72c1fa;">RM 250</p>
+                                    <p class="mt-2 font-semibold"> <i class="fas fa-star star-icon mr-2"></i>8.2/10</p>
+                                </div>
+                            </div>
+
+                            <div class="shadow-lg rounded-lg p-2 bg-white">
+                                <div class="relative">
+                                    <!-- Image at the top -->
+                                    <img src="{% static 'images/ex.jpg' %}" alt="Sample Image" class="w-full h-64 object-cover rounded-lg">
+                                </div>
+                            <!-- Text and button below the image -->
+                                <div class="mt-4 text-left">
+                                    <p class="text-md font-semibold " style="color: #72c1fa;">Expressionz Suites KLCC</p>
+                                    <p class="text-sm font-semibold " style="color: #72c1fa;">RM 240</p>
+                                    <p class="mt-2 font-semibold"> <i class="fas fa-star star-icon mr-2"></i>9/10</p>
+                                </div>
+                            </div>
+
+                            <div class="shadow-lg rounded-lg p-2 bg-white">
+                                <div class="relative">
+                                    <!-- Image at the top -->
+                                    <img src="{% static 'images/seri.jpg' %}" alt="Sample Image" class="w-full h-64 object-cover rounded-lg">
+                                </div>
+                            <!-- Text and button below the image -->
+                                <div class="mt-4 text-left">
+                                    <p class="text-md font-semibold " style="color: #72c1fa;">Seri Pacific Hotel Kuala Lumpur</p>
+                                    <p class="text-sm font-semibold " style="color: #72c1fa;">RM 200</p>
+                                    <p class="mt-2 font-semibold"> <i class="fas fa-star star-icon mr-2"></i>8/10</p>
+                                </div>
+                            </div>
+
+                            <div class="shadow-lg rounded-lg p-3 bg-white">
+                                <div class="relative">
+                                    <img src="{% static 'images/hotel.jpg' %}" alt="Sample Image" class="w-full mt-2 h-80 object-cover rounded-lg">
+                                    <div class="absolute inset-0 bg-black bg-opacity-50 rounded-lg flex flex-col justify-center items-center text-white p-4">
+                                        <h3 class="text-xl font-bold hover:underline">Find place you </br> can stay</h3>
+                                        <button class="mt-4 custom-bg hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                            Lets Go!!!
+                                        </button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Row 6 -->
+                <div class="row-span-1 mt-4 pb-5"> 
+                    <h2 class="text-2xl font-semibold mb-2">Plan your next adventures</h2>
+                  
+                        <div class="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-4 gap-4 ">
+                            <!-- Content for row 3 goes here -->
+                            <div class=" rounded-lg p-2 ">
+                                    <div class="relative">
+                                        <!-- Image at the top -->
+                                        <img src="{% static 'images/land2.jpeg' %}" alt="Sample Image" class="w-full h-64 object-cover rounded-lg">
+                                </div>
+                                <!-- Text and button below the image -->
+                                <div class="mt-4 text-left">
+                                    <p class="text-md font-semibold ">Top 10 island in Asia you need to visit</p>
+                                  
+                                </div>
+                            </div> 
+
+
+                            <div class=" rounded-lg p-2 ">
+                                <div class="relative">
+                                    <!-- Image at the top -->
+                                    <img src="{% static 'images/back.jpg' %}" alt="Sample Image" class="w-full h-64 object-cover rounded-lg">
+                                </div>
+                                <!-- Text and button below the image -->
+                                <div class="mt-4 text-left">
+                                    <p class="text-md font-semibold ">What do you need before travel</p>
+                                  
+                                </div>
+                            </div>
+
+                            <div class=" rounded-lg p-2 ">
+                                <div class="relative">
+                                    <!-- Image at the top -->
+                                    <img src="{% static 'images/makan.jpeg' %}" alt="Sample Image" class="w-full h-64 object-cover rounded-lg">
+                                </div>
+                            <!-- Text and button below the image -->
+                            <div class="mt-4 text-left">
+                                <p class="text-md font-semibold ">Top 10 muslim friendly hotels in Vietnam for you halal trip</p>
+                              
+                            </div>
+                            </div>
+
+                       
+                            <div class=" rounded-lg p-2 ">
+                                <div class="relative">
+                                    <img src="{% static 'images/more.jpg' %}" alt="Sample Image" class="w-full h-64 object-cover rounded-lg">
+                                    <div class="absolute inset-0 bg-black bg-opacity-50 rounded-lg flex flex-col justify-center items-center text-white p-4">
+                                        <h3 class="text-xl font-bold hover:underline">More information</h3>
+                                        <button class="mt-4 custom-bg hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                            Read More
+                                        </button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+             
+                </div>
+
+            
+            </div>
+        </div>
+    </div>

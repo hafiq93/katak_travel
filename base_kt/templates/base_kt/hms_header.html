@@ -1,0 +1,77 @@
+{% load static %}
+{% load static tailwind_tags %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    {% tailwind_css %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KATAK TRAVEL</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="https://cdn.ckeditor.com/4.16.0/standard/ckeditor.js"></script>
+    
+    
+    <!-- <link href="{% static 'css/tailwind.css' %}" rel="stylesheet"> -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="{% static 'src/styles.css' %}" rel="stylesheet">
+    <!-- <link href="{% static 'fonts-6/css/all.css' %}" rel="stylesheet"> -->
+    <script src="{% static 'javascript/dropdown_header.js' %}" defer></script>
+     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+</head>
+<header class="bg-white shadow-md">
+    <div class="container mx-auto px-4 py-3 flex justify-between items-center" >
+      <!-- Left side: Logo and title -->
+      <div class="flex items-center space-x-4">
+        <img src="{% static 'images/KATAK_2.jpg' %}" alt="Company Logo" class="h-12 w-15">
+        <span class="text-lg font-bold text-gray-700" style="color: #009A00;">Hotel Management System</span>
+      </div>
+  
+      <!-- Middle: Navigation links -->
+      <nav class="hidden md:flex space-x-6" >
+        <a href="" class="text-gray-700 hover:text-blue-500">Home</a>
+        <a href="" class="text-gray-700 hover:text-blue-500">Company User</a>
+      </nav>
+  
+      <!-- Right side: Profile picture with dropdown -->
+      <div class="relative">
+        <button id="profileMenuButton" class="flex items-center space-x-2 focus:outline-none">
+          <img src="{% static 'images/profile-pic.png' %}" alt="Profile" class="w-8 h-8 rounded-full">
+          <span class="hidden md:block text-gray-700">Profile</span>
+        </button>
+        
+        <!-- Dropdown menu -->
+        <div id="profileDropdown" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-2 z-10">
+          <a href="{% url 'home' %}" target="_blank" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Katak Travel Page</a>
+          <a href="" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Profile</a>
+          <a href="" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Log Out</a>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Mobile menu -->
+    <div id="mobileMenu" class="md:hidden flex justify-between items-center px-4 py-3 bg-white">
+      <nav class="flex space-x-4">
+        <a href="" class="text-gray-700 hover:text-blue-500">Homessss</a>
+        <a href="" class="text-gray-700 hover:text-blue-500">Company User</a>
+      </nav>
+    </div>
+  </header>
+  
+
+  
+</html>
+
+<script>
+    const profileMenuButton = document.getElementById('profileMenuButton');
+    const profileDropdown = document.getElementById('profileDropdown');
+  
+    profileMenuButton.addEventListener('click', () => {
+      profileDropdown.classList.toggle('hidden');
+    });
+  </script>

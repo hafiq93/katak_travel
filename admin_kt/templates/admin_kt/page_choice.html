@@ -1,0 +1,89 @@
+{% block content %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'src/styles.css' %}">
+<html>
+    
+     <!-- Include the header -->
+     {% include 'base_kt/admin_header.html' %}
+
+     <body>
+        <div class="flex">
+           
+            {% include 'base_kt/admin_sidebar.html' %}
+            <div class="flex-grow p-4 bg-gray-100 h-screen">
+
+                <!-- First Row (Metrics in One Row) -->
+                    <!-- First Row (Metrics in One Row) -->
+                    <div class="rounded-md">
+
+                        <!-- Third Row (Below Second Row) -->
+                        <div class="grid grid-cols-1 gap-4 mt-2">
+                            
+                            <!-- Edit Main Page Form -->
+                            <!-- Edit Main Page Form -->
+                            <div class="bg-white shadow-md p-6 rounded-md">
+                                <h2 class="text-2xl font-bold mb-4">Edit Main Page</h2>
+
+                                <form method="post">
+                                    {% csrf_token %}
+                                    <div class="space-y-4">
+                                        <div class=" p-4 rounded-md">
+                                            <div class="mb-4">
+                                                <label for="choose_main" class="block text-gray-700 font-semibold mb-2">List Choice</label>
+                                                <input 
+                                                    type="text" 
+                                                    id="choose_main" 
+                                                    name="intro" 
+                                                    value="{{ main_choose.main }}" 
+                                                    class="w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                                            </div>
+
+                                            <div class="mb-4">
+                                                <label for="choose_description" class="block text-gray-700 font-semibold mb-2">Details</label>
+                                                <textarea 
+                                                    id="choose_description" 
+                                                    name="description" 
+                                                    rows="4" 
+                                                    class="w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                                                    {{ main_choose.description }}
+                                                </textarea>
+                                            </div>
+
+                                            <div class="mb-4">
+                                                <label for="choose_page" class="block text-gray-700 font-semibold mb-2">Page</label>
+                                                <input 
+                                                    type="text" 
+                                                    id="choose_page" 
+                                                    name="page" 
+                                                    value="{{ main_choose.page }}" 
+                                                    class="w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="flex justify-end space-x-4 mt-4">
+                                        <!-- Save Button -->
+                                        <button type="submit" 
+                                                class="bg-green-600 hover:bg-green-500 text-white font-bold py-2 px-4 rounded-md flex items-center space-x-2">
+                                            <i class="fas fa-save"></i>
+                                            <span>Save</span>
+                                        </button>
+                                    
+                                        <!-- Cancel/Back Button -->
+                                        <a href="{% url 'main_page' %}" 
+                                        class="bg-red-600 hover:bg-red-500 text-white font-bold py-2 px-4 rounded-md flex items-center space-x-2">
+                                            <i class="fas fa-times"></i>
+                                            <span>Cancel</span>
+                                        </a>
+                                    </div>
+                                </form>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
+{% endblock %}

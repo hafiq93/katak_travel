@@ -1,0 +1,213 @@
+{% block content %}
+{% load static %}
+<html>
+     <!-- Include the header -->
+     {% if user.is_staff %}
+     {% include 'base_kt/admin_header.html' %}
+     {% else %}
+     {% include 'base_kt/main_header.html' %}
+     {% endif %}
+
+     <body class="flex flex-col min-h-screen custom-bg " >
+        <h3 class=" p-4 px-6 text-white font-semibold text-2xl">Welcome,{{ profile.user.username }} </h3>
+            <div class="grid grid-cols-4 text-center p-1 px-6 mb-6">
+               
+                <div class="col-span-1 bg-white  rounded-l-lg p-6">
+                    <h2 class="text-xl font-semibold mb-6 text-left">Settings</h2>
+                    <!-- <div class="border-2 custom-border rounded-lg mb-2">
+                        <a href="" class="font-semibold flex justify-center rounded-lg p-2">
+                            <span>Main</span>
+                        </a>
+                    </div> -->
+                    <div class="border-2 custom-border rounded-lg mb-2">
+                        <a href="{% url 'profile' %}" class="font-semibold flex justify-center custom-bg text-white rounded-md p-2">
+                            <span>Public Profile</span>
+                        </a>
+                    </div>
+                    {% if user.is_staff %}
+                    <div class="border-2 custom-border rounded-lg mb-2">
+                        <a href="" class="font-semibold flex justify-center rounded-lg p-2">
+                            <span>Company Profile</span>
+                        </a>
+                    </div>
+                    {% endif %}
+                    <div class="border-2 custom-border rounded-lg mb-2">
+                        <a href="{% url 'setting_profile' %}" class="font-semibold flex justify-center rounded-lg p-2">
+                            <span>Setting Profile</span>
+                        </a>
+                    </div>
+                    <div class="border-2 custom-border rounded-lg mb-2">
+                        <a href="" class="font-semibold flex justify-center rounded-lg p-2">
+                            <span>Review</span>
+                        </a>
+                    </div>
+                    <div class="border-2 custom-border rounded-lg mb-2">
+                        <a href="" class="font-semibold flex justify-center rounded-lg p-2">
+                            <span>Forum</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-span-3 w-full bg-white rounded-r-lg p-6 text-left">
+                    <h2 class="text-2xl px-6 font-semibold mb-6 text-gray-800">Edit Public Profile</h2>
+                
+                    <!-- Center the profile picture at the top -->
+                    <div class="flex flex-col items-center mb-6">
+                        <img class="object-cover w-32 h-32 sm:w-40 sm:h-40 rounded-full border-4 border-indigo-300"
+                            src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fGZhY2V8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=500&q=60"
+                            alt="Profile picture">
+                
+                        <!-- Buttons for changing/deleting the picture -->
+                        <div class="flex space-x-4 mt-4">
+                            <button
+                                class="py-2 px-4 text-white bg-green-500 font-semibold border border-green-500 rounded-lg hover:bg-green-700">Change
+                                Picture</button>
+                            <button
+                                class="py-2 px-4 text-white bg-red-500 font-semibold border border-red-500 rounded-lg hover:bg-red-700">Delete
+                                Picture</button>
+                        </div>
+                    </div>
+                
+                    <!-- Form Section -->
+                    <!-- Form Section -->
+                    <form method="post" id="profile-form" class="p-6 w-full">
+                        {% csrf_token %}
+                        <div class="grid grid-cols-2 sm:grid-cols-2 gap-6">
+                            <!-- First name -->
+                            <div class="col-span-1">
+                                <label for="first_name" class="text-md font-semibold w-1/3">First Name:</label>
+                                <input type="text" id="first_name" name="first_name" value="{{ user.first_name }}"
+                                    class="block w-full bg-gray-50 px-3 border rounded-lg shadow-sm text-gray-900"/>
+                            </div>
+                    
+                            <!-- Last name -->
+                            <div class="col-span-1">
+                                <label for="last_name" class="text-md font-semibold w-1/3">Last Name:</label>
+                                <input type="text" id="last_name" name="last_name" value="{{ user.last_name }}"
+                                    class="block w-full bg-gray-50 px-3 py-2 border rounded-lg shadow-sm text-gray-900" />
+                            </div>
+                    
+                        
+                                <!-- identity_type -->
+                                <div class="col-span-1">
+                                    <label for="identity_type" class="text-md font-semibold">Identity Type:</label>
+                                    <input type="text" id="identity_type" name="identity_type" value="{{ profile.identity_type }}"
+                                        class="block w-full bg-gray-50 px-3 py-2 border rounded-lg shadow-sm text-gray-900" />
+                                </div>
+                            
+                                <!-- identity_no -->
+                                <div class="col-span-1">
+                                    <label for="identity_no" class="text-md font-semibold">Identity No:</label>
+                                    <input type="text" id="identity_no" name="identity_no" value="{{ profile.identity_no }}"
+                                        class="block w-full bg-gray-50 px-3 py-2 border rounded-lg shadow-sm text-gray-900"  />
+                                </div>
+                        
+
+
+                            <!-- Email -->
+                            <div class="col-span-2">
+                                <label for="email" class="text-md font-semibold w-1/3">Email:</label>
+                                <input type="text" id="email" name="email" value="{{ user.email }}"
+                                    class="block w-full bg-gray-50  px-3 py-2 border rounded-lg shadow-sm text-gray-900"  />
+                            </div>
+
+                             <!-- Phone number -->
+                             <div class="col-span-2">
+                                <label for="phone" class="text-md font-semibold w-1/3">Gender:</label>
+                                <input type="text" id="gender" name="gender" value="{{ profile.gender }}"
+                                    class="block w-full bg-gray-50 px-3 py-2 border rounded-lg shadow-sm text-gray-900"  />
+                            </div>
+                    
+                            <!-- Phone number -->
+                            <div class="col-span-2">
+                                <label for="phone" class="text-md font-semibold w-1/3">Phone No.:</label>
+                                <input type="text" id="phone" name="phone" value="{{ profile.phone }}"
+                                    class="block w-full bg-gray-50 px-3 py-2 border rounded-lg shadow-sm text-gray-900"  />
+                            </div>
+                    
+                            <!-- Address -->
+                            <div class="col-span-2">
+                                <label for="address" class="text-md font-semibold w-1/3">Address:</label>
+                                <textarea id="address" rows="3" placeholder="Write your address.." name="address"
+                                    class="block w-full bg-gray-50 px-3 py-2 border rounded-lg shadow-sm text-gray-900" >{{ profile.address }}</textarea>
+                            </div>
+
+                            <div class="col-span-1">
+                                <label for="country" class="text-md font-semibold w-1/3">Postcode:</label>
+                                <input type="text" id="postcode" name="postcode" value="{{ profile.postcode }}"
+                                    class="block w-full bg-gray-50 px-3 py-2 border rounded-lg shadow-sm text-gray-900"  />
+                            </div>
+
+
+                            <div class="col-span-1">
+                                <label for="country" class="text-md font-semibold w-1/3">City:</label>
+                                <input type="text" id="city" name="city" value="{{ profile.city }}"
+                                    class="block w-full bg-gray-50 px-3 py-2 border rounded-lg shadow-sm text-gray-900"  />
+                            </div>
+
+                            <div class="col-span-1">
+                                <label for="country" class="text-md font-semibold w-1/3">State:</label>
+                                <input type="text" id="state" name="state" value="{{ profile.state }}"
+                                    class="block w-full bg-gray-50 px-3 py-2 border rounded-lg shadow-sm text-gray-900"  />
+                            </div>
+                            <!-- Country -->
+                            <div class="col-span-1">
+                                <label for="country" class="text-md font-semibold w-1/3">Country:</label>
+                                <input type="text" id="country" name="country" value="{{ profile.country }}"
+                                    class="block w-full bg-gray-50 px-3 py-2 border rounded-lg shadow-sm text-gray-900"  />
+                            </div>
+                        </div>
+                           <!-- Save/Edit/Cancel Buttons -->
+                            <div class="mt-2 flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-4 justify-end items-center w-full">
+                                <!-- Back/Cancel Button -->
+                                <a href="{% url 'profile' %}" class="flex items-center bg-red-700 text-white px-4 py-2 rounded-lg font-semibold hover:bg-red-500">
+                                    <i class="fas fa-times-circle mr-2"></i> Cancel
+                                </a>
+                                
+                                <!-- Save Button -->
+                                <button type="submit" class="flex items-center bg-green-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-green-700">
+                                    <i class="fas fa-check-circle mr-2"></i> Save
+                                </button>
+
+                            </div>
+                    </form>
+                </div>
+                
+            </div>
+            <div>      <!-- Include the footer -->
+    {% include 'base_kt/page_footer.html' %}
+            </div>
+     </body>
+
+</html>
+
+
+<script>
+    function toggleEdit() {
+        const form = document.getElementById('profile-form');
+        const inputs = form.querySelectorAll('input, textarea');
+        const editButton = document.getElementById('edit-btn');
+        const saveButton = document.getElementById('save-btn');
+
+        if (editButton.innerText === 'Edit') {
+            // Enable inputs and remove bg-gray-100
+            inputs.forEach(input => {
+                input.removeAttribute('disabled');
+                input.classList.remove('bg-gray-100');
+            });
+            // Show Save button and hide Edit button
+            editButton.classList.add('hidden');
+            saveButton.classList.remove('hidden');
+        } else {
+            // Disable inputs and add bg-gray-100 back
+            inputs.forEach(input => {
+                input.setAttribute('disabled', true);
+                input.classList.add('bg-gray-100');
+            });
+            // Toggle back to Edit button
+            editButton.innerText = 'Edit';
+            editButton.classList.remove('hidden');
+            saveButton.classList.add('hidden');
+        }
+    }
+</script>
+{% endblock %}

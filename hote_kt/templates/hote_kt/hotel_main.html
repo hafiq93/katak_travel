@@ -1,0 +1,352 @@
+{% block content %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'src/styles.css' %}">
+<html>
+
+     <!-- Include the header -->
+     {% include 'base_kt/main_header.html' %}
+   <body class="flex flex-col min-h-screen " >
+   
+    <div class="w-full flex items-center justify-center background-cover">
+        <div class="container mx-auto text-center">
+            <!-- First Row: Centered Text and Katak Image -->
+            <div class="flex items-center justify-center text-center ">
+                <!-- Katak Logo Image -->
+                <img src="{% static 'images/KATAK_3.png' %}" alt="Katak Logo" class="h-15 w-15 ">
+              
+                <!-- Centered Text -->
+                <h1 class="lg:text-3xl md:text-2xl font-bold text-white" style="color: #009A00;">Embark on New Adventures: Where Every Journey Begins</h1>
+            </div>
+            
+                <!-- Katak Logo Image -->
+               
+                
+                <!-- Tab Content -->
+                <div>
+                    {% include 'base_kt/tab_hotel.html' %}
+                </div>
+   
+        </div>
+    </div>
+    <div class="w-full bg-white mb-2">
+           
+        <div class="container mx-auto grid grid-cols-1 md:grid-cols-1 lg:grid-cols-1 gap-4 text-left lg:px-20  ">
+          
+            <div class="container mx-auto items-center mt-2 px-2 ">
+                <a href="" class="text-sm font-semibold color-text"><i class="fa fa-home"></i>
+                    <span>></span>
+                </a>
+                <a href="" class="text-sm font-semibold color-text">Hotel Dashboard</i>
+                    
+                </a>
+
+            </div>
+
+            <div class="grid grid-cols-4 gap-2">
+        
+                <!-- Column 1 -->
+                <div class="col-span-1 p-2">
+                    <div class="grid gap-2">
+                        <!-- Row 1 -->
+                        <div class="row-span-1  ">
+                            <h2 class="font-semibold mb-2 color-text">Location Map</h2>
+                            <iframe
+                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3153.320880138535!2d-122.39919468468168!3d37.78878397975792!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8085809ed16c5f83%3A0x19a44dff5b5971f8!2sSalesforce%20Tower!5e0!3m2!1sen!2sus!4v1614014777118!5m2!1sen!2sus"
+                                width="100%"
+                                height="200"
+                                style="border:0;"
+                                allowfullscreen=""
+                                loading="lazy">
+                            </iframe>
+                        </div>
+                        <h2 class="font-semibold  text-lg mb-2 color-text">Filter By:</h2>
+                        <!-- Price -->
+                        <div class="row-span-1  border rounded-lg custom-border">
+                            <p class="font-semibold border-b-2 custom-border py-1 px-2 mb-2">Price</p>
+                            <div class="flex items-center mb-2 px-2">
+                            </div>
+                        </div>
+                    
+                        <!-- Star Rating -->
+                        <div class="row-span-1  border rounded-lg custom-border">
+                            <p class="font-semibold border-b-2 custom-border py-1 px-2 mb-2">Star Rating</p>
+                            <!-- Loop through the hotel_types passed from the view -->
+                            {% for hotel_star in hotel_stars %}
+                                <div class="flex items-center mb-2 px-2">
+                                    <input type="checkbox" id="hotel_star_{{ hotel_star.id }}" class="mr-2" name="hotel_star" value="{{ hotel_star.id }}">
+                                    <label for="hotel_star_{{ hotel_star.id }}" class="flex items-center text-sm gap-1">
+                                        {{ hotel_star.rating_name }}
+                                        <span class="flex items-center">
+                                            <!-- Use the star_range passed from the view -->
+                                            {% for _ in hotel_star.star_range %}
+                                                <i class="fas fa-star text-yellow-500"></i>
+                                            {% endfor %}
+                                        </span>
+                                    </label>
+                                </div>
+                            {% endfor %}
+                            
+                        </div>
+                        <!-- select hotel -->
+                        <div class="row-span-1 border rounded-lg custom-border">
+                            <p class="font-semibold border-b-2 custom-border py-1 px-2 mb-2">Select Hotel</p>
+                            
+                            <!-- Loop through the hotel_types passed from the view -->
+                            {% for hotel_type in hotel_types %}
+                            <div class="flex items-center mb-2 px-2">
+                                <input type="checkbox" id="hotel_type_{{ hotel_type.id }}" class="mr-2" name="hotel_type" value="{{ hotel_type.id }}">
+                                <label for="hotel_type_{{ hotel_type.id }}" class="flex items-center text-sm gap-1">
+                                    {{ hotel_type.type_name }}
+                                </label>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        <!-- Display Room Types -->
+                        <div class="row-span-1 border rounded-lg custom-border ">
+                            <p class="font-semibold border-b-2 custom-border py-1 px-2 mb-2">Room Type</p>
+                            {% for room_type in room_types %}
+                            <div class="flex items-center mb-2 px-2">
+                                <input type="checkbox" id="room_type_{{ room_type.id }}" class="mr-2" name="room_type" value="{{ room_type.id }}">
+                                <label for="room_type_{{ room_type.id }}" class="flex items-center text-sm gap-1">
+                                    {{ room_type.type_name }}
+                                </label>
+                            </div>
+                            {% endfor %}
+                        </div>
+                       <!-- Display Hotel Facilities -->
+                        <div class="row-span-1 border rounded-lg custom-border">
+                            <p class="font-semibold border-b-2 custom-border py-1 px-2 mb-2">Select Hotel Facilities</p>
+                            {% for facility in hotel_faci %}
+                            <div class="flex items-center mb-2 px-2">
+                                <input type="checkbox" id="facility_{{ facility.id }}" class="mr-2" name="facility" value="{{ facility.id }}">
+                                <label for="facility_{{ facility.id }}" class="flex items-center text-sm gap-1">
+                                    {{ facility.type_name }}
+                                </label>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        <!-- room failities -->
+                        <div class="row-span-1  border rounded-lg custom-border">
+                            <p class="font-semibold border-b-2 custom-border py-1 px-2 mb-2">Room Facilities</p>
+                            {% for facility in room_faci %}
+                            <div class="flex items-center mb-2 px-2">
+                                <input type="checkbox" id="facility_{{ facility.id }}" class="mr-2" name="facility" value="{{ facility.id }}">
+                                <label for="facility_{{ facility.id }}" class="flex items-center text-sm gap-1">
+                                    {{ facility.type_name }}
+                                </label>
+                            </div>
+                            {% endfor %}
+                        </div>
+                      
+                        <div class="row-span-1  border rounded-lg custom-border">
+                            <p class="font-semibold border-b-2 custom-border py-1 px-2 mb-2">Guest Rating</p>
+                         
+                            <div class="flex items-center mb-2 px-2">
+                                <input type="checkbox" id="star1" class="mr-2">
+                                <label for="star1" class="flex items-center text-sm gap-1">
+                                    Guest Rating
+                                </label>
+                                
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+        
+                <!-- list hotel -->
+                <div class="col-span-3 p-2">
+                    <div class="grid grid-rows-2 pb-4 ">
+                        <!-- Row 1 -->
+                        <div class=" mb-2 ">
+                            <p class="font-semibold text-2xl">Location: Total Properties found</p>
+                        </div>
+                        <!-- Row 2 -->
+                        <div class="row-span-1 flex flex-col md:flex-row justify-between text-left items-start py-2">
+                            <div class="flex items-center mb-2 md:mb-0">
+                                <label for="sort-by" class="font-semibold mr-2">Sort by:</label>
+                                <select id="sort-by" class="border p-1 rounded-md text-md w-48 color-text">
+                                    <option value="price">Price</option>
+                                    <option value="rating">Rating</option>
+                                    <option value="popularity">Popularity</option>
+                                    <!-- Add more options as needed -->
+                                </select>
+                            </div>
+                            <div class="flex items-center">
+                                <label for="price-display" class="font-semibold mr-2">Price Display:</label>
+                                <select id="price-display" class="border p-1 rounded-md text-md w-48 color-text">
+                                    <option value="all">All Prices</option>
+                                    <option value="low">Low to High</option>
+                                    <option value="high">High to Low</option>
+                                    <!-- Add more options as needed -->
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    {% for hotel in hotels %}
+                    <div class="col-span-3 mb-3">
+                        <div class="grid grid-cols-5 border-2 rounded-lg custom-border">
+                            <!-- Hotel Images Section -->
+                            <div class="col-span-2">
+                                <!-- Hotel Main Image -->
+                                <div class="grid grid-rows-1 border-b-2 border-r-2 custom-border">
+                                    <img src="{% static 'images/hotel/1.jpeg' %}" alt="Image description" class="w-full h-48 object-cover rounded-tl-md">
+                                </div>
+                                <!-- Hotel Additional Images -->
+                                <div class="flex grid grid-rows-1">
+                                    <div class="grid grid-cols-3 w-full">
+                                        <div class="flex justify-end items-end border-r-2 custom-border">
+                                            <img src="{% static 'images/hotel/2.jpeg' %}" alt="Image 1" class="w-full h-auto rounded-bl-md">
+                                        </div>
+                                        <div class="flex justify-end items-end border-r-2 custom-border">
+                                            <img src="{% static 'images/hotel/3.jpeg' %}" alt="Image 2" class="w-full h-auto">
+                                        </div>
+                                        <div class="flex justify-end items-end border-r-2 custom-border">
+                                            <img src="{% static 'images/hotel/2.jpeg' %}" alt="Image 3" class="w-full h-auto">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                
+                            <!-- Hotel Details Section -->
+                            <div class="col-span-2 custom-border border-r-2 px-2">
+                                <p class="font-semibold text-2xl">{{hotel.name}}</p>
+                                <div class="justify-start items-center w-full">
+                                    <!-- Hotel Type and Rating -->
+                                    <div class="mt-1 flex items-center">
+                                        <i class="fas fa-hotel mr-2"></i>
+                                        <p class="text-md color-text font-semibold">
+                                            {{ hotel.hotel_type.type_name }}
+                                            <span class="mx-1"></span> 
+                                            {{ hotel.rating.rating_name }}
+                                        </p>
+                                        <div class="flex items-center ml-2">
+                                            {% for star in hotel.rating.star_range %}
+                                                <i class="fas fa-star text-yellow-500"></i>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                
+                                    <!-- Hotel Location -->
+                                    <div class="mt-1">
+                                        <p class="text-lg color-text font-semibold">{{ hotel.location }}, {{ hotel.city }}</p>
+                                    </div>
+                
+                                    <!-- Hotel Facilities -->
+                                    <div class="mt-1 justify-start items-start">
+                                        <ul class="flex flex-wrap space-x-2">
+                                            {% for facility in hotel.hotel_facilities.all|slice:":3" %}
+                                                <li class="text-sm border rounded-lg p-2 font-semibold border-gray-300 mb-2 ">{{ facility.type_name }}</li>
+                                            {% endfor %}
+                                            {% if hotel.hotel_facilities.count > 3 %}
+                                                <li class="text-sm p-2 font-semibold mb-2">+{{ hotel.hotel_facilities.count|add:-3 }} more</li>
+                                            {% endif %}
+                                        </ul>
+                                        {% if hotel.hotel_facilities.count == 0 %}
+                                            <p class="text-sm">No facilities available.</p>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                
+                            <!-- Room Price Section -->
+                            <div class="flex col-span-1 p-2 justify-end items-end">
+                                <div class="grid grid-rows-1 w-full">
+                                    <!-- Price Section -->
+                                    <div class="flex flex-col items-end space-y-1">
+                                        {% for room_hotel in room_hotels %}
+                                            {% if room_hotel.hotel_id == hotel.id %}
+                                                {% if room_hotel.price %}
+                                                    <!-- Discount (Above Main Price) -->
+                                                    {% if room_hotel.price.discount > 0 %}
+                                                        <div class="flex justify-end items-end">
+                                                            <p class="text-md text-red-500 font-semibold">
+                                                             {{ room_hotel.price.discount }}%
+                                                            </p>
+                                                        </div>
+                                                    {% endif %}
+                            
+                                                    <!-- Main Price -->
+                                                    <div class="flex justify-end items-end">
+                                                        <p class="text-md text-gray-400 font-semibold">
+                                                            <del> {{ room_hotel.price.currency }} {{ room_hotel.price.amount }}</del>
+                                                        </p>
+                                                    </div>
+                            
+                                                    <!-- Price after Discount -->
+                                                    <div class="flex justify-end items-end">
+                                                        <p class="text-lg text-green-500 font-semibold">
+                                                            {{ room_hotel.price.price_after_discount|floatformat:2 }} {{ room_hotel.price.currency }}
+                                                        </p>
+                                                    </div>
+                                                {% else %}
+                                                    <!-- If price is not available, prompt to update -->
+                                                    <div class="flex justify-end items-end">
+                                                        <p class="text-md text-red-500 font-semibold">Will Available</p>
+                                                    </div>
+                                                {% endif %}
+                                            {% endif %}
+                                        {% endfor %}
+                            
+                                        <!-- Exclude taxes & fees -->
+                                        <div class="flex justify-end items-end">
+                                            <p class="text-sm text-gray-400">Exclude taxes & fees</p>
+                                        </div>
+                                    </div>
+                            
+                                    <!-- Button Section -->
+                                    <div class="row-span-1 flex justify-end p-1">
+                                        <a href="{% url 'hotel_detail' hotel.id %}" class="w-full">
+                                            <button class="w-full p-2 custom-border border-2 rounded-xl text-white font-semibold custom-bg">
+                                                See Availibilty
+                                            </button>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                {% endfor %}
+                
+                     <!-- Pagination controls -->
+                    <div class="flex justify-between mt-4 ">
+                        <div class="flex">
+                            {% if hotels.has_previous %}
+                                <a href="?page=1" class="mr-2">First</a>
+                                <a href="?page={{ hotels.previous_page_number }}">Previous</a>
+                            {% endif %}
+                        </div>
+                        <div class="flex">
+                            {% for num in hotels.paginator.page_range %}
+                                {% if hotels.number == num %}
+                                    <p class="font-semibold p-2 custom-bg text-white border">Page</p>
+                                    <span class="font-semibold p-2 custom-bg text-white border">{{ num }}</span>
+                                {% else %}
+                                    <a href="?page={{ num }}">{{ num }}</a>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                        <div class="flex">
+                            {% if hotels.has_next %}
+                                <a href="?page={{ hotels.next_page_number }}">Next</a>
+                                <a href="?page={{ hotels.paginator.num_pages }}">Last</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+            
+        </div>
+    </div>
+    </body>
+</html>
+<style>
+    .background-cover {
+        background-image: url('{% static "images/travel_1.jpg" %}');
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center;
+    }
+</style>
+{% endblock %}

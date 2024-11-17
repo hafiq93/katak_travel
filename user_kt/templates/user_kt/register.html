@@ -1,0 +1,60 @@
+{% block content %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'src/styles.css' %}">
+<title>Register</title>
+<html>
+<body>
+    <h1>Register</h1>
+    
+    <form method="POST">
+        {% csrf_token %}
+        
+        <label for="email">Email:</label><br>
+        <input type="email" id="email" name="email" required><br><br>
+
+        <label for="username">Username:</label><br>
+        <input type="text" id="username" name="username" required><br><br>
+
+        <label for="first_name">First Name:</label><br>
+        <input type="text" id="first_name" name="first_name"><br><br>
+
+        <label for="last_name">Last Name:</label><br>
+        <input type="text" id="last_name" name="last_name"><br><br>
+
+        <label for="gender">Gender:</label><br>
+        <select id="gender" name="gender">
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+        </select><br><br>
+
+        <label for="password">Password:</label><br>
+        <input type="password" id="password" name="password" required><br><br>
+
+        <label for="confirm_password">Confirm Password:</label><br>
+        <input type="password" id="confirm_password" name="confirm_password" required><br><br>
+
+        <label for="phone">Phone:</label><br>
+        <input type="text" id="phone" name="phone"><br><br>
+
+       
+
+        <!-- <label for="country">Country:</label><br>
+        <input type="text" id="country" name="country" required><br><br> -->
+
+        <!-- <label for="gender">Identity Type:</label><br>
+        <select name="identity_type" required>
+            <option value="Identication Number (I/C)">Identication Number (I/C)</option>
+            <option value="Passport Number">Passport Number</option>
+        </select><br><br>
+
+        
+
+        <label for="phone">Identity Number:</label><br>
+        <input type="text" name="identity_no" placeholder="Identity Number" required>
+        <br><br> -->
+
+        <button type="submit">Register</button>
+    </form>
+</body>
+</html>
+{% endblock %}
