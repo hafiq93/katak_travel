@@ -1,0 +1,103 @@
+{% load static %}
+{% load static tailwind_tags %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% tailwind_css %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KATAK TRAVEL</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="{% static 'src/styles.css' %}" rel="stylesheet">
+    <link href="{% static 'fonts-6/css/all.css' %}" rel="stylesheet">
+    <script src="{% static 'javascript/dropdown_header.js' %}" defer></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+</head>
+
+<body>
+    <header class="bg-white border-b-2" style="color: #009A00;">
+        <div class="container mx-auto p-2 px-10">
+            <div class="grid grid-cols-12 items-center">
+                <!-- First Column (Empty) -->
+                <div></div>
+
+                <!-- Second Column (Content Centered) -->
+                <div class=" col-span-10 flex justify-between items-center">
+                    <!-- Left: Logo -->
+                    <div class="flex items-center space-x-4">
+                        <img src="{% static 'images/KATAK_2.jpg' %}" alt="Company Logo" class="h-12 w-15">
+                        <h1 class="text-2xl font-bold">KATAK TRAVEL</h1>
+                    </div>
+
+                    <!-- Center: Home -->
+                    <!-- <nav class="hidden sm:flex space-x-4">
+                        <a href="{% url 'home' %}" class="text-lg font-medium">Home</a>
+                    </nav> -->
+
+                    <!-- Right: Support and Currency -->
+                    <div class="flex items-center space-x-4">
+                        <!-- Support Dropdown -->
+                        <div class="relative">
+                            <button type="button" class="inline-flex items-center text-lg font-medium">
+                                Support
+                                <svg class="ml-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M5.292 7.293a1 1 0 011.415 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                </svg>
+                            </button>
+                            <div id="dropdown-menu" class="absolute mt-2 w-48 rounded-md shadow-lg bg-white hidden">
+                                <a href="/support/faq" class="block px-4 py-2 text-sm hover:bg-gray-100">FAQ</a>
+                                <a href="/contact" class="block px-4 py-2 text-sm hover:bg-gray-100">Contact Us</a>
+                                <a href="/support" class="block px-4 py-2 text-sm hover:bg-gray-100">Live Chat</a>
+                            </div>
+                        </div>
+
+                        <!-- Currency Selector -->
+                        <div>
+                            <select id="country-select" class="border p-1  rounded-md text-lg ">
+                                <option value="MYR" data-currency="MYR">MYR</option>
+                                <option value="USD" data-currency="USD">USD</option>
+                                <option value="EUR" data-currency="EUR">EUR</option>
+                                <option value="GBP" data-currency="GBP">GBP</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Third Column (Empty) -->
+                <div></div>
+            </div>
+        </div>
+    </header>
+
+    <!-- JavaScript to handle dropdown and responsiveness -->
+    <script>
+        const dropdownButton = document.querySelector('button[aria-haspopup="true"]');
+        const dropdownMenu = document.getElementById('dropdown-menu');
+
+        dropdownButton.addEventListener('click', () => {
+            dropdownMenu.classList.toggle('hidden');
+        });
+
+        document.addEventListener('click', (event) => {
+            if (!dropdownButton.contains(event.target) && !dropdownMenu.contains(event.target)) {
+                dropdownMenu.classList.add('hidden');
+            }
+        });
+
+        const countrySelect = document.getElementById('country-select');
+
+        countrySelect.addEventListener('change', () => {
+            const selectedOption = countrySelect.options[countrySelect.selectedIndex];
+            console.log(selectedOption.getAttribute('data-currency'));
+        });
+    </script>
+</body>
+
+
+
+</html>

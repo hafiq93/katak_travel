@@ -1,100 +1,75 @@
-{% load static tailwind_tags %}
-
+{% block content %}
 {% load static %}
 
-{% block content %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    
-    {% tailwind_css %}
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KATAK TRAVEL</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <script src="https://cdn.ckeditor.com/4.16.0/standard/ckeditor.js"></script>
-    
-    
-    <link href="{% static 'css/tailwind.css' %}" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link href="{% static 'src/styles.css' %}" rel="stylesheet">
-    <!-- <link href="{% static 'fonts-6/css/all.css' %}" rel="stylesheet"> -->
-    <script src="{% static 'javascript/dropdown_header.js' %}" defer></script>
-     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-</head>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Page</title>
-    <link rel="stylesheet" href="{% static 'css/tailwind.css' %}">
-</head>
-<body class="bg-green-300 p-8 flex items-center justify-center min-h-screen">
-    <!-- Medium-Sized Container -->
-    <div class="container max-w-2xl mx-auto bg-white p-4 rounded-lg shadow-lg flex">
-        <!-- Login Form Section -->
-        <div class="w-1/2 p-4">
-            <div class="flex items-center justify-center mb-4 space-x-4">
-                <!-- Company Logo -->
-                <img src="{% static 'images/KATAK_2.jpg' %}" alt="Company Logo" class="h-13 w-16">
-            </div>
-            <div class="flex items-center justify-center mb-6 space-x-4">
-                <!-- Heading -->
-                <h1 class="text-3xl font-semibold text-gray-800">Login</h1>
-            </div>
-            
-            <form method="POST" class="space-y-6">
-                {% csrf_token %}
-                <div class="form-group">
-                    <label for="email" class="block text-sm font-medium text-gray-700">Email:</label>
-                    <input type="text" name="email" id="email" class="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" required>
-                </div>
-                <div class="form-group">
-                    <label for="password" class="block text-sm font-medium text-gray-700">Password:</label>
-                    <input type="password" name="password" id="password" class="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" required>
-                </div>
 
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center">
-                        <input id="remember_me" name="remember_me" type="checkbox" class="h-4 w-4 text-blue-600 border-gray-300 rounded">
-                        <label for="remember_me" class="ml-2 block text-sm text-gray-900">Remember me</label>
+    <html>
+        {% include 'base_kt/login_header.html' %}
+     <!-- Include the header -->
+    
+     
+
+     <body class="flex  flex-col min-h-screen custom-bg " >
+        
+        <div class="container  text-center py-4">
+          <!-- Main Container -->
+          <div class="bg-white shadow-lg rounded-lg overflow-hidden max-w-4xl mx-auto flex ">
+            <!-- Left Section -->
+            <div class="w-full p-8 flex flex-col justify-center items-center">
+                <!-- Logo and Heading -->
+               
+                <h1 class="text-center text-2xl font-bold text-gray-800 mb-4">Welcome Back</h1>
+                <p class="text-center text-gray-600 mb-8">Login to access your account and explore our features.</p>
+                
+                <!-- Form -->
+                <form method="POST" class="space-y-6">
+                    {% csrf_token %}
+                    <div class="w-full">
+                        <label for="email" class="block text-sm font-medium text-gray-700 text-center">Email</label>
+                        <input type="text" name="email" id="email" class="w-80 mt-1 p-3 border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500" required>
                     </div>
-                    <a href="#" class="text-sm font-semibold text-blue-500 hover:text-blue-700">Forgot Password?</a>
-                </div>
-
-                <div class="flex items-center justify-between mb-6 space-x-4">
-                    <a href="{% url 'home' %}" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-700 hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                        Back
-                    </a>
-                    <button type="submit" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    <div class="w-full">
+                        <label for="password" class="block text-sm font-medium text-gray-700 text-center">Password</label>
+                        <input type="password" name="password" id="password" class=" w-80 mt-1 p-3 border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500" required>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <label class="flex items-center space-x-2">
+                            <input id="remember_me" name="remember_me" type="checkbox" class="h-4 w-4 text-indigo-600 border-gray-300 rounded">
+                            <span class="text-sm text-gray-700">Remember me</span>
+                        </label>
+                       
+                    </div>
+                    <div class="flex items-center justify-between">
+                    <a href="#" class="text-sm text-indigo-600 hover:underline text-center">Forgot Password?</a>
+                    </div>
+                    <button type="submit" class="w-full py-3 text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg shadow-lg text-sm font-medium focus:outline-none">
                         Login
                     </button>
-                </div>
+                </form>
 
-                <div class="text-center text-gray-600">
-                    {% if messages %}
-                        <div class="messages">
-                            {% for message in messages %}
-                                <p>{{ message }}</p>
-                            {% endfor %}
-                        </div>
-                    {% endif %}
-                    <small>Don't have an account yet? <a href="{% url 'register' %}" class="text-blue-500 hover:text-blue-700">Register</a></small>
+                <!-- Links -->
+                <div class="text-center mt-6 text-sm text-gray-600">
+                    <p>Don't have an account yet? <a href="{% url 'register' %}" class="text-indigo-600 hover:underline">Register</a></p>
+                    <a href="{% url 'home' %}" class="text-white hover:underline inline-block mt-2 rounded-lg p-2 bg-red-500 font-medium ">Back to Home</a>
                 </div>
-            </form>
-        </div>
+            </div>
 
-        <!-- Right Section with Border and Text -->
-        <div class="w-1/2 border-l-2 border-gray-300 flex items-center justify-center">
-            <p class="text-lg text-gray-600 p-4">Welcome to our platform! Please login to continue and explore our amazing features.</p>
+            <!-- Right Section -->
+            <div class="hidden md:block md:w-1/2 bg-indigo-100 flex items-center justify-center">
+                <div class="text-center px-8 ">
+                     <!-- Left: Logo -->
+                    <div class="flex items-center justify-center space-x-4 py-4">
+                        <img src="{% static 'images/katak_icon.png' %}" alt="Company Logo" class="h-40 w-45">
+                    </div>
+                    <h2 class="text-2xl font-bold text-indigo-600 mb-4">Welcome to Katak Travel!</h2>
+                    <p class="text-gray-700">Explore amazing destinations and book your perfect trip with us. Log in now to get started.</p>
+                </div>
+            </div>
         </div>
     </div>
-</body>
-</html>
+        
 
+    </body>
+  
+</html> 
 {% endblock %}
