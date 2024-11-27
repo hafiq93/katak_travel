@@ -3,54 +3,6 @@
 
 
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    
-    {% tailwind_css %}
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KATAK TRAVEL</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <script src="https://cdn.ckeditor.com/4.16.0/standard/ckeditor.js"></script>
-    
-    
-    <link href="{% static 'css/tailwind.css' %}" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link href="{% static 'src/styles.css' %}" rel="stylesheet">
-    <!-- <link href="{% static 'fonts-6/css/all.css' %}" rel="stylesheet"> -->
-    <script src="{% static 'javascript/dropdown_header.js' %}" defer></script>
-    <script src="https://cdn.tailwindcss.com"></script>    
-     <link href="{% static 'css/styles.css' %}" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-</head>
-
-<body class="bg-green-300 p-8 flex items-center justify-center min-h-screen">
-    <!-- Medium-Sized Container -->
-    <div class="container max-w-2xl mx-auto bg-white p-4 rounded-lg shadow-lg flex">
-        <!-- Login Form Section -->
-        <div class="w-1/2 p-4">
-            <div class="flex items-center justify-center mb-4 space-x-4">
-                <!-- Company Logo -->
-                <img src="{% static 'images/KATAK_2.jpg' %}" alt="Company Logo" class="h-13 w-16">
-            </div>
-            <div class="flex items-center justify-center mb-6 space-x-4">
-                <!-- Heading -->
-                <h1 class="text-3xl font-semibold text-gray-800">Login</h1>
-            </div>
-            
-            <form method="POST" class="space-y-6">
-                {% csrf_token %}
-                <div class="form-group">
-                    <label for="email" class="block text-sm font-medium text-gray-700">Email:</label>
-                    <input type="text" name="email" id="email" class="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" required>
-                </div>
-                <div class="form-group">
-                    <label for="password" class="block text-sm font-medium text-gray-700">Password:</label>
-                    <input type="password" name="password" id="password" class="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" required>
-                </div>
     <html>
         {% include 'base_kt/login_header.html' %}
      <!-- Include the header -->
@@ -117,9 +69,7 @@
     </div>
         
 
-
     </body>
   
 </html> 
-
 {% endblock %}
