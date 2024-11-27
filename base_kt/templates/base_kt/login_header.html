@@ -32,6 +32,7 @@
                     <div class="flex items-center space-x-4">
                         <img src="{% static 'images/KATAK_2.jpg' %}" alt="Company Logo" class="h-12 w-15">
                         <h1 class="text-2xl font-bold">KATAK TRAVEL</h1>
+                        <a href="{% url 'home' %}" class="text-lg font-medium">Home</a>
                     </div>
 
                     <!-- Center: Home -->
@@ -58,7 +59,7 @@
 
                         <!-- Currency Selector -->
                         <div>
-                            <select id="country-select" class="border-2 border-black p-1  rounded-md text-lg ">
+                            <select id="country-select" class="border-2 border-black p-1 rounded-md text-lg ">
                                 <option value="MYR" data-currency="MYR">MYR</option>
                                 <option value="USD" data-currency="USD">USD</option>
                                 <option value="EUR" data-currency="EUR">EUR</option>

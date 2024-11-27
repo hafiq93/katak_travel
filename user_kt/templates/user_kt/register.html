@@ -1,129 +1,132 @@
-{% load static tailwind_tags %}
-
+{% block content %}
 {% load static %}
 
-{% block content %}
+<link rel="stylesheet" href="{% static 'src/styles.css' %}">
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    {% tailwind_css %}
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KATAK TRAVEL</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <script src="https://cdn.ckeditor.com/4.16.0/standard/ckeditor.js"></script>
-    <link href="{% static 'css/tailwind.css' %}" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- <link href="{% static 'src/styles.css' %}" rel="stylesheet"> -->
-    <script src="{% static 'javascript/dropdown_header.js' %}" defer></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-    <link rel="stylesheet" href="{% static 'src/styles.css' %}">
-</head>
+<html>
+    {% include 'base_kt/login_header.html' %}
 
-<body>
-    <body class="bg-green-300 p-8 flex items-center justify-center min-h-screen">
-        <!-- Medium-Sized Container -->
-        <div class="container max-w-2xl mx-auto bg-white p-4 rounded-lg shadow-lg flex">
-            <!-- Login Form Section -->
-            <div class="w-1/2 p-4">
-                <div class="flex items-center justify-center mb-4 space-x-4">
-                    <!-- Company Logo -->
-                    <img src="{% static 'images/KATAK_2.jpg' %}" alt="Company Logo" class="h-13 w-16">
+  
+    <body class="flex flex-col min-h-screen custom-bg">
+        <!-- Main Container -->
+        <div class="container mx-auto px-4 py-8">
+            <div class="bg-white shadow-lg rounded-lg overflow-hidden max-w-4xl mx-auto flex">
+                
+                <!-- Left Section for Form -->
+                <div class="w-full p-8 flex flex-col justify-center items-center">
+                    
+                    <div class="text-center mb-6">
+                        <!-- Heading -->
+                        <h1 class="text-3xl font-semibold text-gray-800">Register</h1>
+                    </div>
+    
+                    <!-- Registration Form -->
+                    <form method="POST" class="space-y-6 w-full max-w-md">
+                        {% csrf_token %}
+    
+                        <!-- Email -->
+                        <div>
+                            <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+                            <input type="email" id="email" name="email" required
+                                class="mt-1 block w-full px-4 py-2 border-2  border-black rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 focus:outline-none" />
+                        </div>
+    
+                        <!-- Username -->
+                        <div>
+                            <label for="username" class="block text-sm font-medium text-gray-700">Username</label>
+                            <input type="text" id="username" name="username" required
+                                class="mt-1 block w-full px-4 py-2 border-2  border-black rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 focus:outline-none" />
+                        </div>
+    
+                        <!-- First Name -->
+                        <div>
+                            <label for="first_name" class="block text-sm font-medium text-gray-700">First Name</label>
+                            <input type="text" id="first_name" name="first_name"
+                                class="mt-1 block w-full px-4 py-2 border-2  border-black rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 focus:outline-none" />
+                        </div>
+    
+                        <!-- Last Name -->
+                        <div>
+                            <label for="last_name" class="block text-sm font-medium text-gray-700">Last Name</label>
+                            <input type="text" id="last_name" name="last_name"
+                                class="mt-1 block w-full px-4 py-2 border-2  border-black rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 focus:outline-none" />
+                        </div>
+    
+                        <!-- Gender -->
+                        <div>
+                            <label for="gender" class="block text-sm font-medium text-gray-700">Gender</label>
+                            <select id="gender" name="gender"
+                                class="mt-1 block w-full px-4 py-2 border-2  border-black rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 focus:outline-none">
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                            </select>
+                        </div>
+    
+                        <!-- Password -->
+                        <div>
+                            <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+                            <input type="password" id="password" name="password" required
+                                class="mt-1 block w-full px-4 py-2 border-2  border-black rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 focus:outline-none" />
+                        </div>
+    
+                        <!-- Confirm Password -->
+                        <div>
+                            <label for="confirm_password" class="block text-sm font-medium text-gray-700">Confirm Password</label>
+                            <input type="password" id="confirm_password" name="confirm_password" required
+                                class="mt-1 block w-full px-4 py-2 border-2  border-black rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 focus:outline-none" />
+                        </div>
+    
+                        <!-- Phone Number -->
+                        <div>
+                            <label for="phone" class="block text-sm font-medium text-gray-700">Phone</label>
+                            <input type="text" id="phone" name="phone"
+                                class="mt-1 block w-full px-4 py-2 border-2  border-black rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 focus:outline-none" />
+                        </div>
+    
+                      <!-- Register and Cancel Buttons -->
+                        <div class="flex justify-between space-x-4">
+                            <!-- Register Button -->
+                            <button type="submit"
+                                class="w-full bg-indigo-600 text-white py-3 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50 flex items-center justify-center">
+                                <!-- Register Icon -->
+                                <i class="fas fa-user-plus mr-2"></i> Register
+                            </button>
+
+                            <!-- Cancel Button -->
+                            <a href="{% url 'home' %}" class="w-full bg-red-600 text-white py-3 px-4 rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50 flex items-center justify-center">
+                                <!-- Cancel Icon -->
+                                <i class="fas fa-times mr-2"></i> Cancel
+                            </a>
+                        </div>
+                    </form>
+    
+                    <!-- Login Redirect -->
+                    <div class="mt-4 text-center">
+                        <p class="text-sm text-gray-600">
+                            Already have an account? 
+                            <a href="{% url 'login' %}" class="text-indigo-600 hover:text-indigo-700">Login</a>
+                        </p>
+                    </div>
                 </div>
-                <div class="flex items-center justify-center mb-6 space-x-4">
-                    <!-- Heading -->
-                    <h1 class="text-3xl font-semibold text-gray-800">Register</h1>
-                </div>
-
-                <form method="POST" class="space-y-6">
-                    {% csrf_token %}
-
-                    <!-- Email -->
-                    <div>
-                        <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
-                        <input type="email" id="email" name="email" required
-                            class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 focus:outline-none" />
+    
+                <!-- Right Section with Border and Text -->
+                 
+                 <!-- Right Section -->
+                    <div class=" w-1/2 bg-indigo-100 flex  justify-center">
+                        <div class="text-center px-8 ">
+                            <!-- Left: Logo -->
+                            <div class="flex items-center justify-center space-x-4 py-4">
+                                <img src="{% static 'images/katak_icon.png' %}" alt="Company Logo" class="h-40 w-45">
+                            </div>
+                            <!-- <h2 class="text-2xl font-bold text-indigo-600 mb-4">Welcome to Katak Travel!</h2> -->
+                            <p class="text-gray-700">Welcome to our platform! Please register to access amazing features.</p>
+                        </div>
                     </div>
-
-                    <!-- Username -->
-                    <div>
-                        <label for="username" class="block text-sm font-medium text-gray-700">Username</label>
-                        <input type="text" id="username" name="username" required
-                            class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 focus:outline-none" />
-                    </div>
-
-                    <!-- First Name -->
-                    <div>
-                        <label for="first_name" class="block text-sm font-medium text-gray-700">First Name</label>
-                        <input type="text" id="first_name" name="first_name"
-                            class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 focus:outline-none" />
-                    </div>
-
-                    <!-- Last Name -->
-                    <div>
-                        <label for="last_name" class="block text-sm font-medium text-gray-700">Last Name</label>
-                        <input type="text" id="last_name" name="last_name"
-                            class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 focus:outline-none" />
-                    </div>
-
-                    <!-- Gender -->
-                    <div>
-                        <label for="gender" class="block text-sm font-medium text-gray-700">Gender</label>
-                        <select id="gender" name="gender"
-                            class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 focus:outline-none">
-                            <option value="Male">Male</option>
-                            <option value="Female">Female</option>
-                        </select>
-                    </div>
-
-                    <!-- Password -->
-                    <div>
-                        <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
-                        <input type="password" id="password" name="password" required
-                            class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 focus:outline-none" />
-                    </div>
-
-                    <!-- Confirm Password -->
-                    <div>
-                        <label for="confirm_password" class="block text-sm font-medium text-gray-700">Confirm Password</label>
-                        <input type="password" id="confirm_password" name="confirm_password" required
-                            class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 focus:outline-none" />
-                    </div>
-
-                    <!-- Phone Number -->
-                    <div>
-                        <label for="phone" class="block text-sm font-medium text-gray-700">Phone</label>
-                        <input type="text" id="phone" name="phone"
-                            class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 focus:outline-none" />
-                    </div>
-
-                    <!-- Register Button -->
-                    <div class="flex justify-center">
-                        <button type="submit"
-                            class="w-full bg-indigo-600 text-white py-3 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50">
-                            Register
-                        </button>
-                    </div>
-                </form>
-
-                <div class="mt-4 text-center">
-                    <p class="text-sm text-gray-600">
-                        Already have an account? 
-                        <a href="{% url 'login' %}" class="text-indigo-600 hover:text-indigo-700">Login</a>
-                    </p>
-                </div>
-            </div>
-
-          <!-- Right Section with Border and Text -->
-            <div class="w-1/2 border-l-2 border-gray-300 flex items-center justify-center">
-                <p class="text-lg text-gray-600 p-4">Welcome to our platform! Please login to continue and explore our amazing features.</p>
+    
             </div>
         </div>
-    </div>
-</body>
+    </body>
+    
 </html>
 
 {% endblock %}
