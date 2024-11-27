@@ -105,7 +105,7 @@ DATABASES = {
         "NAME": "katak_travel",
         "USER": "root",
         "PASSWORD": "Katak@031!",
-        "HOST": "127.0.0.1",
+        "HOST": "0.0.0.0",
         "PORT": "",
     }
 }
