@@ -44,7 +44,7 @@ def main_edit(request, id):
         main_page.save()
 
         # Redirect back to the main page
-        return redirect('main_edit', id=id)
+        return redirect('main_page')
 
     return render(request, 'admin_kt/page_main_edit.html', {
         'main_page': main_page,
