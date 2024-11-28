@@ -57,18 +57,18 @@
                                     <tr>
                                         <th class="px-4 py-2 text-left text-gray-600 font-semibold" style="width: 5%;">No</th>
                                         <th class="px-4 py-2 text-left text-gray-600 font-semibold" style="width: 20%;">List Choice</th>
-                                        <th class="px-4 py-2 text-left text-gray-600 font-semibold" style="width: 85%;">Details</th>
-                                        <th class="px-4 py-2 text-left text-gray-600 font-semibold" style="width: 30%;">Page</th>
-                                        <th class="px-4 py-2 text-left text-gray-600 font-semibold" style="width: 15%;">Actions</th>
+                                        <th class="px-4 py-2 text-left text-gray-600 font-semibold" style="width: 65%;">Details</th>
+                                        <th class="px-4 py-2 text-left text-gray-600 font-semibold" style="width: 40%;">Page</th>
+                                        <th class="px-4 py-2 text-left text-gray-600 font-semibold" style="width: 20%;">Actions</th>
                                     </tr>
                                     <tbody>
                                         {% for choose in main_choose %}
                                         <tr>
                                             <td class="px-4 py-2 text-gray-700 text-justify" style="width: 5%;">{{ forloop.counter }}</td>
                                             <td class="px-4 py-2 text-gray-700 text-justify" style="width: 20%;">{{ choose.main }}</td>
-                                            <td class="px-4 py-2 text-gray-700" style="width: 85%;">{{ choose.description }}</td>
-                                            <td class="px-4 py-2 text-gray-700" style="width: 30%;">{{ choose.page }}</td>
-                                            <td class="px-4 py-2 text-center" style="width: 15%;">
+                                            <td class="px-4 py-2 text-gray-700" style="width: 65%;">{{ choose.description }}</td>
+                                            <td class="px-4 py-2 text-gray-700" style="width: 40%;">{{ choose.page }}</td>
+                                            <td class="px-4 py-2 text-center" style="width: 20%;">
                                                 <a href="{% url 'main_choice' choose.id %}" 
                                                     class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md flex items-center space-x-2">
                                                         <i class="fas fa-edit"></i>
