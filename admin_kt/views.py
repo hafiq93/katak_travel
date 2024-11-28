@@ -53,6 +53,7 @@ def main_edit(request, id):
 @user_passes_test(admin_required, login_url='/login/')
 def main_choose(request, id):
     main_choose = get_object_or_404(MainChoose, id=id)
+    
 
     if request.method == 'POST':
         # Get data from the form
@@ -67,7 +68,7 @@ def main_choose(request, id):
         main_choose.save()
 
         # Redirect back to the same edit page
-        return redirect('main_choice', id=id)
+        return redirect('main_page')
 
     return render(request, 'admin_kt/page_choice.html', {
         'main_choose': main_choose,
