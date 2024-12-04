@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-+s6*ap0wm#q+0&k35r7^1s(&$40ya()@&6yt!)me^!ay__na1m
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['34.193.238.154','localhost']
+ALLOWED_HOSTS = ['localhost','127.0.0.1']
 
 
 # Application definition
@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'tailwind',
     'ckeditor',
     'theme',
-    'django_browser_reload',
+    # 'django_browser_reload',
     'admin_kt',
     'hote_kt',
     'hms_kt',
@@ -62,7 +62,7 @@ INTERNAL_IPS = [
     "127.0.0.1",
 ]
 
-NPM_BIN_PATH = "/usr/bin/npm"
+NPM_BIN_PATH = "C:/Program Files/nodejs/npm.cmd"
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -104,9 +104,10 @@ DATABASES = {
         "ENGINE": "django.db.backends.mysql",
         "NAME": "katak_travel",
         "USER": "root",
-        "PASSWORD": "Katak@031!",
-        "HOST": "0.0.0.0",
-        "PORT": "3306",
+        "PASSWORD": "Ccl@190824",
+        "HOST": "127.0.0.1",
+        "PORT": "3308",
+
     }
 }
 
@@ -144,21 +145,21 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
-
+# tukar static 
+# URL for serving static files
 STATIC_URL = '/static/'
 
+# Directories where Django will look for static files during development
 STATICFILES_DIRS = [
-    BASE_DIR / "static",
+    os.path.join(BASE_DIR, 'static'),  # This points to the 'static' folder within your project
 ]
 
-STATIC_URL = '/static/'
+# Location where static files will be collected for production
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
-
-
-# Media files (for uploaded images, files, etc.)
+# Media files settings (for uploaded images, files, etc.)
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'static/images/hotel')  
+MEDIA_ROOT = os.path.join(BASE_DIR, 'static/images/hotel')  # Make sure this is correct for your project
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
