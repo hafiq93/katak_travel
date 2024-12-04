@@ -34,8 +34,8 @@ CSRF_TRUSTED_ORIGINS = [
     'https://www.kataktravel.com'
 ]
 
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = False
+CSRF_COOKIE_SECURE = False
 
 
 # Application definition
