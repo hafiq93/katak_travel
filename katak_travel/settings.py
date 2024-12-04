@@ -31,8 +31,8 @@ ALLOWED_HOSTS = ['127.0.0.1','kataktravel.com','34.193.238.154','localhost']
 
 CSRF_TRUSTED_ORIGINS = ['https://kataktravel.com']
 
-SESSION_COOKIE_SECURE = False
-CSRF_COOKIE_SECURE = False
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
 
 
 # Application definition
