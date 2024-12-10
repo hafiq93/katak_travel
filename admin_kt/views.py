@@ -429,3 +429,9 @@ def review(request):
    
     # Your dashboard view logic
     return render(request, 'admin_kt/news_review.html')
+
+@user_passes_test(admin_required, login_url='/login/')
+def news_add(request):
+   
+    # Your dashboard view logic
+    return render(request, 'admin_kt/news_add.html')

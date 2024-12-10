@@ -2,15 +2,37 @@
 {% load static %}
 <link rel="stylesheet" href="{% static 'src/styles.css' %}">
 <html>
-    
     <!-- Include the header -->
     {% include 'base_kt/admin_header.html' %}
 
     <body>
-        <div class="flex h-screen">
-            <!-- Sidebar -->
+        <div class="flex">
             {% include 'base_kt/admin_sidebar.html' %}
-            <div class="flex-grow p-4 bg-gray-100 h-min-screen">
+            <div class="flex-grow p-4 bg-gray-100 h-screen">
+
+                <!-- First Row (Metrics in One Row) -->
+                <div class="rounded-md">
+                
+                    <!-- Third Row (Below Second Row) -->
+                    <div class="grid grid-cols-1 gap-4 mt-2">
+                
+                        <!-- Second Column, Second Row: Another Sales Breakdown -->
+                        <div class="flex justify-end items-center">
+                            <a href="{% url 'news_add' %}" class="bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700">
+                                        Add News
+                            </a>
+                        </div> 
+                        <div class="bg-white shadow-md p-6 rounded-md">
+                            <div class="flex justify-between items-center mb-4">
+                                <h2 class="text-2xl font-bold">News</h2>
+                                <!-- Add News Button -->
+                               
+                            </div>
+                            <!-- Additional content for news goes here -->
+                        </div>
+                    </div>
+                </div>
+                
             </div>
         </div>
     </body>

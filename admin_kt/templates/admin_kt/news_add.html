@@ -1,0 +1,164 @@
+{% block content %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'src/styles.css' %}">
+<html>
+    <!-- Include the header -->
+    {% include 'base_kt/admin_header.html' %}
+
+    <body>
+        <div class="flex">
+            {% include 'base_kt/admin_sidebar.html' %}
+            <div class="flex-grow p-4 bg-gray-100 min-h-screen">
+
+                <!-- Add News Section -->
+                <div class="rounded-md bg-white shadow-md p-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-2xl font-bold">Add News</h2>
+                    </div>
+
+                    <!-- Add News Form -->
+                    <form method="POST" enctype="multipart/form-data" class="space-y-6" id="news-form">
+                        {% csrf_token %}
+
+                        <!-- News Title -->
+                        <div>
+                            <label for="title" class="block text-sm font-medium text-gray-700">Title</label>
+                            <input type="text" id="title" name="title" required
+                                class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 focus:outline-none" />
+                        </div>
+
+                        <!-- News Description -->
+                        <div>
+                            <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
+                            <textarea id="description" name="description" rows="6" required
+                                class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 focus:outline-none"></textarea>
+                        </div>
+
+                           <!-- Upload Images -->
+                           <div id="image-upload-container">
+                            <label class="block text-sm font-medium text-gray-700">Upload Images</label>
+                            
+                            <!-- First Image -->
+                            <div class="image-upload-row mt-2">
+                                <label for="top_image" class="block text-sm text-gray-700">Top Image</label>
+                                <input type="file" id="top_image" name="images" 
+                                    class="block w-full text-sm text-gray-600 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border file:border-gray-300 file:text-gray-700 hover:file:bg-gray-100" />
+                            </div>
+
+                            <!-- Second Image -->
+                            <div class="image-upload-row mt-2">
+                                <label for="second_image" class="block text-sm text-gray-700">Second Image</label>
+                                <input type="file" id="second_image" name="images"
+                                    class="block w-full text-sm text-gray-600 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border file:border-gray-300 file:text-gray-700 hover:file:bg-gray-100" />
+                            </div>
+
+                            <!-- Third Image -->
+                            <div class="image-upload-row mt-2">
+                                <label for="third_image" class="block text-sm text-gray-700">Third Image</label>
+                                <input type="file" id="third_image" name="images"
+                                    class="block w-full text-sm text-gray-600 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border file:border-gray-300 file:text-gray-700 hover:file:bg-gray-100" />
+                            </div>
+
+                            <!-- Fourth Image -->
+                            <div class="image-upload-row mt-2">
+                                <label for="fourth_image" class="block text-sm text-gray-700">Fourth Image</label>
+                                <input type="file" id="fourth_image" name="images"
+                                    class="block w-full text-sm text-gray-600 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border file:border-gray-300 file:text-gray-700 hover:file:bg-gray-100" />
+                            </div>
+                        </div>
+
+                        <!-- Add More Images Button -->
+                        <div class="mt-4">
+                            <button type="button" id="add-more-images"
+                                class="bg-gray-200 text-gray-700 py-2 px-4 rounded-md hover:bg-gray-300 focus:outline-none">
+                                Add More Images
+                            </button>
+                        </div>
+
+                        <!-- Publish Date Range -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Publish Date Range</label>
+                            <div class="grid grid-cols-2 gap-4 mt-2">
+                                <!-- Start Date -->
+                                <div>
+                                    <label for="start_date" class="block text-sm text-gray-700">Start Date</label>
+                                    <input type="text" id="start_date" name="start_date" required
+                                        class="datepicker mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 focus:outline-none" />
+                                </div>
+
+                                <!-- End Date -->
+                                <div>
+                                    <label for="end_date" class="block text-sm text-gray-700">End Date</label>
+                                    <input type="text" id="end_date" name="end_date" required
+                                        class="datepicker mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 focus:outline-none" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Duration -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Duration (days)</label>
+                            <input type="text" id="duration" name="duration" readonly
+                                class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-100 focus:outline-none" />
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="flex justify-end mt-4">
+                            <button type="submit"
+                                class="bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50">
+                                Submit
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- JavaScript -->
+        <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+        <script>
+            // Initialize Flatpickr for date picking
+            flatpickr(".datepicker", {
+                dateFormat: "d/m/Y",
+                allowInput: false, // Disable manual input
+            });
+
+            const startDateInput = document.getElementById('start_date');
+            const endDateInput = document.getElementById('end_date');
+            const durationInput = document.getElementById('duration');
+
+            // Function to calculate duration
+            function calculateDuration() {
+                const startDate = new Date(startDateInput.value.split('/').reverse().join('-'));
+                const endDate = new Date(endDateInput.value.split('/').reverse().join('-'));
+
+                if (startDate && endDate && endDate > startDate) {
+                    const duration = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24)); // Duration in days
+                    durationInput.value = `${duration} days`;
+                } else {
+                    durationInput.value = '';
+                }
+            }
+
+            // Event listeners for date inputs
+            startDateInput.addEventListener('change', calculateDuration);
+            endDateInput.addEventListener('change', calculateDuration);
+
+              // JavaScript to dynamically add more image upload inputs
+              const addMoreImagesBtn = document.getElementById('add-more-images');
+            const imageUploadContainer = document.getElementById('image-upload-container');
+
+            addMoreImagesBtn.addEventListener('click', () => {
+                const newImageInput = document.createElement('div');
+                newImageInput.className = 'image-upload-row mt-2';
+                newImageInput.innerHTML = `
+                    <label class="block text-sm text-gray-700">Additional Image</label>
+                    <input type="file" name="images"
+                        class="block w-full text-sm text-gray-600 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border file:border-gray-300 file:text-gray-700 hover:file:bg-gray-100" />
+                `;
+                imageUploadContainer.appendChild(newImageInput);
+            });
+        </script>
+    </body>
+</html>
+{% endblock %}

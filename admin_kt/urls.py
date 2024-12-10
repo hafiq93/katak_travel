@@ -63,6 +63,7 @@ urlpatterns = [
     path('room/bed/delete/<int:bed_id>/', views.bed_delete, name='bed_delete'),
 
     path('news/', views.news, name='news'),
+    path('news/add', views.news_add, name='news_add'),
     path('review/', views.review, name='review'),
 
 
