@@ -1,276 +1,298 @@
-<div class="w-64 bg-gray-800 text-white h-min-screen">
-    <div class="p-4 flex gap-4 items-center">
-        <img src="#" alt="Profile" class="w-8 h-8 rounded-full">
-        <span class="text-white text-gray-700 font-semibold">{{ request.user.username }}</span>
-    </div>
-    <ul class="space-y-2">
-        <li>
-            <a href="{% url 'admin-dashboard' %}" class="flex items-center p-4 text-gray-200 hover:bg-gray-700">
-                <i class="fas fa-tachometer-alt"></i>
-                <span class="ml-4">Dashboard</span>
-            </a>
-        </li>
+<div class="flex flex-col w-60 h-screen bg-gray-800 text-gray-200">
+    <!-- Sidebar Header -->
+    <!-- <div class="flex items-center justify-between p-4 bg-gray-900">
+        <h1 class="text-lg font-bold">Admin Panel</h1>
+        <button id="sidebarToggle" class="lg:hidden p-2 text-white">
+            <i class="fas fa-bars"></i>
+        </button>
+    </div> -->
 
-        <!-- Module Dropdown -->
-        <li>
-            <button id="moduleDropdownButton" class="flex items-center p-4 text-gray-200 hover:bg-gray-700 w-full text-left">
-                <i class="fas fa-book"></i>
-                <span class="ml-4">Katak Travel</span>
-                <i class="fas fa-chevron-down ml-auto"></i>
-            </button>
-            <ul id="moduleDropdown" class="hidden space-y-2 pl-4">
-                <li>
-                    <a href="{% url 'main_page' %}" class="flex items-center p-2 text-gray-200 hover:bg-gray-700">
-                        <i class="fas fa-info-circle"></i> <!-- Icon for Intro -->
-                        <span class="ml-4">Main</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="{% url 'main_about' %}" class="flex items-center p-2 text-gray-200 hover:bg-gray-700">
-                        <i class="fas fa-bullseye"></i> <!-- Icon for Objective -->
-                        <span class="ml-4">About</span>
-                    </a>
-                </li>
-                <!-- <li>
-                    <a href="#" class="flex items-center p-2 text-gray-200 hover:bg-gray-700">
-                        <i class="fas fa-eye"></i> Icon for Vision
-                        <span class="ml-4">Contact Us</span>
-                    </a>
-                </li> -->
-                <!-- <li>
-                    <a href="#" class="flex items-center p-2 text-gray-200 hover:bg-gray-700">
-                        <i class="fas fa-handshake"></i> 
-                        <span class="ml-4">Mission</span>
-                    </a>
-                </li> -->
-            </ul>
-        </li>
+     <!-- Sidebar Content -->
+     <nav class="flex-1 overflow-y-auto">
+        <ul class="space-y-2">
+            <!-- Dashboard -->
+            <!-- <li>
+                <a href="{% url 'admin-dashboard' %}" 
+                   class="flex items-center p-4 text-gray-200 hover:bg-gray-700 {% if request.resolver_match.url_name == 'admin-dashboard' %}bg-gray-700{% endif %}">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span class="ml-4">Dashboard</span>
+                </a>
+            </li> -->
 
-        
-        <!-- Sales Dropdown -->
-        <li>
-            <button id="salesDropdownButton" class="flex items-center p-4 text-gray-200 hover:bg-gray-700 w-full text-left">
-                <i class="fas fa-chart-line"></i>
-                <span class="ml-4">Sales</span>
-                <i class="fas fa-chevron-down ml-auto"></i>
-            </button>
-            <ul id="salesDropdown" class="hidden space-y-2 pl-4">
-                <li>
-                    <a href="#" class="flex items-center p-2 text-gray-200 hover:bg-gray-700">
-                        <span class="ml-4">Sales Report</span>
-                    </a>
+            <!-- Module Dropdown -->
+            <li>
+                <button id="moduleDropdownButton" class="flex items-center p-4 text-gray-200 hover:bg-gray-700 w-full text-left">
+                    <i class="fas fa-book"></i>
+                    <span class="ml-4">Katak Travel</span>
+                    <i class="fas fa-chevron-down ml-auto"></i>
+                </button>
+                <ul id="moduleDropdown" class="hidden space-y-2 pl-4">
+                    <li>
+                        <a href="{% url 'main_page' %}" class="flex items-center p-2 text-gray-200 hover:bg-gray-700">
+                            <i class="fas fa-info-circle"></i> <!-- Icon for Intro -->
+                            <span class="ml-4">Main</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'main_about' %}" class="flex items-center p-2 text-gray-200 hover:bg-gray-700">
+                            <i class="fas fa-bullseye"></i> <!-- Icon for Objective -->
+                            <span class="ml-4">About</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'news' %}" class="flex items-center p-2 text-gray-200 hover:bg-gray-700">
+                            <i class="fas fa-newspaper"></i> <span class="ml-4">News</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="" class="flex items-center p-2 text-gray-200 hover:bg-gray-700">
+                            <i class="fas fa-star"></i> <span class="ml-4">Category</span>
+                        </a>
+                    </li>
+                   
+                   
                 </li>
-            </ul>
-        </li>
+                    
+                </ul>
+            </li>
 
-        <!-- hotel Dropdown -->
-        <li>
-            <button id="hotelDropdownButton" class="flex items-center p-4 text-gray-200 hover:bg-gray-700 w-full text-left">
-                <i class="fas fa-hotel"></i>
-                <span class="ml-4">Hotel</span>
-                <i class="fas fa-chevron-down ml-auto"></i>
-            </button>
-            <ul id="hotelDropdown" class="hidden space-y-2 pl-4">
+            <!-- Sales Dropdown -->
+            <li>
+                <button id="salesDropdownButton" class="flex items-center w-full p-4 text-left hover:bg-gray-700">
+                    <i class="fas fa-chart-line"></i>
+                    <span class="ml-4 flex-1">Sales</span>
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                <ul id="salesDropdown" class="hidden pl-8 space-y-2">
+                    <li>
+                        <a href="#" class="block p-2 hover:bg-gray-700">Reports</a>
+                    </li>
+                    <li>
+                        <a href="#" class="block p-2 hover:bg-gray-700">Transactions</a>
+                    </li>
+                </ul>
+
+                
+
+                <!-- Sales Dropdown -->
                 <li>
-                    <a href="{% url 'hotel_list' %}" class="flex items-center p-2 text-gray-200 hover:bg-gray-700">
-                        <span class="ml-4">Hotel List</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="{% url 'hotel_type' %}" class="flex items-center p-2 text-gray-200 hover:bg-gray-700">
-                        <span class="ml-4"> Hotel Type</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="{% url 'hotel_facilities' %}" class="flex items-center p-2 text-gray-200 hover:bg-gray-700">
-                        <span class="ml-4"> Hotel Facilities</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="{% url 'room_type' %}" class="flex items-center p-2 text-gray-200 hover:bg-gray-700">
-                        <span class="ml-4">Room Type</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="{% url 'hotel_room_faci' %}" class="flex items-center p-2 text-gray-200 hover:bg-gray-700">
-                        <span class="ml-4">Room Facilities</span>
-                    </a>
+                    <button id="packageDropdownButton" class="flex items-center p-4 text-gray-200 hover:bg-gray-700 w-full text-left">
+                        <i class="fa-solid fa-suitcase-rolling"></i>
+                        <span class="ml-4">Package</span>
+                        <i class="fas fa-chevron-down ml-auto"></i>
+                    </button>
+                    <ul id="packageDropdown" class="hidden space-y-2 pl-4">
+                        <li>
+                            <a href="{% url 'package_list' %}" class="flex items-center p-2 text-gray-200 hover:bg-gray-700">
+                                <span class="ml-4">List Package</span>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
 
+                <!-- hotel Dropdown -->
                 <li>
-                    <a href="{% url 'room_bed' %}" class="flex items-center p-2 text-gray-200 hover:bg-gray-700">
-                        <span class="ml-4">Type Bed</span>
-                    </a>
+                    <button id="hotelDropdownButton" class="flex items-center p-4 text-gray-200 hover:bg-gray-700 w-full text-left">
+                        <i class="fas fa-hotel"></i>
+                        <span class="ml-4">Hotel</span>
+                        <i class="fas fa-chevron-down ml-auto"></i>
+                    </button>
+                    <ul id="hotelDropdown" class="hidden space-y-2 pl-4">
+                        <li>
+                            <a href="{% url 'hotel_list' %}" class="flex items-center p-2 text-gray-200 hover:bg-gray-700">
+                                <span class="ml-4">Hotel List</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{% url 'hotel_type' %}" class="flex items-center p-2 text-gray-200 hover:bg-gray-700">
+                                <span class="ml-4"> Hotel Type</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{% url 'hotel_facilities' %}" class="flex items-center p-2 text-gray-200 hover:bg-gray-700">
+                                <span class="ml-4"> Hotel Facilities</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{% url 'room_type' %}" class="flex items-center p-2 text-gray-200 hover:bg-gray-700">
+                                <span class="ml-4">Room Type</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{% url 'hotel_room_faci' %}" class="flex items-center p-2 text-gray-200 hover:bg-gray-700">
+                                <span class="ml-4">Room Facilities</span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="{% url 'room_bed' %}" class="flex items-center p-2 text-gray-200 hover:bg-gray-700">
+                                <span class="ml-4">Type Bed</span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="{% url 'hotel_view' %}" class="flex items-center p-2 text-gray-200 hover:bg-gray-700">
+                                <span class="ml-4">View</span>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
 
-                <li>
-                    <a href="{% url 'hotel_view' %}" class="flex items-center p-2 text-gray-200 hover:bg-gray-700">
-                        <span class="ml-4">View</span>
-                    </a>
-                </li>
-            </ul>
-        </li>
 
-        <!-- Merchant Dropdown -->
-        <li>
-            <button id="merchantDropdownButton" class="flex items-center p-4 text-gray-200 hover:bg-gray-700 w-full text-left">
-                <i class="fa-solid fa-store"></i>
-                <span class="ml-4">Merchant</span>
-                <i class="fas fa-chevron-down ml-auto"></i>
-            </button>
-            <ul id="merchantDropdown" class="hidden space-y-2 pl-4">
+                <!-- Merchant Dropdown -->
                 <li>
-                    <a href="#" class="flex items-center p-2 text-gray-200 hover:bg-gray-700">
-                        <span class="ml-4">Add Merchant</span>
-                    </a>
+                    <button id="merchantDropdownButton" class="flex items-center p-4 text-gray-200 hover:bg-gray-700 w-full text-left">
+                        <i class="fa-solid fa-store"></i>
+                        <span class="ml-4">Merchant</span>
+                        <i class="fas fa-chevron-down ml-auto"></i>
+                    </button>
+                    <ul id="merchantDropdown" class="hidden space-y-2 pl-4">
+                        <li>
+                            <a href="#" class="flex items-center p-2 text-gray-200 hover:bg-gray-700">
+                                <span class="ml-4">Add Merchant</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="flex items-center p-2 text-gray-200 hover:bg-gray-700">
+                                <span class="ml-4">Merchant Profile</span>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
-                <li>
-                    <a href="#" class="flex items-center p-2 text-gray-200 hover:bg-gray-700">
-                        <span class="ml-4">Merchant Profile</span>
-                    </a>
-                </li>
-            </ul>
-        </li>
 
-        <!-- User Dropdown -->
-        <li>
-            <button id="userDropdownButton" class="flex items-center p-4 text-gray-200 hover:bg-gray-700 w-full text-left">
-                <i class="fas fa-users"></i>
-                <span class="ml-4">User</span>
-                <i class="fas fa-chevron-down ml-auto"></i>
-            </button>
-            <ul id="userDropdown" class="hidden space-y-2 pl-4">
+                 <!-- User Dropdown -->
                 <li>
-                    <a href="{% url 'user_list' %}" class="flex items-center p-2 text-gray-200 hover:bg-gray-700">
-                        <span class="ml-4">User List</span>
-                    </a>
+                    <button id="userDropdownButton" class="flex items-center p-4 text-gray-200 hover:bg-gray-700 w-full text-left">
+                        <i class="fas fa-users"></i>
+                        <span class="ml-4">User</span>
+                        <i class="fas fa-chevron-down ml-auto"></i>
+                    </button>
+                    <ul id="userDropdown" class="hidden space-y-2 pl-4">
+                        <li>
+                            <a href="{% url 'user_list' %}" class="flex items-center p-2 text-gray-200 hover:bg-gray-700">
+                                <span class="ml-4">User List</span>
+                            </a>
+                        </li>
+                        <!-- <li>
+                            <a href="#" class="flex items-center p-2 text-gray-200 hover:bg-gray-700">
+                                <span class="ml-4">Profile</span>
+                            </a>
+                        </li> -->
+                        <li>
+                            <a href="{% url 'user_roles' %}" class="flex items-center p-2 text-gray-200 hover:bg-gray-700">
+                                <span class="ml-4">User Roles</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{% url 'user_roles_permission' %}" class="flex items-center p-2 text-gray-200 hover:bg-gray-700">
+                                <span class="ml-4">Roles & Permission</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{% url 'list_roles' %}" class="flex items-center p-2 text-gray-200 hover:bg-gray-700">
+                                <span class="ml-4">List Roles</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{% url 'list_permission' %}" class="flex items-center p-2 text-gray-200 hover:bg-gray-700">
+                                <span class="ml-4">List Permission</span>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
-                <!-- <li>
-                    <a href="#" class="flex items-center p-2 text-gray-200 hover:bg-gray-700">
-                        <span class="ml-4">Profile</span>
-                    </a>
-                </li> -->
-                <li>
-                    <a href="{% url 'user_roles' %}" class="flex items-center p-2 text-gray-200 hover:bg-gray-700">
-                        <span class="ml-4">User Roles</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="{% url 'user_roles_permission' %}" class="flex items-center p-2 text-gray-200 hover:bg-gray-700">
-                        <span class="ml-4">Roles & Permission</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="{% url 'list_roles' %}" class="flex items-center p-2 text-gray-200 hover:bg-gray-700">
-                        <span class="ml-4">List Roles</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="{% url 'list_permission' %}" class="flex items-center p-2 text-gray-200 hover:bg-gray-700">
-                        <span class="ml-4">List Permission</span>
-                    </a>
-                </li>
-            </ul>
-        </li>
 
-         <!-- Report Dropdown -->
-        <li>
-            <button id="reportDropdownButton" class="flex items-center p-4 text-gray-200 hover:bg-gray-700 w-full text-left">
-                <i class="fas fa-file"></i>
-                <span class="ml-4">Report</span>
-                <i class="fas fa-chevron-down ml-auto"></i>
-            </button>
-            <ul id="reportDropdown" class="hidden space-y-2 pl-4">
+                 <!-- Report Dropdown -->
                 <li>
-                    <a href="" class="flex items-center p-2 text-gray-200 hover:bg-gray-700">
+                    <button id="reportDropdownButton" class="flex items-center p-4 text-gray-200 hover:bg-gray-700 w-full text-left">
+                        <i class="fas fa-file"></i>
                         <span class="ml-4">Report</span>
-                    </a>
+                        <i class="fas fa-chevron-down ml-auto"></i>
+                    </button>
+                    <ul id="reportDropdown" class="hidden space-y-2 pl-4">
+                        <li>
+                            <a href="" class="flex items-center p-2 text-gray-200 hover:bg-gray-700">
+                                <span class="ml-4">Report</span>
+                            </a>
+                        </li>
+                        <!-- <li>
+                            <a href="#" class="flex items-center p-2 text-gray-200 hover:bg-gray-700">
+                                <span class="ml-4">Profile</span>
+                            </a>
+                        </li> -->
+                        <li>
+                            <a href="" class="flex items-center p-2 text-gray-200 hover:bg-gray-700">
+                                <span class="ml-4">Type Report</span>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
-                <!-- <li>
-                    <a href="#" class="flex items-center p-2 text-gray-200 hover:bg-gray-700">
-                        <span class="ml-4">Profile</span>
-                    </a>
-                </li> -->
+
+              
                 <li>
-                    <a href="" class="flex items-center p-2 text-gray-200 hover:bg-gray-700">
-                        <span class="ml-4">Type Report</span>
-                    </a>
+                    <button id="reviewDropdownButton" class="flex items-center p-4 text-gray-200 hover:bg-gray-700 w-full text-left">
+                        <i class="fas fa-clipboard"></i>
+                        <span class="ml-4">Review</span>
+                        <i class="fas fa-chevron-down ml-auto"></i>
+                    </button>
+                    <ul id="reviewDropdown" class="hidden space-y-2 pl-4">
+                        <li>
+                            <a href="{% url 'review' %}" class="flex items-center p-2 text-gray-200 hover:bg-gray-700">
+                                <i class="fas fa-star"></i> <span class="ml-4">Review</span>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
-            </ul>
-        </li>
-         <!-- News/REview Dropdown -->
-        <li>
-            <button id="newsDropdownButton" class="flex items-center p-4 text-gray-200 hover:bg-gray-700 w-full text-left">
-                <i class="fas fa-clipboard"></i>
-                <span class="ml-4">News</span>
-                <i class="fas fa-chevron-down ml-auto"></i>
-            </button>
-            <ul id="newsDropdown" class="hidden space-y-2 pl-4">
-                <li>
-                    <a href="{% url 'news' %}" class="flex items-center p-2 text-gray-200 hover:bg-gray-700">
-                        <i class="fas fa-newspaper"></i> <span class="ml-4">News</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="" class="flex items-center p-2 text-gray-200 hover:bg-gray-700">
-                        <i class="fas fa-star"></i> <span class="ml-4">Category</span>
-                    </a>
-                </li>
-            </ul>
-        </li>
-        <li>
-            <button id="reviewDropdownButton" class="flex items-center p-4 text-gray-200 hover:bg-gray-700 w-full text-left">
-                <i class="fas fa-clipboard"></i>
-                <span class="ml-4">Review</span>
-                <i class="fas fa-chevron-down ml-auto"></i>
-            </button>
-            <ul id="reviewDropdown" class="hidden space-y-2 pl-4">
-                <li>
-                    <a href="{% url 'review' %}" class="flex items-center p-2 text-gray-200 hover:bg-gray-700">
-                        <i class="fas fa-star"></i> <span class="ml-4">Review</span>
-                    </a>
-                </li>
-            </ul>
-        </li>
-    </ul>
+
+            </li>
+        </ul>
+    </nav>
+
+    <!-- Sidebar Footer -->
+    <div class="p-4 bg-gray-900">
+        <a href="{% url 'logout' %}" class="flex items-center text-gray-200 hover:text-white">
+            <i class="fas fa-sign-out-alt"></i>
+            <span class="ml-4">Logout</span>
+        </a>
+    </div>
 </div>
 
 <script>
-    document.getElementById('moduleDropdownButton').addEventListener('click', function() {
-        const dropdown = document.getElementById('moduleDropdown');
-        dropdown.classList.toggle('hidden');
+ document.addEventListener('DOMContentLoaded', () => {
+    // Handle dropdown toggles
+    document.querySelectorAll('button[id$="DropdownButton"]').forEach(button => {
+        button.addEventListener('click', () => {
+            const dropdownId = button.id.replace('Button', '');
+            const dropdownMenu = document.getElementById(dropdownId);
+            dropdownMenu.classList.toggle('hidden');
+        });
     });
 
-    document.getElementById('hotelDropdownButton').addEventListener('click', function() {
-        const dropdown = document.getElementById('hotelDropdown');
-        dropdown.classList.toggle('hidden');
+    // Sidebar toggle for mobile
+    const sidebar = document.querySelector('.flex.w-64');
+    const sidebarToggle = document.getElementById('sidebarToggle');
+    sidebarToggle.addEventListener('click', () => {
+        sidebar.classList.toggle('hidden');
     });
-
-    document.getElementById('salesDropdownButton').addEventListener('click', function() {
-        const dropdown = document.getElementById('salesDropdown');
-        dropdown.classList.toggle('hidden');
-    });
-
-    document.getElementById('merchantDropdownButton').addEventListener('click', function() {
-        const dropdown = document.getElementById('merchantDropdown');
-        dropdown.classList.toggle('hidden');
-    });
-
-    document.getElementById('userDropdownButton').addEventListener('click', function() {
-        const dropdown = document.getElementById('userDropdown');
-        dropdown.classList.toggle('hidden');
-    });
-
-    document.getElementById('reportDropdownButton').addEventListener('click', function() {
-        const dropdown = document.getElementById('reportDropdown');
-        dropdown.classList.toggle('hidden');
-    });
-    document.getElementById('newsDropdownButton').addEventListener('click', function() {
-        const dropdown = document.getElementById('newsDropdown');
-        dropdown.classList.toggle('hidden');
-    });
-    document.getElementById('reviewDropdownButton').addEventListener('click', function() {
-        const dropdown = document.getElementById('reviewDropdown');
-        dropdown.classList.toggle('hidden');
-    });
+});
 </script>
+
+<style>
+    .sidebar {
+      display: flex;
+      flex-direction: column;
+      width: 240px; /* Adjust as needed */
+      min-height: 100vh;
+      max-height: 100vh; /* Prevent its own scrolling */
+      overflow: hidden; /* Disable scroll on the sidebar */
+    }
+  
+    .sidebar-content {
+      flex: 1;
+      overflow-y: auto; /* Enable content scrolling within the available height */
+    }
+  
+    /* Optional: Styling for the body to prevent cut-off */
+    body {
+      overflow-y: auto; /* Ensure the page scrolls properly */
+    }
+  </style>

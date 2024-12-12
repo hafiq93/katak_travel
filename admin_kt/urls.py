@@ -21,7 +21,9 @@ urlpatterns = [
     path('roles/list', views.list_roles, name='list_roles'),
     path('permission/list', views.list_permission, name='list_permission'),
     
-
+    # package
+      path('package/', views.package_list, name='package_list'),
+    # ////////////////////////////////////////////////////////////////////////////
 
     path('hotel/', views.hotel_list, name='hotel_list'),
 

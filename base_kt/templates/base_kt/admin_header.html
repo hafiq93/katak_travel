@@ -28,9 +28,20 @@
             <span class="text-lg font-bold text-gray-700" style="color: #009A00;">Management System</span>
 
              <!-- Middle: Navigation links -->
-            <nav class="hidden md:flex space-x-6 ">
-                <a href="{% url 'admin-dashboard' %}" class="text-gray-700 hover:text-blue-500 font-semibold">Home</a>
-                <a href="" class="text-gray-700 hover:text-blue-500 font-semibold">Company User</a>
+             <nav class="hidden md:flex space-x-6">
+                
+                <a 
+                    href="{% url 'admin-dashboard' %}" 
+                    class="text-md font-bold 
+                           {% if request.resolver_match.url_name == 'admin-dashboard' %}
+                           text-white bg-green-400 
+                           {% else %}
+                           text-gray-700 hover:text-green-400
+                           {% endif %} 
+                           px-4 py-2 rounded-md">
+                    Dashboard
+                </a>
+                <!-- Add more links here with similar logic -->
             </nav>
         </div>
   
@@ -45,6 +56,7 @@
             
             <!-- Dropdown menu -->
             <div id="profileDropdown" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-2 z-10">
+                <a target="_blank" class="font-semibold px-4 py-2 text-gray-700 hover:bg-gray-100">Admin Panel</a>
                 <a href="{% url 'home' %}" target="_blank" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Katak Travel Page</a>
                 <a href="{% url 'profile' %}" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Profile</a>
                 <a href="{% url 'logout' %}" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Log Out</a>
@@ -54,10 +66,10 @@
     
     <!-- Mobile menu -->
     <div id="mobileMenu" class="md:hidden flex justify-between items-center px-4 py-3 bg-white">
-        <nav class="flex space-x-4">
+        <!-- <nav class="flex space-x-4">
             <a href="{% url 'admin-dashboard' %}" class="text-gray-700 hover:text-blue-500">Home</a>
-            <a href="" class="text-gray-700 hover:text-blue-500">Company User</a>
-        </nav>
+           
+        </nav> -->
     </div>
 </header>
 

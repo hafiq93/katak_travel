@@ -80,7 +80,18 @@ def main_about(request):
     main_contact = ContactUs.objects.all()  # Fetch all MainPage entries
     return render(request, 'admin_kt/page_about.html', {'main_about': main_about,'main_contact': main_contact})
 
-# /////////////////////////////////////////////////////////////
+# /////////////////////////////////////package//////////////////////////////////////////
+
+@login_required(login_url='/login/')
+@user_passes_test(lambda u: u.is_staff, login_url='/login/')
+def package_list(request):
+    # Your dashboard view logic
+    return render(request, 'admin_kt/package_list.html')
+
+# ////////////////////////////////////////////////////////////////////////////////////////
+
+
+
 @login_required(login_url='/login/')
 @user_passes_test(lambda u: u.is_staff, login_url='/login/')
 def user_list(request):
