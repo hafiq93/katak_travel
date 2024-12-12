@@ -84,6 +84,12 @@ def main_about(request):
 
 @login_required(login_url='/login/')
 @user_passes_test(lambda u: u.is_staff, login_url='/login/')
+def package_dashboard(request):
+    # Your dashboard view logic
+    return render(request, 'admin_kt/package_dashboard.html')
+
+@login_required(login_url='/login/')
+@user_passes_test(lambda u: u.is_staff, login_url='/login/')
 def package_list(request):
     # Your dashboard view logic
     return render(request, 'admin_kt/package_list.html')
@@ -119,6 +125,13 @@ def user_profile(request, user_id):
     user = get_object_or_404(User.objects.select_related('profile'), id=user_id)
     return render(request, 'admin_kt/user_profile.html', {'user': user})
 
+
+# /////////////////////////merchant & hotel dashboard////////////////////////////////////
+
+@user_passes_test(admin_required, login_url='/login/')
+def merhotel_dashboard(request):
+    # Your dashboard view logic
+    return render(request, 'admin_kt/merhotel_dashboard.html')
 
 # /////////////////////////hote list////////////////////////////////////
 
@@ -446,3 +459,13 @@ def news_add(request):
    
     # Your dashboard view logic
     return render(request, 'admin_kt/news_add.html')
+
+
+
+    # /////////////////////////////////////////////////////////////////////////////////////////////////////
+
+@user_passes_test(admin_required, login_url='/login/')
+def sales_dashboard(request):
+   
+    # Your dashboard view logic
+    return render(request, 'admin_kt/sales_dashboard.html')

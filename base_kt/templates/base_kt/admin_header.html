@@ -28,20 +28,210 @@
             <span class="text-lg font-bold text-gray-700" style="color: #009A00;">Management System</span>
 
              <!-- Middle: Navigation links -->
-             <nav class="hidden md:flex space-x-6">
-                
+            <!-- Middle: Navigation links -->
+            <nav class="hidden md:flex space-x-2">
                 <a 
                     href="{% url 'admin-dashboard' %}" 
                     class="text-md font-bold 
-                           {% if request.resolver_match.url_name == 'admin-dashboard' %}
+                           {% if request.resolver_match.url_name == 'admin-dashboard' %} 
                            text-white bg-green-400 
                            {% else %}
                            text-gray-700 hover:text-green-400
-                           {% endif %} 
+                           {% endif %}
                            px-4 py-2 rounded-md">
                     Dashboard
                 </a>
-                <!-- Add more links here with similar logic -->
+
+                <!-- Main Page Dropdown -->
+                <div class="relative" >
+                    <!-- Dropdown Button -->
+                    <a 
+                        id="mainPageDropdownButton" 
+                        onclick="handleMainPageClick(event, 'mainPageDropdown')" 
+                        href="{% url 'main_page' %}" 
+                        class="flex items-center px-4 py-2 text-md font-bold rounded-md 
+                        {% if request.resolver_match.url_name == 'main_page' or request.resolver_match.url_name == 'main_about' or request.resolver_match.url_name == 'news' %}
+                        text-white bg-green-400 
+                        {% else %}
+                        text-gray-700 hover:text-green-400 
+                        {% endif %}">
+                        <span>Main Page</span>
+                        <i class="fas fa-chevron-down ml-2"></i>
+                   </a>
+
+                    <!-- Dropdown Menu -->
+                    <ul id="mainPageDropdown" class="hidden absolute left-0 bg-white border border-gray-200 mt-2 rounded-md shadow-lg w-64">
+                        <li>
+                            <a 
+                                href="{% url 'main_page' %}" 
+                                class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100"
+                                onclick="setActive(this)">
+                                <i class="fas fa-info-circle"></i>
+                                <span class="ml-4">Main</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a 
+                                href="{% url 'news' %}" 
+                                class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100"
+                                onclick="setActive(this)">
+                                <i class="fas fa-newspaper"></i>
+                                <span class="ml-4">News</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a 
+                                href="#" 
+                                class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100"
+                                onclick="setActive(this)">
+                                <i class="fas fa-star"></i>
+                                <span class="ml-4">Category</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Sales Dropdown -->
+                <div class="relative">
+                    <!-- Dropdown Button -->
+                    <a 
+                        id="salesDropdownButton" 
+                        href="{% url 'sales_dashboard' %}" 
+                        onclick="handleSalesClick(event, 'salesDropdown')" 
+                        class="flex items-center px-4 py-2 text-md font-bold rounded-md 
+                        {% if request.resolver_match.url_name == 'sales_dashboard' %}
+                        text-white bg-green-400 
+                        {% else %}
+                        text-gray-700 hover:text-green-400 
+                        {% endif %}">
+                        <span>Sales</span>
+                        <i class="fas fa-chevron-down ml-2"></i>
+                    </a>
+
+                    <!-- Dropdown Menu -->
+                    <ul id="salesDropdown" class="hidden absolute left-0 bg-white border border-gray-200 mt-2 rounded-md shadow-lg w-64">
+                        <li>
+                            <a 
+                                href="#" 
+                                class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100">
+                                <i class="fas fa-info-circle"></i>
+                                <span class="ml-4">Profit</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a 
+                                href="#" 
+                                class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100">
+                                <i class="fas fa-info-circle"></i>
+                                <span class="ml-4">Reports</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a 
+                                href="#" 
+                                class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100">
+                                <i class="fas fa-newspaper"></i>
+                                <span class="ml-4">Transactions</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                 <!-- package Dropdown -->
+                 <div class="relative">
+                    <!-- Dropdown Button -->
+                    <a 
+                        id="packageDropdownButton" 
+                        href="{% url 'package_dashboard' %}" 
+                        onclick="handleSalesClick(event, 'packageDropdown')" 
+                        class="flex items-center px-4 py-2 text-md font-bold rounded-md 
+                        {% if request.resolver_match.url_name == 'package_dashboard' or request.resolver_match.url_name == 'package_list' %}
+                        text-white bg-green-400 
+                        {% else %}
+                        text-gray-700 hover:text-green-400 
+                        {% endif %}">
+                        <span>Package</span>
+                        <i class="fas fa-chevron-down ml-2"></i>
+                    </a>
+                
+                    <!-- Dropdown Menu -->
+                    <ul id="packageDropdown" class="hidden absolute left-0 bg-white border border-gray-200 mt-2 rounded-md shadow-lg w-64">
+                        <li>
+                            <a 
+                                href="{% url 'package_list' %}" 
+                                class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100">
+                                <i class="fas fa-info-circle"></i>
+                                <span class="ml-4">Package List</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a 
+                                href="" 
+                                class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100">
+                                <i class="fas fa-info-circle"></i>
+                                <span class="ml-4">Profit</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a 
+                                href="" 
+                                class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100">
+                                <i class="fas fa-info-circle"></i>
+                                <span class="ml-4">Payment</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                 <!-- Mercahnt & hotel Dropdown -->
+                 <div class="relative">
+                    <!-- Dropdown Button -->
+                    <a 
+                        id="merhanthotelDropdownButton" 
+                        href="{% url 'merhotel_dashboard' %}" 
+                        onclick="handleSalesClick(event, 'merchantDropdown')" 
+                        class="flex items-center px-4 py-2 text-md font-bold rounded-md 
+                        {% if request.resolver_match.url_name == 'merhotel_dashboard'  %}
+                        text-white bg-green-400 
+                        {% else %}
+                        text-gray-700 hover:text-green-400 
+                        {% endif %}">
+                        <span>Merchant</span>
+                        <i class="fas fa-chevron-down ml-2"></i>
+                    </a>
+                
+                    <!-- Dropdown Menu -->
+                    <ul id="packageDropdown" class="hidden absolute left-0 bg-white border border-gray-200 mt-2 rounded-md shadow-lg w-64">
+                        <li>
+                            <a 
+                                href="{% url 'package_list' %}" 
+                                class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100">
+                                <i class="fas fa-info-circle"></i>
+                                <span class="ml-4">Package List</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a 
+                                href="" 
+                                class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100">
+                                <i class="fas fa-info-circle"></i>
+                                <span class="ml-4">Profit</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a 
+                                href="" 
+                                class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100">
+                                <i class="fas fa-info-circle"></i>
+                                <span class="ml-4">Payment</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+               
+
+
             </nav>
         </div>
   
@@ -49,18 +239,21 @@
   
         <!-- Right side: Profile picture with dropdown -->
         <div class="relative">
-            <button id="profileMenuButton" class="flex items-center space-x-2 focus:outline-none">
+            <button id="profileMenuButton" class="flex items-center space-x-2 focus:outline-none" onclick="handleProfileClick(event, 'profileDropdown')">
                 <img src="{% static 'images/profile-pic.png' %}" alt="Profile" class="w-8 h-8 rounded-full">
                 <span class="hidden md:block text-gray-700">{{ request.user.username }}</span> <!-- Display username here -->
             </button>
             
             <!-- Dropdown menu -->
-            <div id="profileDropdown" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-2 z-10">
-                <a target="_blank" class="font-semibold px-4 py-2 text-gray-700 hover:bg-gray-100">Admin Panel</a>
+            <ul id="profileDropdown" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-2 z-10">
+                
+                
                 <a href="{% url 'home' %}" target="_blank" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Katak Travel Page</a>
                 <a href="{% url 'profile' %}" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Profile</a>
+                <a href="{% url 'profile' %}" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Info</a>
+                <a href="{% url 'profile' %}" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Setting</a>
                 <a href="{% url 'logout' %}" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Log Out</a>
-            </div>
+            </ul>
         </div>
     </div>
     
@@ -73,12 +266,81 @@
     </div>
 </header>
 
-<script>
-    const profileMenuButton = document.getElementById('profileMenuButton');
-    const profileDropdown = document.getElementById('profileDropdown');
-  
-    profileMenuButton.addEventListener('click', () => {
-        profileDropdown.classList.toggle('hidden');
-    });
-</script>
+
 </html>
+<script>
+function handleSalesClick(event, dropdownId) {
+    const chevronClicked = event.target.tagName === 'I'; // Check if chevron was clicked
+    if (!chevronClicked) {
+        // If not chevron, allow normal link behavior (navigation)
+        return;
+    }
+    // Prevent navigation if chevron is clicked
+    event.preventDefault();
+    toggleDropdown(event, dropdownId);
+}
+
+function handleMainPageClick(event, dropdownId) {
+    const chevronClicked = event.target.tagName === 'I'; // Check if chevron was clicked
+    if (!chevronClicked) {
+        // If not chevron, allow normal link behavior (navigation)
+        return;
+    }
+    // Prevent navigation if chevron is clicked
+    event.preventDefault();
+    toggleDropdown(event, dropdownId);
+}
+
+function handleProfileClick(event, dropdownId) {
+    event.preventDefault();
+    toggleDropdown(event, dropdownId);
+}
+
+function toggleDropdown(event, dropdownId) {
+    const dropdownMenu = document.getElementById(dropdownId);
+
+    // Toggle visibility of the dropdown
+    dropdownMenu.classList.toggle('hidden');
+
+    // Close other dropdowns if open
+    document.querySelectorAll('.relative ul').forEach(menu => {
+        if (menu.id !== dropdownId) {
+            menu.classList.add('hidden');
+        }
+    });
+}
+
+// Close dropdown when clicking outside
+document.addEventListener('click', (e) => {
+    const isClickInside = e.target.closest('.relative');
+    if (!isClickInside) {
+        document.querySelectorAll('.relative ul').forEach(menu => {
+            menu.classList.add('hidden');
+        });
+    }
+});
+
+</script>
+
+   
+   
+   <style>
+       .sidebar {
+         display: flex;
+         flex-direction: column;
+         width: 240px; /* Adjust as needed */
+         min-height: 100vh;
+         max-height: 100vh; /* Prevent its own scrolling */
+         overflow: hidden; /* Disable scroll on the sidebar */
+       }
+     
+       .sidebar-content {
+         flex: 1;
+         overflow-y: auto; /* Enable content scrolling within the available height */
+       }
+     
+       /* Optional: Styling for the body to prevent cut-off */
+       body {
+         overflow-y: auto; /* Ensure the page scrolls properly */
+       }
+     </style>

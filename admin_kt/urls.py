@@ -23,7 +23,10 @@ urlpatterns = [
     
     # package
       path('package/', views.package_list, name='package_list'),
+      path('package/dashboard', views.package_dashboard, name='package_dashboard'),
     # ////////////////////////////////////////////////////////////////////////////
+
+   path('merchant/dashboard', views.merhotel_dashboard, name='merhotel_dashboard'),
 
     path('hotel/', views.hotel_list, name='hotel_list'),
 
@@ -67,6 +70,9 @@ urlpatterns = [
     path('news/', views.news, name='news'),
     path('news/add', views.news_add, name='news_add'),
     path('review/', views.review, name='review'),
+    # /////////////////////////////////////////////////////////////////////////////
+
+    path('sales/dashboard', views.sales_dashboard, name='sales_dashboard'),
 
 
 ]
