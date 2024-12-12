@@ -32,6 +32,21 @@
                     <nav class="flex space-x-4">
                         <a href="{% url 'home_page' %}" class="text-lg font-medium">Home</a>
                         
+                        <!-- About Us Dropdown -->
+                        <div class="relative  group">
+                            <button class="text-lg font-medium flex items-center space-x-2" >
+                                <span>About Us</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </button>
+                            <!-- Dropdown Menu -->
+                            <div id="about-us-dropdown" class="absolute left-0 hidden mt-2 bg-white shadow-lg rounded-lg w-48 py-2 space-y-2">
+                                <a href="{% url 'about_us' %}" class="block px-4 py-2 text-lg text-gray-700 hover:bg-gray-100">About Us </a>
+                                <a href="{% url 'contact_us' %}" class="block px-4 py-2 text-lg text-gray-700 hover:bg-gray-100">Contact Us</a>
+                            </div>
+                        </div>
+                        
                         <!-- Reviews Dropdown -->
                         <div class="relative group">
                             <button class="text-lg font-medium flex items-center space-x-2" id="reviews-btn">
@@ -41,8 +56,8 @@
                                 </svg>
                             </button>
                             <div class="absolute left-0 hidden mt-2 bg-white shadow-lg rounded-lg w-48 py-2 space-y-2" id="reviews-dropdown">
-                                <a href="#" class="block px-4 py-2 text-lg text-gray-700 hover:bg-gray-100">Places/Locations</a>
-                                <a href="#" class="block px-4 py-2 text-lg text-gray-700 hover:bg-gray-100">Food</a>
+                                <a href="#" class="block px-4 py-2 text-lg text-gray-700 hover:bg-gray-100">Places/Locations  <span class="text-red-500 text-sm">(Coming Soon)</span></a>
+                                <a href="#" class="block px-4 py-2 text-lg text-gray-700 hover:bg-gray-100">Food  <span class="text-red-500 text-sm">(Coming Soon)</span></a>
                             </div>
                         </div>
 
@@ -56,25 +71,12 @@
                             </button>
                             <!-- Dropdown Menu -->
                             <div id="blog-dropdown" class="absolute left-0 hidden mt-2 bg-white shadow-lg rounded-lg w-48 py-2 space-y-2">
-                                <a href="" class="block px-4 py-2 text-lg text-gray-700 hover:bg-gray-100">Best Food</a>
-                                <a href="" class="block px-4 py-2 text-lg text-gray-700 hover:bg-gray-100">Best Hotels</a>
+                                <a href="" class="block px-4 py-2 text-lg text-gray-700 hover:bg-gray-100">Best Food  <span class="text-red-500 text-sm">(Coming Soon)</span></a>
+                                <a href="" class="block px-4 py-2 text-lg text-gray-700 hover:bg-gray-100">Best Hotels  <span class="text-red-500 text-sm">(Coming Soon)</span></a>
                             </div>
                         </div>
 
-                        <!-- About Us Dropdown -->
-                        <div class="relative  group">
-                            <button class="text-lg font-medium flex items-center space-x-2" >
-                                <span>About Us</span>
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                                </svg>
-                            </button>
-                            <!-- Dropdown Menu -->
-                            <div id="about-us-dropdown" class="absolute left-0 hidden mt-2 bg-white shadow-lg rounded-lg w-48 py-2 space-y-2">
-                                <a href="{% url 'about_us' %}" class="block px-4 py-2 text-lg text-gray-700 hover:bg-gray-100">About Us</a>
-                                <a href="{% url 'contact_us' %}" class="block px-4 py-2 text-lg text-gray-700 hover:bg-gray-100">Contact Us</a>
-                            </div>
-                        </div>
+                        
                     </nav>
                 </div>
             </div>
