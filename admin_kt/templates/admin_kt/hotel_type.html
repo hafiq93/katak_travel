@@ -7,107 +7,140 @@
     {% include 'base_kt/admin_header.html' %}
 
     <body>
-        <div class="flex h-screen">
-            <!-- Sidebar -->
-            {% include 'base_kt/admin_sidebar.html' %}
-            <div class="flex-grow p-4 bg-gray-100 h-min-screen">
-
-                <!-- Search Form -->
-                <form method="GET" class="mb-4 flex justify-end">
-                    <input 
-                        type="text" 
-                        name="search" 
-                        placeholder="Search by hotel,name"
-                        value="{{ query }}" 
-                        class="border px-4 py-2 w-1/3 rounded-md"
-                    />
-                    <button type="submit" class="ml-2 bg-blue-500 text-white px-4 py-2 rounded">
-                        Search
-                    </button>
-                </form>
-
-            <!-- First Row (Metrics in One Row) -->
-            <div class="rounded-md">
+        <div class="">
             
-                <!-- Third Row (Below Second Row) -->
-                <div class="grid grid-cols-1 gap-4 mt-2">
+           <!-- Main Content -->
+        <div class=" p-4 bg-gray-100 h-screen">
             
-                    <!-- Second Column, Second Row: User List -->
-                    <!-- Container to Align Button Right -->
-                    <div class="flex justify-end ">
-                        <button onclick="openAddModal()" class="bg-green-500 text-white px-4 py-2 rounded">Add Hotel Type</button>
-                    </div>
-                    <div class="bg-white shadow-md p-6 rounded-md">
-                        <h2 class="text-2xl font-bold mb-4">Hotel Type</h2>
-                    
-                        <table class="min-w-full table-auto">
-                            <thead>
-                                <tr>
-                                    <th class="px-4 py-2 text-left text-gray-600 font-semibold">No</th>
-                                    <th class="px-4 py-2 text-left text-gray-600 font-semibold">Type Hotel</th>
-                                    <th class="px-4 py-2 text-left text-gray-600 font-semibold">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for hotel_type in hotel_type %}
-                                <tr class="border-b">
-                                    <td class="px-4 py-2">{{ forloop.counter }}</td>
-                                    <td class="px-4 py-2">{{ hotel_type.type_name }}</td>
-                                    <td class="px-4 py-2">
-                                        <button type="button" onclick="openEditModal('{{ hotel_type.id }}', '{{ hotel_type.type_name }}')" class="bg-blue-700 text-white px-4 py-2 rounded font-semibold">
-                                            <i class="fas fa-edit"></i> Edit
-                                        </button>
-                                        <form action="{% url 'hotel_type_delete' hotel_type.id %}" method="POST" style="display:inline;">
-                                            {% csrf_token %}
-                                            <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded font-semibold" onclick="return confirm('Are you sure you want to delete this hotel type?');"><i class="fa-solid fa-trash mr-1"></i>Delete</button>
-                                        </form>
-                                    </td>
-                                </tr>
-                                {% empty %}
-                                <tr>
-                                    <td colspan="3" class="text-center py-4">No hotel types found.</td>
-                                </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
+            <!-- Tabs Navigation -->
+                <div class="mb-6">
+                    <ul class="flex border-b">
+                        <li class="mr-1">
+                            <a 
+                                href="{% url 'hotel_list' %}" 
+                                class="bg-white inline-block px-4 py-2 text-green-500 font-semibold border-lg hover:text-green-700 focus:outline-none">
+                                Hotel List
+                            </a>
+                        </li>
+                        <li class="mr-1">
+                            <a 
+                                href="{% url 'hotel_type' %}" 
+                                class="bg-green-500 inline-block px-4 py-2 text-white font-semibold border-lg border-l border-t border-r rounded-t focus:outline-none">
+                                Hotel Type
+                            </a>
+                        </li>
+                        <li class="mr-1">
+                            <a 
+                                href="{% url 'hotel_facilities' %}" 
+                                class="bg-white inline-block px-4 py-2 text-green-500 font-semibold border-lg hover:text-green-700 focus:outline-none">
+                                Hotel Facilities
+                            </a>
+                        </li>
                         
-                    </div>
+                    </ul>
                 </div>
-                <!-- Modal Structure -->
-                <div id="detailsModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden items-center justify-center  flex">
-                    <div class="bg-white rounded-lg w-1/2 p-6">
-                        <h2 class="text-xl font-semibold mb-4">Edit Hotel Type</h2>
-                        <form method="POST" action="{% url 'hotel_type_edit' %}">
-                            {% csrf_token %}
-                            <input type="hidden" name="hotel_type_id" id="hotelTypeId">
-                            <div class="mb-4">
-                                <label for="type_name" class="block font-semibold">Type Name:</label>
-                                <input type="text" name="type_name" id="type_name" class="w-full border border-gray-300 rounded px-3 py-2" required>
-                            </div>
-                            <div class="flex justify-end">
-                                <button type="button" onclick="closeModal()" class="bg-red-700 text-white font-semibold px-4 py-2 rounded mr-2">Cancel</button>
-                                <button type="submit" class="bg-green-700 text-white px-4 py-2 rounded font-semibold">Save</button>
-                            </div>
+           
+     
+                <!-- First Row (Metrics in One Row) -->
+                <div class="rounded-md">
+                          <!-- Search Form -->
+                        <form method="GET" class="mb-4 flex justify-end">
+                            <input 
+                                type="text" 
+                                name="search" 
+                                placeholder="Search by hotel,name"
+                                value="{{ query }}" 
+                                class="border px-4 py-2 w-1/3 rounded-md"
+                            />
+                            <button type="submit" class="ml-2 bg-blue-500 text-white px-4 py-2 rounded">
+                                Search
+                            </button>
                         </form>
-                    </div>
-                </div>
-                <!-- Modal for Adding Hotel Type -->
-                <div id="addHotelTypeModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden items-center justify-center flex">
-                    <div class="bg-white rounded-lg w-1/2 p-6">
-                        <h2 class="text-xl font-semibold mb-4">Add Hotel Type</h2>
-                        <form method="POST" action="{% url 'hotel_type_add' %}">
-                            {% csrf_token %}
-                            <div class="mb-4">
-                                <label for="type_name" class="block font-semibold">Type Name:</label>
-                                <input type="text" name="type_name" id="type_name" class="w-full border border-gray-300 rounded px-3 py-2" required>
+
+                       
+                 
+
+                            <!-- Container to Align Button Right -->
+                            <div class="flex justify-end mb-4 ">
+                                <button onclick="openAddModal()" class="bg-green-500 text-white px-4 py-2 rounded">Add Hotel Type</button>
                             </div>
-                            <div class="flex justify-end">
-                                <button type="button" onclick="closeAddModal()" class="bg-red-700 text-white px-4 py-2 rounded mr-2 font-semibold">Cancel</button>
-                                <button type="submit" class="bg-green-700 text-white px-4 py-2 rounded font-semibold">Add</button>
+                                <div class="bg-white shadow-md p-6 rounded-md">
+                                    <h2 class="text-2xl font-bold mb-4">Hotel Type</h2>
+                                
+                                    <table class="min-w-full table-auto">
+                                        <thead>
+                                            <tr>
+                                                <th class="px-4 py-2 text-left text-gray-600 font-semibold">No</th>
+                                                <th class="px-4 py-2 text-left text-gray-600 font-semibold">Type Hotel</th>
+                                                <th class="px-4 py-2 text-left text-gray-600 font-semibold">Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for hotel_type in hotel_type %}
+                                            <tr class="border-b">
+                                                <td class="px-4 py-2">{{ forloop.counter }}</td>
+                                                <td class="px-4 py-2">{{ hotel_type.type_name }}</td>
+                                                <td class="px-4 py-2">
+                                                    <button type="button" onclick="openEditModal('{{ hotel_type.id }}', '{{ hotel_type.type_name }}')" class="bg-blue-700 text-white px-4 py-2 rounded font-semibold">
+                                                        <i class="fas fa-edit"></i> Edit
+                                                    </button>
+                                                    <form action="{% url 'hotel_type_delete' hotel_type.id %}" method="POST" style="display:inline;">
+                                                        {% csrf_token %}
+                                                        <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded font-semibold" onclick="return confirm('Are you sure you want to delete this hotel type?');"><i class="fa-solid fa-trash mr-1"></i>Delete</button>
+                                                    </form>
+                                                </td>
+                                            </tr>
+                                            {% empty %}
+                                            <tr>
+                                                <td colspan="3" class="text-center py-4">No hotel types found.</td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                    
+                                </div>
                             </div>
-                        </form>
+
+                        
+                            <!-- Modal Structure -->
+                            <div id="detailsModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden items-center justify-center  flex">
+                                <div class="bg-white rounded-lg w-1/2 p-6">
+                                    <h2 class="text-xl font-semibold mb-4">Edit Hotel Type</h2>
+                                    <form method="POST" action="{% url 'hotel_type_edit' %}">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="hotel_type_id" id="hotelTypeId">
+                                        <div class="mb-4">
+                                            <label for="type_name" class="block font-semibold">Type Name:</label>
+                                            <input type="text" name="type_name" id="type_name" class="w-full border border-gray-300 rounded px-3 py-2" required>
+                                        </div>
+                                        <div class="flex justify-end">
+                                            <button type="button" onclick="closeModal()" class="bg-red-700 text-white font-semibold px-4 py-2 rounded mr-2">Cancel</button>
+                                            <button type="submit" class="bg-green-700 text-white px-4 py-2 rounded font-semibold">Save</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+
+
+                            <!-- Modal for Adding Hotel Type -->
+                            <div id="addHotelTypeModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden items-center justify-center flex">
+                                <div class="bg-white rounded-lg w-1/2 p-6">
+                                    <h2 class="text-xl font-semibold mb-4">Add Hotel Type</h2>
+                                    <form method="POST" action="{% url 'hotel_type_add' %}">
+                                        {% csrf_token %}
+                                        <div class="mb-4">
+                                            <label for="type_name" class="block font-semibold">Type Name:</label>
+                                            <input type="text" name="type_name" id="type_name" class="w-full border border-gray-300 rounded px-3 py-2" required>
+                                        </div>
+                                        <div class="flex justify-end">
+                                            <button type="button" onclick="closeAddModal()" class="bg-red-700 text-white px-4 py-2 rounded mr-2 font-semibold">Cancel</button>
+                                            <button type="submit" class="bg-green-700 text-white px-4 py-2 rounded font-semibold">Add</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
 
             </div>
         </div>

@@ -7,10 +7,46 @@
     {% include 'base_kt/admin_header.html' %}
 
     <body>
-        <div class="flex h-screen">
-            <!-- Sidebar -->
-            {% include 'base_kt/admin_sidebar.html' %}
-            <div class="flex-grow p-4 bg-gray-100">
+        <div class="">
+            
+           <!-- Main Content -->
+        <div class=" p-4 bg-gray-100 h-screen">
+            
+            <!-- Tabs Navigation -->
+                <div class="mb-6">
+                    <ul class="flex border-b">
+                        <li class="mr-1">
+                            <a 
+                                href="{% url 'room_type' %}" 
+                                class="bg-white inline-block px-4 py-2 text-green-500 font-semibold border-lg hover:text-green-700 focus:outline-none">
+                                Room Type
+                            </a>
+                        </li>
+                        <li class="mr-1">
+                            <a 
+                                href="{% url 'hotel_room_faci' %}" 
+                                class="bg-green-500 inline-block px-4 py-2 text-white font-semibold border-lg border-l border-t border-r rounded-t focus:outline-none">
+                                Room Facilities
+                            </a>
+                        </li>
+                        <li class="mr-1">
+                            <a 
+                                href="{% url 'room_bed' %}" 
+                                class="bg-white inline-block px-4 py-2 text-green-500 font-semibold border-lg hover:text-green-700 focus:outline-none">
+                                Bed Type
+                            </a>
+                        </li>
+                        <li class="mr-1">
+                            <a 
+                                href="{% url 'hotel_view' %}" 
+                                class="bg-white inline-block px-4 py-2 text-green-500 font-semibold border-lg hover:text-green-700 focus:outline-none">
+                                View
+                            </a>
+                        </li>
+                        
+                    </ul>
+                </div>
+            <div class=" bg-gray-100">
                 <!-- Search Form -->
                 <form method="GET" class="mb-4 flex justify-end">
                     <input 

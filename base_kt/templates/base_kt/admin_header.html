@@ -183,15 +183,15 @@
                     </ul>
                 </div>
 
-                 <!-- Mercahnt & hotel Dropdown -->
-                 <div class="relative">
+                <!-- Combined Merchant & Hotel Dropdown -->
+                <div class="relative">
                     <!-- Dropdown Button -->
                     <a 
-                        id="merhanthotelDropdownButton" 
+                        id="merchantHotelDropdownButton" 
                         href="{% url 'merhotel_dashboard' %}" 
-                        onclick="handleSalesClick(event, 'merchantDropdown')" 
+                        onclick="handleSalesClick(event, 'merchantHotelDropdown')" 
                         class="flex items-center px-4 py-2 text-md font-bold rounded-md 
-                        {% if request.resolver_match.url_name == 'merhotel_dashboard'  %}
+                        {% if request.resolver_match.url_name == 'merhotel_dashboard' %}
                         text-white bg-green-400 
                         {% else %}
                         text-gray-700 hover:text-green-400 
@@ -199,62 +199,178 @@
                         <span>Merchant</span>
                         <i class="fas fa-chevron-down ml-2"></i>
                     </a>
-                
+                    
                     <!-- Dropdown Menu -->
-                    <ul id="packageDropdown" class="hidden absolute left-0 bg-white border border-gray-200 mt-2 rounded-md shadow-lg w-64">
+                    <ul id="merchantHotelDropdown" class="hidden absolute left-0 bg-white border border-gray-200 mt-2 rounded-md shadow-lg w-64">
+                        <!-- Hotel Section -->
                         <li>
-                            <a 
-                                href="{% url 'package_list' %}" 
-                                class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100">
-                                <i class="fas fa-info-circle"></i>
-                                <span class="ml-4">Package List</span>
-                            </a>
+                            <button 
+                                onclick="toggleDropdown(event, 'hotelSubDropdown')" 
+                                class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100 w-full text-left">
+                                <i class="fas fa-hotel"></i>
+                                <span class="ml-4">Hotel</span>
+                                <i class="fas fa-chevron-right ml-auto"></i>
+                            </button>
+                            <!-- Hotel Sub-dropdown -->
+                             <!-- Hotel Sub-dropdown (appears on the right) -->
+                            <ul id="hotelSubDropdown" class="hidden absolute top-0 left-full bg-gray-50 border border-gray-200 rounded-md mt-0 shadow-md w-48">
+                                <li>
+                                    <a href="{% url 'hotel_list' %}" class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100">
+                                        <span>Hotel</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{% url 'room_type' %}" class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100">
+                                        <span>Room</span>
+                                    </a>
+                                </li>
+                                <!-- <li>
+                                    <a href="{% url 'hotel_type' %}" class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100">
+                                        <span>Hotel Type</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{% url 'hotel_facilities' %}" class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100">
+                                        <span>Hotel Facilities</span>
+                                    </a>
+                                </li> -->
+                            </ul>
                         </li>
+                        <!-- Merchant Section -->
                         <li>
-                            <a 
-                                href="" 
-                                class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100">
-                                <i class="fas fa-info-circle"></i>
-                                <span class="ml-4">Profit</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a 
-                                href="" 
-                                class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100">
-                                <i class="fas fa-info-circle"></i>
-                                <span class="ml-4">Payment</span>
-                            </a>
+                            <button 
+                                onclick="toggleDropdown(event, 'merchantSubDropdown')" 
+                                class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100 w-full text-left">
+                                <i class="fa-solid fa-store"></i>
+                                <span class="ml-4">Merchant</span>
+                                <i class="fas fa-chevron-right ml-auto"></i>
+                            </button>
+                            <!-- Merchant Sub-dropdown -->
+                            <ul id="merchantSubDropdown" class="hidden absolute top-11 left-full bg-gray-50 border border-gray-200 rounded-md mt-0 shadow-md w-48">
+                                <li>
+                                    <a href="#" class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100">
+                                        <span>Add Merchant</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100">
+                                        <span>Merchant Profile</span>
+                                    </a>
+                                </li>
+                            </ul>
                         </li>
                     </ul>
                 </div>
 
-               
 
+                 <!-- User Dropdown -->
+                 <div class="relative">
+                    <!-- Dropdown Button -->
+                    <a 
+                        id="userDropdownButton" 
+                        href="{% url 'user_dashboard' %}" 
+                        onclick="handleSalesClick(event, 'userDropdown')" 
+                        class="flex items-center px-4 py-2 text-md font-bold rounded-md 
+                        {% if request.resolver_match.url_name == 'user_dashboard'  %}
+                        text-white bg-green-400 
+                        {% else %}
+                        text-gray-700 hover:text-green-400 
+                        {% endif %}">
+                        <span>User</span>
+                        <i class="fas fa-chevron-down ml-2"></i>
+                    </a>
+                
+                    <!-- Dropdown Menu -->
+                    <ul id="userDropdown" class="hidden absolute left-0 bg-white border border-gray-200 mt-2 rounded-md shadow-lg w-64">
+                        <li>
+                            <a 
+                                href="{% url 'user_list' %}"
+                                class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100">
+                                <i class="fas fa-info-circle"></i>
+                                <span class="ml-4">User List</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a 
+                                href="{% url 'user_roles' %}"
+                                class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100">
+                                <i class="fas fa-info-circle"></i>
+                                <span class="ml-4">User Role</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a 
+                                href="{% url 'user_roles_permission' %}"
+                                class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100">
+                                <i class="fas fa-info-circle"></i>
+                                <span class="ml-4">Roles & Permission</span>
+                            </a>
+                        </li>
+                     
+                    </ul>
+                </div>
 
             </nav>
         </div>
   
-       
-  
         <!-- Right side: Profile picture with dropdown -->
-        <div class="relative">
-            <button id="profileMenuButton" class="flex items-center space-x-2 focus:outline-none" onclick="handleProfileClick(event, 'profileDropdown')">
-                <img src="{% static 'images/profile-pic.png' %}" alt="Profile" class="w-8 h-8 rounded-full">
-                <span class="hidden md:block text-gray-700">{{ request.user.username }}</span> <!-- Display username here -->
-            </button>
+        <div class="relative flex items-center space-x-4"> <!-- Added Flexbox and space-x-4 for spacing control -->
+            <!-- Notification Icon -->
+            <div class="relative">
+                <!-- Notification Icon -->
+                <span class="absolute top-0 right-0 inline-flex items-center justify-center w-4 h-4 text-xs font-semibold text-white bg-red-500 rounded-full -mr-1 -mt-1">
+                    <!-- Notification Badge -->
+                    3
+                </span>
+                <i id="bellIcon" class="fas fa-bell text-gray-700 cursor-pointer" onclick="toggleNotificationDropdown()"></i>
             
-            <!-- Dropdown menu -->
-            <ul id="profileDropdown" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-2 z-10">
+                <!-- Notification Dropdown List -->
+                <ul id="notificationDropdown" class="absolute right-0 mt-2 w-64 bg-white shadow-lg rounded-md py-2 hidden">
+                    <li class="notification-item px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer" onclick="markAsRead(this)">New user signed up</li>
+                    <li class="notification-item px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer" onclick="markAsRead(this)">New booking made</li>
+                    <li class="notification-item px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer" onclick="markAsRead(this)">Room availability update</li>
+                    <!-- Add more notifications here -->
+                </ul>
+            </div>
+            
+
+           <!-- Cart Icon -->
+            <div class="relative">
+                <!-- Cart Badge -->
+                <span class="absolute top-0 right-0 inline-flex items-center justify-center w-4 h-4 text-xs font-semibold text-white bg-green-500 rounded-full -mr-1 -mt-1">
+                    5
+                </span>
+                <!-- Cart Icon -->
+                <i id="cartIcon" class="fas fa-shopping-cart text-gray-700 cursor-pointer" onclick="toggleCartDropdown()"></i>
+
+                <!-- Cart Dropdown List -->
+                <ul id="cartDropdown" class="absolute right-0 mt-2 w-64 bg-white shadow-lg rounded-md py-2 hidden">
+                    <li class="cart-item px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer">Item 1</li>
+                    <li class="cart-item px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer">Item 2</li>
+                    <li class="cart-item px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer">Item 3</li>
+                    <!-- Add more cart items here -->
+                    <li class="px-4 py-2 text-blue-500 hover:bg-blue-100 cursor-pointer font-semibold">View Cart</li>
+                </ul>
+            </div>
+
+            <!-- Profile Picture and Username -->
+            <div class="relative">
+                <button id="profileMenuButton" class="flex items-center space-x-2 focus:outline-none" onclick="handleProfileClick(event, 'profileDropdown')">
+                    <img src="{% static 'images/profile-pic.png' %}" alt="Profile" class="w-8 h-8 rounded-full">
+                    <span class="hidden md:block text-gray-700">{{ request.user.username }}</span> <!-- Display username here -->
+                </button>
                 
-                
-                <a href="{% url 'home' %}" target="_blank" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Katak Travel Page</a>
-                <a href="{% url 'profile' %}" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Profile</a>
-                <a href="{% url 'profile' %}" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Info</a>
-                <a href="{% url 'profile' %}" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Setting</a>
-                <a href="{% url 'logout' %}" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Log Out</a>
-            </ul>
+                <!-- Dropdown menu -->
+                <ul id="profileDropdown" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-2 z-10">
+                    <a href="{% url 'home' %}" target="_blank" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Katak Travel Page</a>
+                    <a href="{% url 'profile' %}" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Profile</a>
+                    <a href="{% url 'profile' %}" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Info</a>
+                    <a href="{% url 'profile' %}" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Setting</a>
+                    <a href="{% url 'logout' %}" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Log Out</a>
+                </ul>
+            </div>
         </div>
+
     </div>
     
     <!-- Mobile menu -->
@@ -310,6 +426,45 @@ function toggleDropdown(event, dropdownId) {
     });
 }
 
+
+function toggleDropdown(event, dropdownId) {
+    event.preventDefault(); // Prevent navigation if the button is clicked
+    
+    const dropdownMenu = document.getElementById(dropdownId);
+
+    // Toggle visibility of the current dropdown
+    dropdownMenu.classList.toggle('hidden');
+
+    // Close other dropdowns if open (except current dropdown and its children)
+   
+}
+
+   // Function to toggle the dropdown visibility and bell icon color
+   function toggleNotificationDropdown() {
+        const dropdown = document.getElementById('notificationDropdown');
+        const bellIcon = document.getElementById('bellIcon');
+        
+        // Toggle dropdown visibility
+        dropdown.classList.toggle('hidden');
+        
+        // Toggle bell icon color
+        bellIcon.classList.toggle('text-gray-700'); // Default color
+        bellIcon.classList.toggle('text-blue-500'); // New color when clicked
+    }
+
+      // Function to toggle the cart dropdown visibility and cart icon color
+      function toggleCartDropdown() {
+        const dropdown = document.getElementById('cartDropdown');
+        const cartIcon = document.getElementById('cartIcon');
+
+        // Toggle dropdown visibility
+        dropdown.classList.toggle('hidden');
+
+        // Toggle cart icon color
+        cartIcon.classList.toggle('text-gray-700'); // Default color
+        cartIcon.classList.toggle('text-green-500'); // New color when clicked
+    }
+
 // Close dropdown when clicking outside
 document.addEventListener('click', (e) => {
     const isClickInside = e.target.closest('.relative');
@@ -321,6 +476,7 @@ document.addEventListener('click', (e) => {
 });
 
 </script>
+
 
    
    
