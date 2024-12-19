@@ -12,6 +12,7 @@ urlpatterns = [
 
 
     path('user/', views.user_list, name='user_list'),
+    path('user/dashboard', views.user_dashboard, name='user_dashboard'),
     path('profile/<int:user_id>/', views.user_profile, name='user_profile'),
     path('roles/', views.user_roles, name='user_roles'),
     

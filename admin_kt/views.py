@@ -469,3 +469,12 @@ def sales_dashboard(request):
    
     # Your dashboard view logic
     return render(request, 'admin_kt/sales_dashboard.html')
+
+
+    # /////////////////////////////////////////////////////////////////////////////////////////////////////
+
+@user_passes_test(admin_required, login_url='/login/')
+def user_dashboard(request):
+   
+    # Your dashboard view logic
+    return render(request, 'admin_kt/user_dashboard.html')
