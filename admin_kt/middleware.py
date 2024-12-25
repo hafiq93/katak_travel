@@ -1,8 +1,7 @@
-import logging
 from analytics_kt.models import WebsiteAnalytics
 from datetime import datetime
 
-logger = logging.getLogger(__name__)
+
 
 class AnalyticsMiddleware:
     def __init__(self, get_response):
@@ -20,9 +19,9 @@ class AnalyticsMiddleware:
                     browser_info=request.META.get('HTTP_USER_AGENT', 'Unknown'),
                     event_type='page_view'
                 )
-                logger.info(f"Analytics data saved for {request.build_absolute_uri()}")
             except Exception as e:
-                logger.error(f"Error saving analytics data: {e}")
+                # Handle the error if necessary, but no logging
+                pass
         
         return response
 

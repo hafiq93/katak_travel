@@ -115,12 +115,12 @@ DATABASES = {
         "ENGINE": "django.db.backends.mysql",
         "NAME": "katak_travel",
         "USER": "root",
-        #  "PASSWORD": "Ccl@190824",
-        # "HOST": "127.0.0.1",
-        # "PORT": "3308",
-        "PASSWORD": "Katak@031!",
-        "HOST": "0.0.0.0",
-        "PORT": "3306",
+         "PASSWORD": "Ccl@190824",
+        "HOST": "127.0.0.1",
+        "PORT": "3308",
+        # "PASSWORD": "Katak@031!",
+        # "HOST": "0.0.0.0",
+        # "PORT": "3306",
     }
 }
 
@@ -200,20 +200,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'user_kt.User'
 
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-        'console': {
-            'level': 'DEBUG',
-            'class': 'logging.StreamHandler',
-        },
-    },
-    'loggers': {
-        'django': {
-            'handlers': ['console'],
-            'level': 'DEBUG',
-            'propagate': True,
-        },
-    },
-}
+
