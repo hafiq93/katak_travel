@@ -1,5 +1,8 @@
+import logging
 from analytics_kt.models import WebsiteAnalytics
 from datetime import datetime
+
+logger = logging.getLogger(__name__)
 
 class AnalyticsMiddleware:
     def __init__(self, get_response):
@@ -10,12 +13,17 @@ class AnalyticsMiddleware:
 
         # Save data only for valid URLs
         if request.path.startswith('/'):
-            WebsiteAnalytics.objects.create(
-                page_url=request.build_absolute_uri(),
-                user_ip=self.get_client_ip(request),
-                browser_info=request.META.get('HTTP_USER_AGENT', 'Unknown'),
-                event_type='page_view'
-            )
+            try:
+                WebsiteAnalytics.objects.create(
+                    page_url=request.build_absolute_uri(),
+                    user_ip=self.get_client_ip(request),
+                    browser_info=request.META.get('HTTP_USER_AGENT', 'Unknown'),
+                    event_type='page_view'
+                )
+                logger.info(f"Analytics data saved for {request.build_absolute_uri()}")
+            except Exception as e:
+                logger.error(f"Error saving analytics data: {e}")
+        
         return response
 
     def get_client_ip(self, request):
