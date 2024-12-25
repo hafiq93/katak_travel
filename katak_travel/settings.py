@@ -118,8 +118,8 @@ DATABASES = {
         #  "PASSWORD": "Ccl@190824",
         # "HOST": "127.0.0.1",
         # "PORT": "3308",
-        "PASSWORD": "Katak@031!",
-        "HOST": "0.0.0.0",
+       "PASSWORD": "Katak@031!",
+        "HOST": "34.193.238.154",  # Public IPv4 address
         "PORT": "3306",
     }
 }
