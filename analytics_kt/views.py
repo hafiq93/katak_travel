@@ -3,7 +3,7 @@ from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.decorators import user_passes_test
 from django.http import HttpResponse
-# from .models import WebsiteAnalytics
+from .models import WebsiteAnalytics
 from user_kt.models import User,Profile
 from page.models import MainPage,MainChoose,AboutUs,ContactUs
 from admin_kt.models import Permission,Roles,UserRole, RolePermission
@@ -15,7 +15,6 @@ def admin_required(user):
 
 @user_passes_test(admin_required, login_url='/login/')
 def analytics_dashboard(request):
-    # analytics_data = WebsiteAnalytics.objects.all().order_by('-timestamp')  # Get all data sorted by timestamp
-    # total_visits = analytics_data.count()
-    # , {'data': analytics_data, 'total_visits': total_visits}
-    return render(request, 'analytics_dashboard.html')
+    analytics_data = WebsiteAnalytics.objects.all().order_by('-timestamp')  # Get all data sorted by timestamp
+    total_visits = analytics_data.count()
+    return render(request, 'analytics_dashboard.html', {'data': analytics_data, 'total_visits': total_visits})
