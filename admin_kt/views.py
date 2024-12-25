@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.decorators import user_passes_test
 from django.http import HttpResponse
 from user_kt.models import User,Profile
+from analytics_kt.models import WebsiteAnalytics
 from page.models import MainPage,MainChoose,AboutUs,ContactUs
 from .models import Permission,Roles,UserRole, RolePermission,HotelType,HotelFacilities,HotelRoom,RoomFacilities,RoomBed,RoomView
 import re
@@ -17,8 +18,10 @@ def admin_required(user):
 @login_required(login_url='/login/')
 @user_passes_test(lambda u: u.is_staff, login_url='/login/')
 def dashboard(request):
+    analytics_data = WebsiteAnalytics.objects.all()
+    total_visits = analytics_data.count()  # Correct indentation
     # Your dashboard view logic
-    return render(request, 'admin_kt/dashboard.html')
+    return render(request, 'admin_kt/dashboard.html', {'data': analytics_data, 'total_visits': total_visits})
 
 # ////////////////////////////////////////////////////////////////////////////////////////
 
@@ -475,8 +478,10 @@ def sales_dashboard(request):
 
 @user_passes_test(admin_required, login_url='/login/')
 def user_dashboard(request):
-   
+    # analytics_data = WebsiteAnalytics.objects.all().order_by('-timestamp')
+    # total_visits = analytics_data.count()  
     # Your dashboard view logic
+    # , {'data': analytics_data, 'total_visits': total_visits}
     return render(request, 'admin_kt/user_dashboard.html')
 #//////////////////////////////////////////////////////////////////////////////////////////////////////////
 # @user_passes_test(admin_required, login_url='/login/')

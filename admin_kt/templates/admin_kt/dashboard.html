@@ -36,8 +36,18 @@
             
                         <!-- Fourth Column -->
                         <div class="bg-purple-500 p-4 rounded-md">
-                            <h3 class="text-md font-semibold mb-2">Metric 4</h3>
-                            <p>Some additional data for metric 4 can go here.</p>
+                            <a href="{% url 'analytics_dashboard' %}" class="flex items-center space-x-4 text-white hover:text-gray-300">
+                                <!-- Column 1: Icon (Person/People Icon) -->
+                                <div class="flex-shrink-0">
+                                    <i class="fas fa-users text-3xl"></i> <!-- Person icon (using Font Awesome) -->
+                                </div>
+                                
+                                <!-- Column 2: Text (Total Customer Clicks) -->
+                                <div>
+                                    <h3 class="text-md font-semibold mb-2">Total Customer Clicks</h3>
+                                    <p>{{ total_visits }} users clicked on the page</p>
+                                </div>
+                            </a>
                         </div>
             
                         <!-- Fifth Column -->
