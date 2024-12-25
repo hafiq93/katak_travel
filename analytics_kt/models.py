@@ -8,4 +8,4 @@ class WebsiteAnalytics(models.Model):
     event_type = models.CharField(max_length=100)
 
     def __str__(self):
-        return f"{self.page_url} - {self.event_type} - {self.timestamp}"
+        return f"{self.page_url} - {self.event_type} - {self.timestamp}" 
