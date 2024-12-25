@@ -1,0 +1,36 @@
+{% block content %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'src/styles.css' %}">
+<html>
+    
+    <!-- Include the header -->
+    {% include 'base_kt/admin_header.html' %}
+    <body>
+        <h1>Analytics Dashboard</h1>
+        <p>Total Visits: {{ total_visits }}</p>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Page URL</th>
+                    <th>User IP</th>
+                    <th>Browser Info</th>
+                    <th>Timestamp</th>
+                    <th>Event Type</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in data %}
+                    <tr>
+                        <td>{{ item.page_url }}</td>
+                        <td>{{ item.user_ip }}</td>
+                        <td>{{ item.browser_info }}</td>
+                        <td>{{ item.timestamp }}</td>
+                        <td>{{ item.event_type }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </body>
+    </html>
+</html>
+{% endblock %}

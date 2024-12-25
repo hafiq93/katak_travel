@@ -60,6 +60,7 @@ INSTALLED_APPS = [
     'user_kt',
     'base_kt',
     'page',
+    'analytics_kt',
 
     'userauths',
 ]
@@ -81,6 +82,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django_browser_reload.middleware.BrowserReloadMiddleware',
+    'admin_kt.middleware.AnalyticsMiddleware',
+    
 ]
 
 ROOT_URLCONF = 'katak_travel.urls'
@@ -112,9 +115,12 @@ DATABASES = {
         "ENGINE": "django.db.backends.mysql",
         "NAME": "katak_travel",
         "USER": "root",
-        "PASSWORD": "Katak@031!",
-        "HOST": "0.0.0.0",
-        "PORT": "3306",
+         "PASSWORD": "Ccl@190824",
+        "HOST": "127.0.0.1",
+        "PORT": "3308",
+        # "PASSWORD": "Katak@031!",
+        # "HOST": "0.0.0.0",
+        # "PORT": "3306",
     }
 }
 

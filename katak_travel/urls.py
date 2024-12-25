@@ -16,12 +16,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path,include
-from django.shortcuts import redirect 
+
 from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
-     path('', lambda request: redirect('home_page', permanent=True)),
+   
     path("__reload__/", include("django_browser_reload.urls")),
     # path('admin/', admin.site.urls),
     path('', include('page.urls')),
@@ -31,6 +31,7 @@ urlpatterns = [
     path('', include('main_kt.urls')),
     path('', include('user_kt.urls')),
     path('', include('hote_kt.urls')),
+    path('analytics/', include('analytics_kt.urls')),
     # path("hotel/", include("hote_kt.urls")),
     # path("katak_travel/", include("main_kt.urls")),
     # path("merchant/", include("merchant_kt.urls")),

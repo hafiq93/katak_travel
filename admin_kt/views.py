@@ -478,3 +478,9 @@ def user_dashboard(request):
    
     # Your dashboard view logic
     return render(request, 'admin_kt/user_dashboard.html')
+#//////////////////////////////////////////////////////////////////////////////////////////////////////////
+# @user_passes_test(admin_required, login_url='/login/')
+#  def analytics_dashboard(request):
+#     data = WebsiteAnalytics.objects.filter(page_url='https://www.kataktravel.com').order_by('-timestamp')
+#     total_visits = data.count()
+#     return render(request, 'analytics/analytics_dashboard.html', {'data': data, 'total_visits': total_visits})
