@@ -6,30 +6,47 @@
     <!-- Include the header -->
     {% include 'base_kt/admin_header.html' %}
     <body>
-        <h1>Analytics Dashboard</h1>
-        <p>Total Visits: {{ total_visits }}</p>
-        <table border="1">
-            <thead>
-                <tr>
-                    <th>Page URL</th>
-                    <th>User IP</th>
-                    <th>Browser Info</th>
-                    <th>Timestamp</th>
-                    <th>Event Type</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for item in data %}
-                    <tr>
-                        <td>{{ item.page_url }}</td>
-                        <td>{{ item.user_ip }}</td>
-                        <td>{{ item.browser_info }}</td>
-                        <td>{{ item.timestamp }}</td>
-                        <td>{{ item.event_type }}</td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+        <div class="flex-grow p-4 bg-gray-100 h-screen">
+
+            <!-- First Row (Metrics in One Row) -->
+            <div class="rounded-md">
+                <div class="grid grid-cols-1 gap-4 mt-2">
+                
+                    <!-- Second Column, Second Row: Another Sales Breakdown -->
+                    <div class="bg-white shadow-md p-6 rounded-md">
+                        <h2 class="text-2xl font-bold mb-4">Analytics Dashboard</h2>
+                        <p class="text-lg font-bold mb-4">Total Visits: {{ total_visits }}</p>
+                         <!-- Table to display the user list -->
+                         <table class="min-w-full table-auto">
+                            <thead>
+                                <tr>
+                                    <th class="px-4 py-2 text-left text-gray-600 font-semibold">No</th>
+                                    <th class="px-4 py-2 text-left text-gray-600 font-semibold">Page URL</th>
+                                    <th class="px-4 py-2 text-left text-gray-600 font-semibold">User IP</th>
+                                    <th class="px-4 py-2 text-left text-gray-600 font-semibold">Browser Info</th>
+                                    <th class="px-4 py-2 text-left text-gray-600 font-semibold">Timestamp</th>
+                                    <th class="px-4 py-2 text-left text-gray-600 font-semibold">Event Type</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item in data %}
+                                <tr class="">
+                                    <td class="px-4 py-2">{{ forloop.counter }}</td>
+                                    <td class="px-4 py-2">{{ item.page_url }}</td>
+                                    <td class="px-4 py-2">{{ item.user_ip }}</td>
+                                    <td class="px-4 py-2">{{ item.browser_info }}</td>
+                                    <td class="px-4 py-2">{{ item.timestamp |date:"d/m/y H:i"}}</td>
+                                    <td class="px-4 py-2">{{ item.event_type }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+
+                        
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
     </body>
     </html>
 </html>
