@@ -10,12 +10,11 @@
         <div class="flex">
            
             <!-- Main Content -->
-            <div class=" p-4 bg-gray-100 h-screen">
-
-                <!-- First Row (Metrics in One Row) -->
-                <div class="rounded-md">
+            <div class=" p-4 bg-gray-100">
+                 <!-- First Row (Metrics in One Row) -->
+                 <div class="rounded-md">
                     <!-- Grid layout with 1 row and 6 columns -->
-                    <div class="grid grid-cols-1 sm:grid-cols-4 gap-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-6 gap-4">
                         <!-- First Column -->
                         <div class="bg-green-500 p-4 rounded-md">
                             <h3 class="text-md font-semibold mb-2 text-white">Total Sale</h3>
@@ -24,7 +23,7 @@
             
                         <!-- Second Column -->
                         <div class="bg-blue-500 p-4 rounded-md">
-                            <h3 class="text-md font-semibold mb-2 text-white">Total Customer</h3>
+                            <h3 class="text-md font-semibold mb-2 text-white">Total Hotel</h3>
                             <p>Some additional data for metric 2 can go here.</p>
                         </div>
             
@@ -35,48 +34,49 @@
                         </div>
             
                         <!-- Fourth Column -->
-                        <div class="bg-purple-500 p-4 rounded-md">
+                        <div class="bg-purple-500 p-4 rounded-md ">
                             <a href="{% url 'analytics_dashboard' %}" class="flex items-center space-x-4 text-white hover:text-gray-300">
                                 <!-- Column 1: Icon (Person/People Icon) -->
                                 <div class="flex-shrink-0">
-                                    <i class="fas fa-users text-3xl"></i> <!-- Person icon (using Font Awesome) -->
+                                    <i class="fas fa-users text-5xl"></i> <!-- Person icon (using Font Awesome) -->
                                 </div>
                                 
                                 <!-- Column 2: Text (Total Customer Clicks) -->
                                 <div>
-                                    <h3 class="text-md font-semibold mb-2">Total Customer Clicks</h3>
-                                    <p>{{ total_visits }} users clicked on the page</p>
+                                    <h3 class="text-md font-semibold mb-2 mt-3">Total Customer </h3>
+                                    <p>{{ total_visits }} customer visit</p>
                                 </div>
                             </a>
                         </div>
             
                         <!-- Fifth Column -->
-                        <!-- <div class="bg-orange-500 p-4 rounded-md">
-                            <h3 class="text-lg font-semibold mb-2">Metric 5</h3>
+                        <div class="bg-orange-500 p-4 rounded-md">
+                            <h3 class="text-lg font-semibold mb-2">Total Package</h3>
                             <p>Some additional data for metric 5 can go here.</p>
-                        </div> -->
+                        </div>
             
                         <!-- Sixth Column -->
-                        <!-- <div class="bg-yellow-500 p-4 rounded-md">
-                            <h3 class="text-lg font-semibold mb-2">Metric 6</h3>
+                        <div class="bg-yellow-500 p-4 rounded-md">
+                            <h3 class="text-lg font-semibold mb-2">Total User</h3>
                             <p>Some additional data for metric 6 can go here.</p>
-                        </div> -->
+                        </div>
                     </div>
                 </div>
-            
                 <!-- Second Row (Below First Row) -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">  <!-- Added margin-top (mt-6) for spacing -->
-                    <!-- First Column, First Row: Total Sales by Month -->
-                    <div class="bg-white shadow-md p-4 rounded-md">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+                    <!-- First Column: Graph -->
+                    <div class="bg-white shadow-md p-4 rounded-md ">
                         <h2 class="text-2xl font-bold mb-4">Total Sales by Month</h2>
                         <canvas id="salesChart" class="w-full h-64"></canvas> <!-- Chart will be displayed here -->
                     </div>
-            
-                    <!-- Second Column, First Row: Sales Breakdown -->
-                    <div class="bg-white shadow-md p-6 rounded-md">
-                        <h2 class="text-2xl font-bold mb-4">Merchant Status</h2>
-                        <p>Sales breakdown can go here.</p>
+
+                    <div class="bg-white shadow-md p-4 rounded-md ">
+                        <h2 class="text-2xl font-bold mb-4">Total Sales by Month</h2>
+                        <canvas id="salesChart" class="w-full h-64"></canvas> <!-- Chart will be displayed here -->
                     </div>
+                
+                    <!-- Second Column: Total Breakdown -->
+                  
                 </div>
             
                 <!-- Third Row (Below Second Row) -->
