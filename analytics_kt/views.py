@@ -15,7 +15,7 @@ def admin_required(user):
 
 @user_passes_test(admin_required, login_url='/login/')
 def analytics_dashboard(request):
-    analytics_data = WebsiteAnalytics.objects.all().order_by('-timestamp')  # Get all data sorted by timestamp
+    analytics_data = WebsiteAnalytics.objects.filter(page_url__icontains='/home').order_by('-timestamp') # Get all data sorted by timestamp
     total_visits = analytics_data.count()
     return render(request, 'analytics_dashboard.html', {'data': analytics_data, 'total_visits': total_visits})
     

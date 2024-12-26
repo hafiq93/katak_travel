@@ -11,7 +11,7 @@ class AnalyticsMiddleware:
         response = self.get_response(request)
 
         # Save data only for valid URLs
-        if request.path.startswith('/'):
+        if request.path =='/home':
             try:
                 WebsiteAnalytics.objects.create(
                     page_url=request.build_absolute_uri(),
