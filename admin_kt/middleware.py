@@ -10,8 +10,12 @@ class AnalyticsMiddleware:
     def __call__(self, request):
         response = self.get_response(request)
 
-        # Save data only for valid URLs
-        if request.path =='/home':
+        # Log the request path for debugging
+        print(f"Request path: {request.path}")
+
+        # Save analytics data only for the /home/ path
+        if request.path == '/home/':
+            print("Matched /home/")
             try:
                 WebsiteAnalytics.objects.create(
                     page_url=request.build_absolute_uri(),
@@ -19,10 +23,12 @@ class AnalyticsMiddleware:
                     browser_info=request.META.get('HTTP_USER_AGENT', 'Unknown'),
                     event_type='page_view'
                 )
+                print("Analytics data saved successfully")
             except Exception as e:
-                # Handle the error if necessary, but no logging
-                pass
-        
+                print(f"Error saving analytics data: {e}")
+        else:
+            print("No match, data not saved")
+
         return response
 
     def get_client_ip(self, request):
