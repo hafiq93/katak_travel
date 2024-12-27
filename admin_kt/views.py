@@ -2,6 +2,9 @@ from django.shortcuts import render, get_object_or_404,redirect
 from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.decorators import user_passes_test
+from django.utils.timezone import now
+from datetime import datetime,timedelta
+from django.db.models import Count
 from django.http import HttpResponse
 from user_kt.models import User,Profile
 from analytics_kt.models import WebsiteAnalytics
@@ -18,20 +21,27 @@ def admin_required(user):
 @login_required(login_url='/login/')
 @user_passes_test(lambda u: u.is_staff, login_url='/login/')
 def dashboard(request):
-    analytics_data = WebsiteAnalytics.objects.all()
-    total_visits = analytics_data.count()  # Correct indentation
+    # Filter for URLs that contain either 'kataktravel.com' or 'www.kataktravel.com'
+    analytics_data = WebsiteAnalytics.objects.filter(
+        page_url__icontains='kataktravel.com'
+    ).filter(
+        page_url__icontains='www.kataktravel.com'
+    ).order_by('-timestamp')
+    
+    total_visits = analytics_data.count()  # Count the visits for the filtered pages
+
     # Your dashboard view logic
     return render(request, 'admin_kt/dashboard.html', {'data': analytics_data, 'total_visits': total_visits})
 
 # ////////////////////////////////////////////////////////////////////////////////////////
-
+@login_required(login_url='/login/')
 @user_passes_test(admin_required, login_url='/login/')
 def main_page(request):
     main_pages = MainPage.objects.all()  # Fetch all MainPage entries
     main_choose = MainChoose.objects.all()  # Fetch all MainPage entries
     return render(request, 'admin_kt/page_main.html', {'main_pages': main_pages,'main_choose': main_choose})
 
-
+@login_required(login_url='/login/')
 @user_passes_test(admin_required, login_url='/login/')
 def main_edit(request, id):
     main_page = get_object_or_404(MainPage, id=id)
@@ -52,7 +62,7 @@ def main_edit(request, id):
     return render(request, 'admin_kt/page_main_edit.html', {
         'main_page': main_page,
     })
-
+@login_required(login_url='/login/')
 @user_passes_test(admin_required, login_url='/login/')
 def main_choose(request, id):
     main_choose = get_object_or_404(MainChoose, id=id)
@@ -76,7 +86,7 @@ def main_choose(request, id):
     return render(request, 'admin_kt/page_choice.html', {
         'main_choose': main_choose,
     })
-
+@login_required(login_url='/login/')
 @user_passes_test(admin_required, login_url='/login/')
 def main_about(request):
     main_about = AboutUs.objects.all()  # Fetch all MainPage entries
@@ -122,7 +132,7 @@ def user_list(request):
         )
     return render(request, 'admin_kt/user_list.html', {'users': users, 'query': query})
 
-
+@login_required(login_url='/login/')
 @user_passes_test(admin_required, login_url='/login/')
 def user_profile(request, user_id):
     user = get_object_or_404(User.objects.select_related('profile'), id=user_id)
@@ -130,26 +140,28 @@ def user_profile(request, user_id):
 
 
 # /////////////////////////merchant & hotel dashboard////////////////////////////////////
-
+@login_required(login_url='/login/')
 @user_passes_test(admin_required, login_url='/login/')
 def merhotel_dashboard(request):
     # Your dashboard view logic
     return render(request, 'admin_kt/merhotel_dashboard.html')
 
 # /////////////////////////hote list////////////////////////////////////
-
+@login_required(login_url='/login/')
 @user_passes_test(admin_required, login_url='/login/')
 def hotel_list(request):
     # Your dashboard view logic
     return render(request, 'admin_kt/hotel_list.html')
 
 # ////////////////////////////hotel type/////////////////////////////////////////////
+@login_required(login_url='/login/')
 @user_passes_test(admin_required, login_url='/login/')
 def hotel_type(request):
     # Your dashboard view logic
     hotel_type = HotelType.objects.all()
     return render(request, 'admin_kt/hotel_type.html',{'hotel_type': hotel_type})
 
+@login_required(login_url='/login/')
 @user_passes_test(admin_required, login_url='/login/')
 def hotel_type_edit(request):
     if request.method == 'POST':
@@ -164,12 +176,14 @@ def hotel_type_edit(request):
         # Redirect back to the hotel type list page (or wherever you want)
         return redirect('hotel_type')
 
+@login_required(login_url='/login/')
 @user_passes_test(admin_required, login_url='/login/')
 def hotel_type_delete(request, hotel_type_id):
     hotel_type = get_object_or_404(HotelType, id=hotel_type_id)
     hotel_type.delete()
     return redirect('hotel_type')  # This should redirect correctly
-
+    
+@login_required(login_url='/login/')
 @user_passes_test(admin_required, login_url='/login/')
 def hotel_type_add(request):
     if request.method == 'POST':
@@ -478,11 +492,57 @@ def sales_dashboard(request):
 
 @user_passes_test(admin_required, login_url='/login/')
 def user_dashboard(request):
-    # analytics_data = WebsiteAnalytics.objects.all().order_by('-timestamp')
-    # total_visits = analytics_data.count()  
-    # Your dashboard view logic
-    # , {'data': analytics_data, 'total_visits': total_visits}
-    return render(request, 'admin_kt/user_dashboard.html')
+    # Get the current date and time
+    current_time = now()
+    start_date = current_time - timedelta(days=7)  # Default to last week
+
+    # Check filter type
+    filter_type = request.GET.get('filter', 'week')  # Default filter: 'week'
+    if filter_type == 'day':
+        start_date = current_time - timedelta(days=1)
+    elif filter_type == 'month':
+        start_date = current_time - timedelta(weeks=4)
+    elif filter_type == 'year':
+        start_date = current_time - timedelta(weeks=52)
+
+    # Custom date range handling
+    custom_start_date = request.GET.get('start_date')
+    custom_end_date = request.GET.get('end_date')
+    if custom_start_date and custom_end_date:
+        try:
+            start_date = datetime.strptime(custom_start_date, "%d-%m-%Y")
+            end_date = datetime.strptime(custom_end_date, "%d-%m-%Y")
+        except ValueError:
+            end_date = current_time
+    else:
+        end_date = current_time
+
+    # Corrected filter to handle URLs and date range properly
+    analytics_data = WebsiteAnalytics.objects.filter(
+        timestamp__range=(start_date, end_date),
+        page_url__icontains='kataktravel.com'
+    ).filter(
+        Q(page_url__icontains='www.kataktravel.com') | Q(page_url__icontains='kataktravel.com')
+    ).order_by('-timestamp')
+
+    total_visits = analytics_data.count()
+
+    # Group data for the chart
+    grouped_data = analytics_data.values('timestamp__date').annotate(total_clicks=Count('id')).order_by('timestamp__date')
+
+    # Prepare data for JavaScript
+    labels = [data['timestamp__date'].strftime('%d-%m-%Y') for data in grouped_data]
+    clicks = [data['total_clicks'] for data in grouped_data]
+
+    # Pass the data to the template
+    context = {
+        'data': grouped_data,
+        'total_visits': total_visits,
+        'filter_type': filter_type,
+        'labels': labels,
+        'clicks': clicks,
+    }
+    return render(request, 'admin_kt/user_dashboard.html', context)
 #//////////////////////////////////////////////////////////////////////////////////////////////////////////
 # @user_passes_test(admin_required, login_url='/login/')
 #  def analytics_dashboard(request):

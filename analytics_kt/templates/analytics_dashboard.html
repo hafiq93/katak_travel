@@ -11,18 +11,35 @@
             <!-- First Row (Metrics in One Row) -->
             <div class="rounded-md">
                 <div class="grid grid-cols-1 gap-4 mt-2">
-                
-                    <!-- Second Column, Second Row: Another Sales Breakdown -->
+
+                    <!-- Second Column, Second Row: Analytics Header -->
                     <div class="bg-white shadow-md p-6 rounded-md">
                         <h2 class="text-2xl font-bold mb-4">Analytics Dashboard</h2>
-                        <p class="text-lg font-bold mb-4">Total Visits: {{ total_visits }}</p>
-                         <!-- Table to display the user list -->
-                         <table class="min-w-full table-auto">
+                        
+                        <!-- Date Range Filter -->
+                        <div class="mb-4">
+                            <form method="GET">
+                                <p class="text-lg font-bold mb-4">Total Visits: {{ total_visits }}</p>
+                                <div class="flex space-x-4">
+                                    <div class="flex items-center">
+                                        <label for="start_date" class="mr-2">Start Date:</label>
+                                        <input type="date" id="start_date" name="start_date" class="p-2 border rounded-md" value="{{ request.GET.start_date }}">
+                                    </div>
+                                    <div class="flex items-center">
+                                        <label for="end_date" class="mr-2">End Date:</label>
+                                        <input type="date" id="end_date" name="end_date" class="p-2 border rounded-md" value="{{ request.GET.end_date }}">
+                                    </div>
+                                    <button type="submit" class="bg-blue-500 text-white p-2 rounded-md">Filter</button>
+                                </div>
+                            </form>
+                        </div>
+                      
+                        <!-- Table to display the user list -->
+                        <table class="min-w-full table-auto mt-4">
                             <thead>
                                 <tr>
                                     <th class="px-4 py-2 text-left text-gray-600 font-semibold">No</th>
                                     <th class="px-4 py-2 text-left text-gray-600 font-semibold">Page URL</th>
-                                    <!-- <th class="px-4 py-2 text-left text-gray-600 font-semibold">User IP</th> -->
                                     <th class="px-4 py-2 text-left text-gray-600 font-semibold">Browser Info</th>
                                     <th class="px-4 py-2 text-left text-gray-600 font-semibold">Timestamp</th>
                                     <th class="px-4 py-2 text-left text-gray-600 font-semibold">Event Type</th>
@@ -33,15 +50,12 @@
                                 <tr class="">
                                     <td class="px-4 py-2">{{ forloop.counter }}</td>
                                     <td class="px-4 py-2">{{ item.page_url }}</td>
-                                    <!-- <td class="px-4 py-2">{{ item.user_ip }}</td> -->
                                     <td class="px-4 py-2">{{ item.browser_info }}</td>
-                                    <td class="px-4 py-2">{{ item.timestamp |date:"d/m/y H:i"}}</td>
+                                    <td class="px-4 py-2">{{ item.timestamp|date:"d/m/y H:i" }}</td>
                                     <td class="px-4 py-2">{{ item.event_type }}</td>
                                 </tr>
                                 {% endfor %}
                             </tbody>
-
-                        
                         </table>
                     </div>
                 </div>

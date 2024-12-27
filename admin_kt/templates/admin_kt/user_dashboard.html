@@ -8,114 +8,152 @@
 
     <body>
         <div class="flex">
-           
             <!-- Main Content -->
-            <div class=" p-4 bg-gray-100 h-screen">
-
-                <!-- First Row (Metrics in One Row) -->
-                <div class="rounded-md">
-                    <!-- Grid layout with 1 row and 6 columns -->
-                    <div class="grid grid-cols-1 sm:grid-cols-4 gap-4">
-                        <!-- First Column -->
-                        <div class="bg-green-500 p-4 rounded-md">
-                            <h3 class="text-md font-semibold mb-2 text-white">Total Sale</h3>
-                            <p>Some additional data for metric 1 can go here.</p>
-                        </div>
-            
-                        <!-- Second Column -->
-                        <div class="bg-blue-500 p-4 rounded-md">
-                            <h3 class="text-md font-semibold mb-2 text-white">Total Customer</h3>
-                            <p>Some additional data for metric 2 can go here.</p>
-                        </div>
-            
-                        <!-- Third Column -->
-                        <div class="bg-red-500 p-4 rounded-md">
-                            <h3 class="text-md font-semibold mb-2 text-white">Total Merchant</h3>
-                            <p>Some additional data for metric 3 can go here.</p>
-                        </div>
-            
-                        <!-- Fourth Column -->
-                        <div class="bg-purple-500 p-4 rounded-md">
-                            <h3 class="text-md font-semibold mb-2">Metric 4</h3>
-                            <p>Some additional data for metric 4 can go here.</p>
-                        </div>
-            
-                        <!-- Fifth Column -->
-                        <!-- <div class="bg-orange-500 p-4 rounded-md">
-                            <h3 class="text-lg font-semibold mb-2">Metric 5</h3>
-                            <p>Some additional data for metric 5 can go here.</p>
-                        </div> -->
-            
-                        <!-- Sixth Column -->
-                        <!-- <div class="bg-yellow-500 p-4 rounded-md">
-                            <h3 class="text-lg font-semibold mb-2">Metric 6</h3>
-                            <p>Some additional data for metric 6 can go here.</p>
-                        </div> -->
+            <div class="p-4 bg-gray-100 w-full h-screen">
+                <!-- First Row (Metrics or Overview Section) -->
+                <!-- Add any metrics overview if needed here -->
+    
+                <!-- Second Row: Total Sales and Merchant Status -->
+                <div class="grid grid-cols-1 md:grid-cols-5 gap-4 mt-6">
+                    <!-- First Column: Total Sales by Month -->
+                    <div class="bg-white shadow-md p-6 rounded-lg col-span-3">
+                        <a href="{% url 'analytics_dashboard' %}" class="text-lg font-bold mb-4 hover:text-green-500 hover:underline">
+                            User Views
+                        </a>
+                    
+                        <!-- Filter Options -->
+                        <form method="GET" class="mb-4 w-full">
+                            <label for="filter" class="block text-md text-gray-700">Filter by:</label>
+                            <select name="filter" id="filter" class="border rounded p-2 w-1/4">
+                                <option value="day" {% if filter_type == 'day' %}selected{% endif %} >Day</option>
+                                <option value="week" {% if filter_type == 'week' %}selected{% endif %} >Week</option>
+                                <option value="month" {% if filter_type == 'month' %}selected{% endif %} >Month</option>
+                                <option value="year" {% if filter_type == 'year' %}selected{% endif %}>Year</option>
+                            </select>
+                            <label for="start_date" class="ml-4">Start Date:</label>
+                            <input type="date" name="start_date" id="start_date" class="border rounded p-2">
+                            <label for="end_date" class="ml-4">End Date:</label>
+                            <input type="date" name="end_date" id="end_date" class="border rounded p-2">
+                            <button type="submit" class="bg-blue-500 text-white rounded p-2 ml-4">Apply</button>
+                        </form>
+                    
+                        <!-- Chart -->
+                        <canvas id="userClicksChart"></canvas>
                     </div>
-                </div>
-            
-                <!-- Second Row (Below First Row) -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">  <!-- Added margin-top (mt-6) for spacing -->
-                    <!-- First Column, First Row: Total Sales by Month -->
-                    <div class="bg-white shadow-md p-4 rounded-md">
-                        <h2 class="text-2xl font-bold mb-4">Total Sales by Month</h2>
-                        <canvas id="salesChart" class="w-full h-64"></canvas> <!-- Chart will be displayed here -->
-                    </div>
-            
-                    <!-- Second Column, First Row: Sales Breakdown -->
-                    <div class="bg-white shadow-md p-6 rounded-md">
+    
+                    <!-- Second Column: Merchant Status -->
+                    <div class="bg-white shadow-md p-6 rounded-md col-span-2">
                         <h2 class="text-2xl font-bold mb-4">Merchant Status</h2>
                         <p>Sales breakdown can go here.</p>
                     </div>
                 </div>
-            
-                <!-- Third Row (Below Second Row) -->
+    
+                <!-- Third Row: Hotel Status and User Clicks -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
-                    <!-- First Column, Second Row: Customer Feedback -->
+                    <!-- First Column: Hotel Status -->
                     <div class="bg-white shadow-md p-4 rounded-md">
-                        <h2 class="text-2xl font-bold mb-4">Hotel status</h2>
-                        <p>Display customer feedback here.</p>
+                        <h2 class="text-2xl font-bold mb-4">Hotel Status</h2>
+                        <p>Display hotel status here.</p>
                     </div>
-            
-                    <!-- Second Column, Second Row: Another Sales Breakdown -->
+    
+                    <!-- Second Column: User Click -->
                     <div class="bg-white shadow-md p-6 rounded-md">
-                        <h2 class="text-2xl font-bold mb-4">Sales Breakdown</h2>
-                        <p>Sales breakdown can go here.</p>
+                        <h2 class="text-2xl font-bold mb-4">User Click</h2>
+                        <p>Details about user clicks can go here.</p>
                     </div>
                 </div>
             </div>
-            
-            
         </div>
     </body>
     
 </html>
 <!-- Chart.js Script -->
 <script>
-    var ctx = document.getElementById('salesChart').getContext('2d');
-    var salesChart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-            datasets: [{
-                label: 'Sales (in USD)',
-                data: [5000, 7000, 6000, 8000, 12000, 15000, 13000, 14000, 11000, 9000, 10000, 12500],
-                backgroundColor: 'rgba(54, 162, 235, 0.5)',
-                borderColor: 'rgba(54, 162, 235, 1)',
-                borderWidth: 1
-            }]
+    // Prepare the data for the chart
+    const labels = {{ labels|safe }};  // Labels (dates)
+    const totalClicks = {{ clicks|safe }};  // Data (click counts)
+
+    // Define weekly color groups
+    const weeklyColors = [
+        { backgroundColor: 'rgba(63, 195, 128)', borderColor: 'rgba(22, 160, 133)' }, // Week 1
+        { backgroundColor: 'rgba(63, 195, 128)', borderColor: 'rgba(22, 160, 133)' }, // Week 2
+        { backgroundColor: 'rgba(63, 195, 128)', borderColor: 'rgba(22, 160, 133)' }, // Week 3
+        { backgroundColor: 'rgba(63, 195, 128)', borderColor: 'rgba(22, 160, 133)' }, // Week 4
+    ];
+
+    // Dynamically assign colors for each bar based on its week
+    const backgroundColors = labels.map((date, index) => {
+        const weekIndex = Math.floor(index / 7); // Determine the week index (7 days per week)
+        return weeklyColors[weekIndex % weeklyColors.length].backgroundColor; // Cycle through colors
+    });
+    const borderColors = labels.map((date, index) => {
+        const weekIndex = Math.floor(index / 7); // Determine the week index (7 days per week)
+        return weeklyColors[weekIndex % weeklyColors.length].borderColor; // Cycle through colors
+    });
+
+    // Get the context of the canvas
+    const ctx = document.getElementById('userClicksChart').getContext('2d');
+
+    // Create the chart
+    const userClicksChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: labels, // Labels (e.g., dates)
+        datasets: [{
+            label: 'User Views',
+            data: totalClicks, // Data for the bar chart
+            backgroundColor: backgroundColors, // Weekly bar colors
+            borderColor: borderColors, // Weekly border colors
+            borderWidth: 1
+        }]
+    },
+    options: {
+        responsive: true,
+        scales: {
+            x: {
+                title: {
+                    display: true,
+                    text: 'Date',
+                    font: {
+                        size: 11
+                    }
+                },
+                ticks: {
+                    font: {
+                        size: 11
+                    },
+                    // Make sure the labels are properly aligned on the x-axis
+                    autoSkip: false // Prevents skipping of labels if there are many
+                }
+            },
+            y: {
+                title: {
+                    display: true,
+                    text: 'Number of Views',
+                    font: {
+                        size: 11
+                    }
+                },
+                ticks: {
+                    font: {
+                        size: 11
+                    }
+                }
+            }
         },
-        options: {
-            responsive: true,
-            scales: {
-                y: {
-                    beginAtZero: true
+        plugins: {
+            legend: {
+                display: true, // Enable the legend to show labels at the bottom
+                position: 'bottom', // Position the legend at the bottom of the chart
+                labels: {
+                    font: {
+                        size: 12
+                    }
                 }
             }
         }
-    });
+    }
+});
 </script>
-
-
 
 {% endblock %}
