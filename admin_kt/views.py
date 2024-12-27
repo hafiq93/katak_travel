@@ -12,6 +12,7 @@ from page.models import MainPage,MainChoose,AboutUs,ContactUs
 from .models import Permission,Roles,UserRole, RolePermission,HotelType,HotelFacilities,HotelRoom,RoomFacilities,RoomBed,RoomView
 import re
 from django.db.models import Q # Import the User model from user_kt app
+from django.core.paginator import Paginator
 
 def admin_required(user):
     return user.is_superuser or user.is_staff
@@ -529,18 +530,29 @@ def user_dashboard(request):
 
     # Group data for the chart
     grouped_data = analytics_data.values('timestamp__date').annotate(total_clicks=Count('id')).order_by('timestamp__date')
+    
 
     # Prepare data for JavaScript
     labels = [data['timestamp__date'].strftime('%d-%m-%Y') for data in grouped_data]
     clicks = [data['total_clicks'] for data in grouped_data]
 
+
+      # Implement pagination
+    paginator = Paginator(analytics_data, 20)  # 20 items per page
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+
+
     # Pass the data to the template
     context = {
+        'analytics_data': page_obj,  # Use this for displaying full data
         'data': grouped_data,
         'total_visits': total_visits,
         'filter_type': filter_type,
         'labels': labels,
         'clicks': clicks,
+         'page_obj': page_obj,
     }
     return render(request, 'admin_kt/user_dashboard.html', context)
 #//////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -43,24 +43,76 @@
     
                     <!-- Second Column: Merchant Status -->
                     <div class="bg-white shadow-md p-6 rounded-md col-span-2">
-                        <h2 class="text-2xl font-bold mb-4">Merchant Status</h2>
-                        <p>Sales breakdown can go here.</p>
+                        <h2 class="text-2xl font-bold mb-4">Analytics Details</h2>
+                        <p>Total Visits: {{ total_visits }}</p>
+                        <table class="min-w-full table-auto mt-4">
+                            <thead>
+                                <tr>
+                                    <th class="px-4 py-2 text-left text-gray-600 font-semibold">No</th>
+                                    <th class="px-4 py-2 text-left text-gray-600 font-semibold">Page URL</th>
+                                    <th class="px-4 py-2 text-left text-gray-600 font-semibold">Timestamp</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item in analytics_data %}
+                                <tr>
+                                    <td class="px-4 py-2">{{ forloop.counter }}</td>
+                                    <td class="px-4 py-2">{{ item.page_url }}</td>
+                                    <td class="px-4 py-2">{{ item.timestamp|date:"d/m/y H:i" }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    
+                        <!-- Pagination Controls -->
+                        <div class="mt-4">
+                            <ul class="flex justify-center space-x-2">
+                                {% if analytics_data.has_previous %}
+                                <li>
+                                    <a href="?page=1" class="px-4 py-2 border rounded bg-gray-200">First</a>
+                                </li>
+                                <li>
+                                    <a href="?page={{ analytics_data.previous_page_number }}" class="px-4 py-2 border rounded bg-gray-200">Previous</a>
+                                </li>
+                                {% endif %}
+                    
+                                {% for num in analytics_data.paginator.page_range %}
+                                {% if analytics_data.number == num %}
+                                <li>
+                                    <span class="px-4 py-2 border rounded bg-blue-500 text-white">{{ num }}</span>
+                                </li>
+                                {% else %}
+                                <li>
+                                    <a href="?page={{ num }}" class="px-4 py-2 border rounded bg-gray-200">{{ num }}</a>
+                                </li>
+                                {% endif %}
+                                {% endfor %}
+                    
+                                {% if analytics_data.has_next %}
+                                <li>
+                                    <a href="?page={{ analytics_data.next_page_number }}" class="px-4 py-2 border rounded bg-gray-200">Next</a>
+                                </li>
+                                <li>
+                                    <a href="?page={{ analytics_data.paginator.num_pages }}" class="px-4 py-2 border rounded bg-gray-200">Last</a>
+                                </li>
+                                {% endif %}
+                            </ul>
+                        </div>
                     </div>
-                </div>
     
                 <!-- Third Row: Hotel Status and User Clicks -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+                <!-- <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6"> -->
                     <!-- First Column: Hotel Status -->
-                    <div class="bg-white shadow-md p-4 rounded-md">
-                        <h2 class="text-2xl font-bold mb-4">Hotel Status</h2>
-                        <p>Display hotel status here.</p>
-                    </div>
+                    <!-- <div class="bg-white shadow-md p-4 rounded-md">
+                      
+                        
+                    </div> -->
     
                     <!-- Second Column: User Click -->
-                    <div class="bg-white shadow-md p-6 rounded-md">
-                        <h2 class="text-2xl font-bold mb-4">User Click</h2>
+                    <!-- <div class="bg-white shadow-md p-6 rounded-md">
+                        <h2 class="text-2xl font-bold mb-4">User Roles and Permission</h2>
                         <p>Details about user clicks can go here.</p>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>
