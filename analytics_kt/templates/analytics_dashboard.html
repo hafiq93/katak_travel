@@ -10,10 +10,10 @@
 
             <!-- First Row (Metrics in One Row) -->
             <div class="rounded-md">
-                <div class="grid grid-cols-1 gap-4 mt-2">
+                <div class="grid grid-cols-1 gap-4 ">
 
                     <!-- Second Column, Second Row: Analytics Header -->
-                    <div class="bg-white shadow-md p-6 rounded-md">
+                    <div class="bg-white shadow-md p-4 rounded-md">
                         <h2 class="text-2xl font-bold mb-4">Analytics Dashboard</h2>
                         
                         <!-- Date Range Filter -->
@@ -23,11 +23,11 @@
                                 <div class="flex space-x-4">
                                     <div class="flex items-center">
                                         <label for="start_date" class="mr-2">Start Date:</label>
-                                        <input type="date" id="start_date" name="start_date" class="p-2 border rounded-md" value="{{ request.GET.start_date }}">
+                                        <input type="date" id="start_date" name="start_date" class="p-2 border-2 rounded-md" value="{{ request.GET.start_date }}">
                                     </div>
                                     <div class="flex items-center">
                                         <label for="end_date" class="mr-2">End Date:</label>
-                                        <input type="date" id="end_date" name="end_date" class="p-2 border rounded-md" value="{{ request.GET.end_date }}">
+                                        <input type="date" id="end_date" name="end_date" class="p-2 border-2 rounded-md" value="{{ request.GET.end_date }}">
                                     </div>
                                     <button type="submit" class="bg-blue-500 text-white p-2 rounded-md">Filter</button>
                                 </div>

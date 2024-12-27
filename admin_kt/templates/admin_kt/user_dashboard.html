@@ -14,7 +14,7 @@
                 <!-- Add any metrics overview if needed here -->
     
                 <!-- Second Row: Total Sales and Merchant Status -->
-                <div class="grid grid-cols-1 md:grid-cols-5 gap-4 mt-6">
+                <div class="grid grid-cols-1 md:grid-cols-5 gap-4 ">
                     <!-- First Column: Total Sales by Month -->
                     <div class="bg-white shadow-md p-6 rounded-lg col-span-3">
                         <a href="{% url 'analytics_dashboard' %}" class="text-lg font-bold mb-4 hover:text-green-500 hover:underline">
@@ -24,16 +24,16 @@
                         <!-- Filter Options -->
                         <form method="GET" class="mb-4 w-full">
                             <label for="filter" class="block text-md text-gray-700">Filter by:</label>
-                            <select name="filter" id="filter" class="border rounded p-2 w-1/4">
+                            <select name="filter" id="filter" class="border-2 rounded p-2 w-1/4">
                                 <option value="day" {% if filter_type == 'day' %}selected{% endif %} >Day</option>
                                 <option value="week" {% if filter_type == 'week' %}selected{% endif %} >Week</option>
                                 <option value="month" {% if filter_type == 'month' %}selected{% endif %} >Month</option>
                                 <option value="year" {% if filter_type == 'year' %}selected{% endif %}>Year</option>
                             </select>
                             <label for="start_date" class="ml-4">Start Date:</label>
-                            <input type="date" name="start_date" id="start_date" class="border rounded p-2">
+                            <input type="date" name="start_date" id="start_date" class="border-2 rounded p-2">
                             <label for="end_date" class="ml-4">End Date:</label>
-                            <input type="date" name="end_date" id="end_date" class="border rounded p-2">
+                            <input type="date" name="end_date" id="end_date" class="border-2 rounded p-2">
                             <button type="submit" class="bg-blue-500 text-white rounded p-2 ml-4">Apply</button>
                         </form>
                     
