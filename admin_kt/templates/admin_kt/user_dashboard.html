@@ -17,7 +17,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-5 gap-4 ">
                     <!-- First Column: Total Sales by Month -->
                     <div class="bg-white shadow-md p-6 rounded-lg col-span-3">
-                        <a href="{% url 'analytics_dashboard' %}" class="text-lg font-bold mb-4 hover:text-green-500 hover:underline">
+                        <a  class="text-lg font-bold mb-4">
                             User Views
                         </a>
                     
@@ -43,7 +43,9 @@
     
                     <!-- Second Column: Merchant Status -->
                     <div class="bg-white shadow-md p-6 rounded-md col-span-2">
-                        <h2 class="text-2xl font-bold mb-4">Analytics Details</h2>
+                        <a href="{% url 'analytics_dashboard' %}" class="text-lg font-bold mb-4 hover:text-green-500 hover:underline">
+                            Analytics List
+                        </a>
                         <p>Total Visits: {{ total_visits }}</p>
                         <table class="min-w-full table-auto mt-4">
                             <thead>
