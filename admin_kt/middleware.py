@@ -12,10 +12,10 @@ class AnalyticsMiddleware:
 
         # Log the request path for debugging
         # print(f"Request path: {request.path}")
-        # print(f"Query params: {request.GET}")
 
-        # Save analytics data only for the exact /home path with no query parameters
-        if request.path == '/home' and not request.GET:
+        # Save analytics data only for the /home/ path
+        if request.path == '/home':
+            # print("Matched /home")
             try:
                 WebsiteAnalytics.objects.create(
                     page_url=request.build_absolute_uri(),
@@ -27,7 +27,7 @@ class AnalyticsMiddleware:
             except Exception as e:
                 print(f"Error saving analytics data: {e}")
         else:
-            print("No match or query parameters present, data not saved")
+            print("No match, data not saved")
 
         return response
 
