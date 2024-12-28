@@ -11,16 +11,17 @@ class AnalyticsMiddleware:
     def __call__(self, request):
         response = self.get_response(request)
 
-        # Save analytics data only for the exact path and domain
+        # Parse the URL
         full_url = request.build_absolute_uri()
         parsed_url = urlparse(full_url)
+        query_params = parse_qs(parsed_url.query)
 
-        # Check if the URL matches exactly 'https://www.kataktravel.com/home' and has no query parameters
+        # Check for disallowed query parameters
         if (
             parsed_url.scheme == "https" and
-            parsed_url.netloc == "www.kataktravel.com" and
+            parsed_url.netloc in ["www.kataktravel.com", "kataktravel.com"] and
             parsed_url.path == "/home" and
-            not parse_qs(parsed_url.query)  # Ensure no query parameters
+            not query_params  # Reject URLs with query parameters
         ):
             try:
                 WebsiteAnalytics.objects.create(
@@ -33,7 +34,7 @@ class AnalyticsMiddleware:
             except Exception as e:
                 print(f"Error saving analytics data: {e}")
         else:
-            print("No match, data not saved")
+            print("Invalid URL or query parameters, data not saved")
 
         return response
 
