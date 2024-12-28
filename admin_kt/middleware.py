@@ -19,7 +19,7 @@ class AnalyticsMiddleware:
         # Check for disallowed query parameters
         if (
             parsed_url.scheme == "https" and
-            parsed_url.netloc in ["www.kataktravel.com", "kataktravel.com"] and
+            parsed_url.netloc == "kataktravel.com" and
             parsed_url.path == "/home" and
             not query_params  # Reject URLs with query parameters
         ):
