@@ -11,11 +11,11 @@ class AnalyticsMiddleware:
         response = self.get_response(request)
 
         # Log the request path for debugging
-        # print(f"Request path: {request.path}")
+      
 
         # Save analytics data only for the /home/ path
-        if request.path == '/home':
-            # print("Matched /home")
+        if request.path == '/home/':
+            
             try:
                 WebsiteAnalytics.objects.create(
                     page_url=request.build_absolute_uri(),

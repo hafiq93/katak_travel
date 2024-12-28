@@ -37,7 +37,9 @@ def analytics_dashboard(request):
             pass  # Handle invalid date formats if needed
 
     # Build the filter conditions
-    url_filter = Q(page_url__icontains='www.kataktravel.com/home')   # This matches both 'www.kataktravel.com' and 'kataktravel.com'
+    url_filter = Q(page_url__icontains='/home') & (
+        Q(page_url__icontains='kataktravel.com')  # This matches both 'www.kataktravel.com' and 'kataktravel.com'
+    )
 
     # Filter analytics data by date range (if provided)
     if start_date and end_date:

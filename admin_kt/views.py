@@ -521,9 +521,9 @@ def user_dashboard(request):
     # Corrected filter to handle URLs and date range properly
     analytics_data = WebsiteAnalytics.objects.filter(
         timestamp__range=(start_date, end_date),
-        page_url__icontains='www.kataktravel.com/home'
+        page_url__icontains='kataktravel.com'
     ).filter(
-        Q(page_url__icontains='www.kataktravel.com/home')
+        Q(page_url__icontains='www.kataktravel.com') | Q(page_url__icontains='kataktravel.com')
     ).order_by('-timestamp')
 
     total_visits = analytics_data.count()
@@ -538,7 +538,7 @@ def user_dashboard(request):
 
 
       # Implement pagination
-    paginator = Paginator(analytics_data, 10)# 20 items 
+    paginator = Paginator(analytics_data, 20)  # 20 items per page
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
