@@ -1,4 +1,5 @@
 from analytics_kt.models import WebsiteAnalytics
+from urllib.parse import urlparse, parse_qs
 from datetime import datetime
 
 
@@ -10,15 +11,20 @@ class AnalyticsMiddleware:
     def __call__(self, request):
         response = self.get_response(request)
 
-        # Log the request path for debugging
-        print(f"Request path: {request.path}")
+        # Save analytics data only for the exact path and domain
+        full_url = request.build_absolute_uri()
+        parsed_url = urlparse(full_url)
 
-        # Save analytics data only for the /home/ path
-        if request.path == '/home/':
-            print("Matched /home/")
+        # Check if the URL matches exactly 'https://www.kataktravel.com/home' and has no query parameters
+        if (
+            parsed_url.scheme == "https" and
+            parsed_url.netloc == "www.kataktravel.com" and
+            parsed_url.path == "/home" and
+            not parse_qs(parsed_url.query)  # Ensure no query parameters
+        ):
             try:
                 WebsiteAnalytics.objects.create(
-                    page_url=request.build_absolute_uri(),
+                    page_url=full_url,
                     user_ip=self.get_client_ip(request),
                     browser_info=request.META.get('HTTP_USER_AGENT', 'Unknown'),
                     event_type='page_view'
