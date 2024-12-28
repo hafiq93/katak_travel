@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-+s6*ap0wm#q+0&k35r7^1s(&$40ya()@&6yt!)me^!ay__na1m
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG=False
 
-ALLOWED_HOSTS = ['127.0.0.1','kataktravel.com','34.193.238.154','localhost','www.kataktravel.com']
+ALLOWED_HOSTS = ['127.0.0.1','kataktravel.com','www.kataktravel.com']
 
 CSRF_TRUSTED_ORIGINS = [
     'https://kataktravel.com', 
