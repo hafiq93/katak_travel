@@ -11,11 +11,11 @@ def user_login(request):
         email = request.POST.get('email')
         password = request.POST.get('password')
 
-        print(f"Email: {email}, Password: {password}")  # Debug print
+      
         user = authenticate(request, username=email, password=password)
 
         if user is not None:
-            print(f"User found: {user}")  # Debug print
+        
             if user.is_superuser or user.is_staff:
                 auth_login(request, user)  # Log in admin or staff user
                 return redirect('admin-dashboard')  # Redirect to admin dashboard
@@ -24,7 +24,7 @@ def user_login(request):
                 auth_login(request, user)
                 return redirect('home')  # Redirect to homepage
         else:
-            print("Authentication failed")  # Debug print
+       
             messages.error(request, "Invalid credentials.")  # Show error message
     
     return render(request, 'user_kt/login.html')  # Your login template
