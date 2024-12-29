@@ -415,9 +415,41 @@ def bed_delete(request, bed_id):
 
 @user_passes_test(admin_required, login_url='/login/')
 def list_roles(request):
+    if request.method == 'POST':
+        role_name = request.POST.get('role_name')
+        no_siri = request.POST.get('no_siri')  # Update if your field name differs
+        # Validate input
+        if not role_name:
+            # Handle missing data error (optional)
+            return render(request, 'admin_kt/list_roles.html', {'error': 'Role Name is required'})
+
+        # Save to the database
+        Roles.objects.create(role_name=role_name, no_siri=no_siri)
+
+        # Redirect or reload page to prevent duplicate submissions
+        return redirect('list_roles')
+
     roles = Roles.objects.all()
-    # Your dashboard view logic
     return render(request, 'admin_kt/list_roles.html', {'roles': roles})
+
+@user_passes_test(admin_required, login_url='/login/')
+def edit_role(request):
+    if request.method == 'POST':
+        role_id = request.POST.get('id')
+        role_name = request.POST.get('role_name')
+        no_siri = request.POST.get('no_siri')
+
+        # Fetch the role object
+        role = get_object_or_404(Roles, id=role_id)
+
+        # Update the role details
+        role.role_name = role_name
+        role.no_siri = no_siri
+        role.save()
+
+        # Redirect to the roles list
+        return redirect('list_roles')
+        
 
 @user_passes_test(admin_required, login_url='/login/')
 def list_permission(request):
@@ -538,7 +570,7 @@ def user_dashboard(request):
 
 
       # Implement pagination
-    paginator = Paginator(analytics_data, 20)  # 20 items per page
+    paginator = Paginator(analytics_data, 10) #00items per page
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 

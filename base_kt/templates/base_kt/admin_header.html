@@ -9,16 +9,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KATAK TRAVEL</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"> -->
-    <!-- Font Awesome -->
-    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha384-k6RqeWeci5ZR/Lv4MR0sA0FfDOMLhu60PlFv8AS6k8HcU8EHT8Fu26Q8q5i5Hwgu" crossorigin="anonymous"> -->
-
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link href="{% static 'src/styles.css' %}" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="{% static 'javascript/dropdown_header.js' %}" defer></script>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="{% static 'src/styles.css' %}" rel="stylesheet">
+    
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+   
 </head>
 <header class="bg-white shadow-md">
     <div class="container mx-auto px-4 py-3 flex justify-between items-center">
@@ -122,6 +120,14 @@
                             <a 
                                 href="#" 
                                 class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100">
+                                <i class="fas fa-newspaper"></i>
+                                <span class="ml-4">Booking</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a 
+                                href="#" 
+                                class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100">
                                 <i class="fas fa-info-circle"></i>
                                 <span class="ml-4">Reports</span>
                             </a>
@@ -177,9 +183,18 @@
                                 href="" 
                                 class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100">
                                 <i class="fas fa-info-circle"></i>
+                                <span class="ml-4">Booking</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a 
+                                href="" 
+                                class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100">
+                                <i class="fas fa-info-circle"></i>
                                 <span class="ml-4">Payment</span>
                             </a>
                         </li>
+                        
                     </ul>
                 </div>
 
@@ -271,7 +286,7 @@
                         href="{% url 'user_dashboard' %}" 
                         onclick="handleSalesClick(event, 'userDropdown')" 
                         class="flex items-center px-4 py-2 text-md font-bold rounded-md 
-                        {% if request.resolver_match.url_name == 'user_dashboard'  %}
+                        {% if request.resolver_match.url_name == 'user_dashboard' or request.resolver_match.url_name == 'analytics_dashboard' %}
                         text-white bg-green-400 
                         {% else %}
                         text-gray-700 hover:text-green-400 
@@ -298,12 +313,20 @@
                                 <span class="ml-4">User Role</span>
                             </a>
                         </li>
-                        <li>
+                        <!-- <li>
                             <a 
                                 href="{% url 'user_roles_permission' %}"
                                 class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100">
                                 <i class="fas fa-info-circle"></i>
                                 <span class="ml-4">Roles & Permission</span>
+                            </a>
+                        </li> -->
+                        <li>
+                            <a 
+                                href=""
+                                class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100">
+                                <i class="fas fa-info-circle"></i>
+                                <span class="ml-4">User Log</span>
                             </a>
                         </li>
                         <li>
@@ -314,6 +337,7 @@
                                 <span class="ml-4">Analytics User</span>
                             </a>
                         </li>
+                       
                      
                     </ul>
                 </div>

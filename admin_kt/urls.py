@@ -20,6 +20,8 @@ urlpatterns = [
     path('roles_permission/edit', views.edit_roles_permission, name='edit_roles_permission'),
 
     path('roles/list', views.list_roles, name='list_roles'),
+    path('roles/edit', views.edit_role, name='edit_role'),
+    
     path('permission/list', views.list_permission, name='list_permission'),
     
     # package

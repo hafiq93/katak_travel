@@ -10,7 +10,7 @@
         <div class="flex">
            
             <!-- Main Content -->
-            <div class=" p-4 bg-gray-100 h-screen">
+            <div class=" p-4 bg-gray-100 h-screen w-full">
 
                 <!-- First Row (Metrics in One Row) -->
                 <div class="rounded-md">
@@ -18,25 +18,25 @@
                     <div class="grid grid-cols-1 sm:grid-cols-4 gap-4">
                         <!-- First Column -->
                         <div class="bg-green-500 p-4 rounded-md">
-                            <h3 class="text-md font-semibold mb-2 text-white">Total Sale</h3>
+                            <h3 class="text-md font-semibold mb-2 text-white">Total Hotel Sales</h3>
                             <p>Some additional data for metric 1 can go here.</p>
                         </div>
             
                         <!-- Second Column -->
                         <div class="bg-blue-500 p-4 rounded-md">
-                            <h3 class="text-md font-semibold mb-2 text-white">Total Customer</h3>
+                            <h3 class="text-md font-semibold mb-2 text-white">Total Hotel</h3>
                             <p>Some additional data for metric 2 can go here.</p>
                         </div>
             
                         <!-- Third Column -->
                         <div class="bg-red-500 p-4 rounded-md">
-                            <h3 class="text-md font-semibold mb-2 text-white">Total Merchant</h3>
+                            <h3 class="text-md font-semibold mb-2 text-white">Total Merchant Sales</h3>
                             <p>Some additional data for metric 3 can go here.</p>
                         </div>
             
                         <!-- Fourth Column -->
                         <div class="bg-purple-500 p-4 rounded-md">
-                            <h3 class="text-md font-semibold mb-2">Metric 4</h3>
+                            <h3 class="text-md font-semibold mb-2">Total Merchant</h3>
                             <p>Some additional data for metric 4 can go here.</p>
                         </div>
             
@@ -58,14 +58,14 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">  <!-- Added margin-top (mt-6) for spacing -->
                     <!-- First Column, First Row: Total Sales by Month -->
                     <div class="bg-white shadow-md p-4 rounded-md">
-                        <h2 class="text-2xl font-bold mb-4">Total Sales by Month</h2>
+                        <h2 class="text-2xl font-bold mb-4">Total Hotel Sales by Month</h2>
                         <canvas id="salesChart" class="w-full h-64"></canvas> <!-- Chart will be displayed here -->
                     </div>
             
                     <!-- Second Column, First Row: Sales Breakdown -->
                     <div class="bg-white shadow-md p-6 rounded-md">
-                        <h2 class="text-2xl font-bold mb-4">Merchant Status</h2>
-                        <p>Sales breakdown can go here.</p>
+                        <h2 class="text-2xl font-bold mb-4">Total Merchant Sales by Month</h2>
+                        <canvas id="salesChart" class="w-full h-64"></canvas> <!-- Chart will be displayed here -->
                     </div>
                 </div>
             
@@ -79,7 +79,7 @@
             
                     <!-- Second Column, Second Row: Another Sales Breakdown -->
                     <div class="bg-white shadow-md p-6 rounded-md">
-                        <h2 class="text-2xl font-bold mb-4">Sales Breakdown</h2>
+                        <h2 class="text-2xl font-bold mb-4">Merchant status</h2>
                         <p>Sales breakdown can go here.</p>
                     </div>
                 </div>

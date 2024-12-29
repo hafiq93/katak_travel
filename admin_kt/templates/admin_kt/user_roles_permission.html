@@ -8,18 +8,40 @@
 
      <body>
         <div class="flex">
-           
-            {% include 'base_kt/admin_sidebar.html' %}
-            <div class="flex-grow p-4 bg-gray-100 h-screen">
-
+            <!-- Main Content -->
+            <div class="p-4 bg-gray-100 h-screen w-full">
+                
+                <!-- Tabs Navigation -->
+                <div class="mb-2">
+                    <ul class="flex border-b">
+                        <li class="mr-1">
+                            <a href="{% url 'user_roles' %}" class="bg-white inline-block px-4 py-2 text-green-500 font-semibold border-lg hover:text-green-700 focus:outline-none">
+                                User Role
+                            </a>
+                        </li>
+                        <li class="mr-1">
+                            <a href="{% url 'user_roles_permission' %}" class="bg-green-500 inline-block px-4 py-2 text-white font-semibold border-lg border-l border-t border-r rounded-t focus:outline-none">
+                                Roles & Permission
+                            </a>
+                        </li>
+                        <li class="mr-1">
+                            <a href="{% url 'list_roles' %}" class="bg-white inline-block px-4 py-2 text-green-500 font-semibold border-lg hover:text-green-700 focus:outline-none">
+                                Roles
+                            </a>
+                        </li>
+                        <li class="mr-1">
+                            <a href="{% url 'list_roles' %}" class="bg-white inline-block px-4 py-2 text-green-500 font-semibold border-lg hover:text-green-700 focus:outline-none">
+                                Permission
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+    
                 <!-- First Row (Metrics in One Row) -->
                 <div class="rounded-md">
-                
-                    <!-- Third Row (Below Second Row) -->
-                    <div class="grid grid-cols-1 gap-4 mt-2">
-                
-                        <!-- Second Column, Second Row: Another Sales Breakdown -->
-                        <div class="bg-white shadow-md p-6 rounded-md">
+                    
+                    <!-- Second Row (User Roles Table) -->
+                    <div class="bg-white shadow-md p-6 rounded-md">
                             <h2 class="text-2xl font-bold mb-4">Roles and Permission</h2>
                        
                         <table class="min-w-full table-auto border">
