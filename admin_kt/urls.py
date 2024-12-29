@@ -21,7 +21,8 @@ urlpatterns = [
 
     path('roles/list', views.list_roles, name='list_roles'),
     path('roles/edit', views.edit_role, name='edit_role'),
-    
+    path('delete-role/<int:role_id>/', views.delete_role, name='delete_role'),
+
     path('permission/list', views.list_permission, name='list_permission'),
     
     # package

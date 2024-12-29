@@ -411,7 +411,7 @@ def bed_delete(request, bed_id):
     bed = get_object_or_404(RoomBed, id=bed_id)
     bed.delete()
     return redirect('room_bed')
-# /////////////////////////////////////
+# //////////////////////////////////////////
 
 @user_passes_test(admin_required, login_url='/login/')
 def list_roles(request):
@@ -449,7 +449,15 @@ def edit_role(request):
 
         # Redirect to the roles list
         return redirect('list_roles')
-        
+
+
+@user_passes_test(admin_required, login_url='/login/')
+def delete_role(request, role_id):
+    role = get_object_or_404(Roles, id=role_id)
+    role.delete()  # Deletes the role object
+    return redirect('list_roles')  # Redirects to the roles list page
+
+#//////////////////////////////////////////////////////////////////////// 
 
 @user_passes_test(admin_required, login_url='/login/')
 def list_permission(request):
