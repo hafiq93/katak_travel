@@ -6,6 +6,7 @@ from django.utils.timezone import now
 from datetime import datetime,timedelta
 from django.db.models import Count
 from django.http import HttpResponse
+from package_kt.models import System,Package,SubPackage
 from user_kt.models import User,Profile
 from analytics_kt.models import WebsiteAnalytics
 from page.models import MainPage,MainChoose,AboutUs,ContactUs
@@ -456,14 +457,38 @@ def delete_role(request, role_id):
     role.delete()  # Deletes the role object
     return redirect('list_roles')  # Redirects to the roles list page
     # /////////////////////////////////////////////////////////////
-
-# 
-
 @user_passes_test(admin_required, login_url='/login/')
 def list_permission(request):
-    # Fetch all permissions
-    permissions = Permission.objects.all()
-    return render(request, 'admin_kt/list_permission.html', {'permissions': permissions})
+    # Fetch all systems from the database
+    systems = System.objects.all()
+
+    # Get the active system based on the URL parameter or default to the first system
+    active_tab = request.GET.get('active_tab', str(systems.first().id))
+
+    # Get the system based on the active tab (system ID or name)
+    current_system = System.objects.get(id=active_tab)
+
+    # Fetch packages and subpackages for the current system
+    permissions = []
+    packages = Package.objects.filter(system=current_system)
+    for idx, package in enumerate(packages, start=1):
+        subpackages = SubPackage.objects.filter(package=package)
+        permissions.append({
+            'number': f"{active_tab}.{idx}",  # Create hierarchical numbering
+            'package': package.name,
+            'subpackages': [sub.name for sub in subpackages] if subpackages.exists() else None
+        })
+
+    context = {
+        'systems': systems,  # Pass all systems to the template for tab selection
+        'permissions': permissions,  # Permissions for the current system
+        'active_tab': active_tab,  # Current active tab (system)
+    }
+
+    return render(request, 'admin_kt/list_permission.html', context)
+# /////////////////////////////////////////////////////////////////////////////
+
+
 
 @user_passes_test(admin_required, login_url='/login/')
 def roles_permission(request):
@@ -475,7 +500,7 @@ def edit_roles_permission(request):
     roles = Roles.objects.prefetch_related('role_permissions__permission').all()
     return render(request, 'admin_kt/user_edit_rnp.html', {'roles': roles})
 
-
+# //////////////////////////////////////////////////////////////////////////////////
 @user_passes_test(admin_required, login_url='/login/')
 def user_roles(request):
     # Fetch all users with their roles and permissions
