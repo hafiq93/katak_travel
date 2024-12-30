@@ -30,29 +30,28 @@
                             </a>
                         </li>
                         <li class="mr-1">
-                            <a href="{% url 'list_permission' %}" onclick="activateManagementSystemTab()" class="bg-green-500 inline-block px-4 py-2 text-white font-semibold border-lg border-l border-t border-r rounded-t focus:outline-none">
+                            <a href="{% url 'list_permission' %}"  class="bg-green-500 inline-block px-4 py-2 text-white font-semibold border-lg border-l border-t border-r rounded-t focus:outline-none">
                                 Permission
                             </a>
                         </li>
                     </ul>
                 </div>
 
-                    <!-- Sub-Tabs Under Permission -->
-                    <!-- Sub-Tabs Under Permission -->
-                    <div>
-                        <ul class="flex border-b" id="subTabs">
-                            {% for system in systems %}
-                                <li class="mr-1">
-                                    <a href="?active_tab={{ system.id }}" 
-                                    class="inline-block px-4 py-2 text-white font-semibold border-lg  focus:outline-none 
-                                    {% if active_tab == system.id|stringformat:"s" %}bg-green-500{% else %}bg-white{% endif %}" 
-                                    id="tab-{{ system.id }}">
-                                        {{ system.name }}
-                                    </a>
-                                </li>
-                            {% endfor %}
-                        </ul>
-                    </div>
+                <!-- Sub-Tabs Under Permission -->
+                <div>
+                    <ul class="flex border-b" id="subTabs">
+                        {% for system in systems %}
+                            <li class="mr-1">
+                                <a href="?active_tab={{ system.id }}" 
+                                class="inline-block px-4 py-2 text-white  font-semibold border-lg  focus:outline-none 
+                                {% if active_tab == system.id|stringformat:"s" %}bg-green-500{% else %}bg-white text-green-500{% endif %}" 
+                                id="tab-{{ system.id }}">
+                                    {{ system.name }}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
                     
 
                 <!-- First Row (Metrics in One Row) -->
@@ -65,44 +64,78 @@
                     
                     <!-- Third Row (Below Second Row) -->
                     {% for system in systems %}
-                    <div class="grid grid-cols-1 gap-4 mt-2 tab-content {% if active_tab == system.id|stringformat:"s" %}block{% else %}hidden{% endif %}" 
-                        id="system-{{ system.id }}-content">
-                        
+                    <div class="grid grid-cols-1 gap-4 mt-2 tab-content {% if active_tab == system.id|stringformat:"s" %}block{% else %}hidden{% endif %}" id="system-{{ system.id }}-content">
                         <div class="bg-white shadow-md p-6 rounded-md">
                             <h2 class="text-2xl font-bold mb-4">{{ system.name }}</h2>
-                            
+                    
                             <!-- Table to display the permission list -->
                             <table class="min-w-full table-auto">
                                 <thead>
                                     <tr>
-                                        <th class="px-4 py-2 text-left text-gray-600 font-semibold">No</th>
-                                        <th class="px-4 py-2 text-left text-gray-600 font-semibold">Package</th>
-                                        <th class="px-4 py-2 text-left text-gray-600 font-semibold">Subpackage</th>
+                                        <th class="px-4 py-2 bg-green-700 font-semibold text-white border-r-2">No</th>
+                                        <th class="px-4 py-2 bg-green-700 font-semibold text-white border-r-2">Package</th>
+                                        <th class="px-4 py-2 bg-green-700 font-semibold text-white border-r-2">Subpackage</th>
+                                        <th class="px-4 py-2 bg-green-700 font-semibold text-white border-r-2">Detail Subpackage</th>
+                                        <th class="px-4 py-2 bg-green-700 font-semibold text-white border-r-2">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {% for permission in permissions %}
-                                        <tr class="border-b">
-                                            <td class="px-4 py-2">{{ forloop.counter }}</td>
-                                            <td class="px-4 py-2 font-bold">{{ permission.package }}</td>
-                                            <td class="px-4 py-2">
-                                                {% if permission.subpackages %}
-                                                    <div>
-                                                        {% for subpackage in permission.subpackages %}
-                                                       <div class="py-2"> <i class="fa-solid fa-circle-check"></i> {{ subpackage }}</div>
-                                                        {% endfor %}
-                                                    </div>
-                                                {% else %}
-                                                    <div class="text-gray-500">(No Subpackages)</div>
-                                                {% endif %}
-                                            </td>
-                                        </tr>
+                                    <tr class="border-b">
+                                        <td class="px-4 py-2">{{ forloop.counter }}</td>
+                                        <td class="px-4 py-2 font-bold">{{ permission.package }}</td>
+                                        <td class="px-4 py-2">
+                                            {% if permission.subpackages %}
+                                            <div class="pl-4">
+                                                {% for subpackage in permission.subpackages %}
+                                                <div class="py-2">
+                                                    <i class="fa-solid fa-circle-check text-white bg-green-500 rounded-full p-1 mr-2"></i>
+                                                    {{ subpackage.name }}
+                                                </div>
+                                                {% endfor %}
+                                            </div>
+                                            {% else %}
+                                            <div class="text-gray-500">(No Subpackages)</div>
+                                            {% endif %}
+                                        </td>
+                                        <td class="px-4 py-2">
+                                            {% for subpackage in permission.subpackages %}
+                                            {% if subpackage.details %}
+                                            <div class="flex flex-wrap">
+                                                {% for detail in subpackage.details %}
+                                                <div class="flex items-center py-2 mr-4">
+                                                    <i class="fa-solid fa-circle-check text-white bg-green-500 rounded-full p-1 mr-2"></i>
+                                                    <span>{{ detail.name }}</span>
+                                                </div>
+                                                {% endfor %}
+                                            </div>
+                                            {% endif %}
+                                            {% endfor %}
+                                        </td>
+                                        <td class="px-4 py-2">
+                                            <div class="flex space-x-2">
+                                                <!-- Edit Button -->
+                                                <button 
+                                                    onclick="openEditModal('{{ permission.package }}', {{ permission.subpackages|safe }})" 
+                                                    class="bg-blue-500 text-white px-3 py-1 rounded flex items-center">
+                                                    <i class="fa-solid fa-pen mr-2"></i>Edit
+                                                </button>
+                                        
+                                                <!-- Delete Button -->
+                                                <button 
+                                                    onclick="confirmDelete('{{ permission.package }}')" 
+                                                    class="bg-red-500 text-white px-3 py-1 rounded flex items-center">
+                                                    <i class="fa-solid fa-trash mr-2"></i>Delete
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
                                     {% endfor %}
                                 </tbody>
                             </table>
                         </div>
                     </div>
-                {% endfor %}
+                    {% endfor %}
                 </div>
             </div>
         </div>
@@ -140,16 +173,13 @@
                 <form id="editForm">
                     <!-- Hidden field to store permission ID -->
                     <input type="hidden" id="permissionId" name="permission_id">
-
-                    <label for="permissionName" class="block font-semibold">Permission Name:</label>
-                    <input type="text" id="permissionSerial" name="permission_no" class="w-full border px-3 py-2 rounded mt-1 mb-4">
-
-                    <label for="permissionName" class="block font-semibold">Permission Name:</label>
-                    <input type="text" id="permissionName" name="permission_name" class="w-full border px-3 py-2 rounded mt-1 mb-4">
-
-                    <!-- <label for="permissionDescription" class="block font-semibold">Description:</label>
-                    <input type="text" id="permissionDescription" name="description" class="w-full border px-3 py-2 rounded mt-1 mb-4"> -->
-
+        
+                    <label class="block font-semibold">Package:</label>
+                    <input type="text" id="editPackage" name="package" class="w-full border px-3 py-2 rounded mt-1 mb-4" readonly>
+        
+                    <label class="block font-semibold">Subpackages:</label>
+                    <div id="editSubpackages" class="space-y-2"></div>
+        
                     <div class="flex justify-end">
                         <button type="button" onclick="closeModal()" class="bg-red-500 text-white px-4 py-2 rounded mr-2">Cancel</button>
                         <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded">Save</button>
@@ -167,26 +197,43 @@
 </script>
 
 <script>
-    // JavaScript to open the modal and populate it with data
-    function openModal(id, no_siri, name, description) {
-        document.getElementById('modal').classList.remove('hidden');
-        document.getElementById('permissionId').value = id;
-        document.getElementById('permissionSerial').value = no_siri;
-        document.getElementById('permissionName').value = name;
-        // document.getElementById('permissionDescription').value = description ? description : ''; // Change to '0' if preferred
+ function openEditModal(packageName, subpackages) {
+    // Show the modal
+    const modal = document.getElementById('modal');
+    modal.classList.remove('hidden');
+
+    // Populate the package name
+    document.getElementById('editPackage').value = packageName;
+
+    // Populate subpackages and their details
+    const subpackageContainer = document.getElementById('editSubpackages');
+    subpackageContainer.innerHTML = ''; // Clear previous content
+    subpackages.forEach(subpackage => {
+        const subpackageElement = document.createElement('div');
+        subpackageElement.classList.add('border', 'p-2', 'rounded', 'mb-2');
+        subpackageElement.innerHTML = `
+            <div class="font-semibold">${subpackage.name}</div>
+            <div class="mt-1">
+                ${subpackage.details
+                    ? subpackage.details.map(detail => `<span class="inline-block bg-gray-200 px-2 py-1 rounded text-sm mr-2">${detail.name}</span>`).join('')
+                    : '<span class="text-gray-500">(No Details)</span>'}
+            </div>
+        `;
+        subpackageContainer.appendChild(subpackageElement);
+    });
+}
+
+function closeModal() {
+    const modal = document.getElementById('modal');
+    modal.classList.add('hidden');
+}
+
+function confirmDelete(packageName) {
+    if (confirm(`Are you sure you want to delete the package "${packageName}"?`)) {
+        // Perform the delete action here
+        console.log(`Deleting package: ${packageName}`);
     }
-    
-    // JavaScript to close the modal
-    function closeModal() {
-        document.getElementById('modal').classList.add('hidden');
-    }
-    
-    // Handle form submission (optional - you may want to send the data via AJAX)
-    document.getElementById('editForm').onsubmit = function(event) {
-        event.preventDefault();
-        // You can add AJAX request here to save the data
-        closeModal();
-    };
+}
     </script>
 
    

@@ -25,4 +25,14 @@ class SubPackage(models.Model):
         return self.name
 
 
+class SubPackage_2(models.Model):
+    subpackage = models.ForeignKey(SubPackage, on_delete=models.CASCADE, related_name="sub_packages_2",null=True, blank=True)
+    name = models.CharField(max_length=255)
+    description = models.TextField(null=True, blank=True)
+
+    def __str__(self):
+        return self.name
+
+
+
 

@@ -6,7 +6,7 @@ from django.utils.timezone import now
 from datetime import datetime,timedelta
 from django.db.models import Count
 from django.http import HttpResponse
-from package_kt.models import System,Package,SubPackage
+from package_kt.models import System,Package,SubPackage,SubPackage_2
 from user_kt.models import User,Profile
 from analytics_kt.models import WebsiteAnalytics
 from page.models import MainPage,MainChoose,AboutUs,ContactUs
@@ -473,10 +473,20 @@ def list_permission(request):
     packages = Package.objects.filter(system=current_system)
     for idx, package in enumerate(packages, start=1):
         subpackages = SubPackage.objects.filter(package=package)
+
+        # Build subpackage data with detail subpackages
+        subpackage_data = []
+        for subpackage in subpackages:
+            detail_subpackages = SubPackage_2.objects.filter(subpackage=subpackage)
+            subpackage_data.append({
+                'name': subpackage.name,
+                'details': [{'name': detail.name} for detail in detail_subpackages] if detail_subpackages.exists() else None
+            })
+
         permissions.append({
             'number': f"{active_tab}.{idx}",  # Create hierarchical numbering
             'package': package.name,
-            'subpackages': [sub.name for sub in subpackages] if subpackages.exists() else None
+            'subpackages': subpackage_data
         })
 
     context = {
