@@ -1,5 +1,6 @@
 from django.db import models
 from user_kt.models import User
+from package_kt.models import System,Package,SubPackage,SubPackage_2
 
 # Create your models here.
 # /////////////////////////////////roles database/////////////////////////////////////////////////
@@ -38,12 +39,12 @@ class UserRole(models.Model):
     def __str__(self):
         return f"{self.user.email} - {self.role.role_name}"
 
-class RolePermission(models.Model):
-    role = models.ForeignKey(Roles, on_delete=models.CASCADE, related_name="role_permissions")
-    permission = models.ForeignKey(Permission, on_delete=models.CASCADE, related_name="permission_roles")
+class RolePackage(models.Model):  # Modified RolePermission to RolePackage
+    role = models.ForeignKey(Roles, on_delete=models.CASCADE, related_name="role_packages")
+    package = models.ForeignKey(Package, on_delete=models.CASCADE, related_name="package_roles")
 
     def __str__(self):
-        return f"{self.role.role_name} - {self.permission.permission_name}"
+        return f"{self.role.role_name} - {self.package.name}"
 
 # ////////////////////////////////////////////Hotel database////////////////////////////////////////////////////////////////
 

@@ -10,10 +10,11 @@ from package_kt.models import System,Package,SubPackage,SubPackage_2
 from user_kt.models import User,Profile
 from analytics_kt.models import WebsiteAnalytics
 from page.models import MainPage,MainChoose,AboutUs,ContactUs
-from .models import Permission,Roles,UserRole, RolePermission,HotelType,HotelFacilities,HotelRoom,RoomFacilities,RoomBed,RoomView
+from .models import Permission,Roles,UserRole, HotelType,HotelFacilities,HotelRoom,RoomFacilities,RoomBed,RoomView,RolePackage
 import re
 from django.db.models import Q # Import the User model from user_kt app
 from django.core.paginator import Paginator
+from django.http import JsonResponse
 
 def admin_required(user):
     return user.is_superuser or user.is_staff
@@ -502,14 +503,90 @@ def list_permission(request):
 
 @user_passes_test(admin_required, login_url='/login/')
 def roles_permission(request):
-    roles = Roles.objects.prefetch_related('role_permissions__permission').all()
-    return render(request, 'admin_kt/user_roles_permission.html', {'roles': roles})
+    roles = Roles.objects.prefetch_related('role_packages__package').all()
+    context = {
+        'roles': roles
+    }
+    return render(request, 'admin_kt/user_roles_permission.html', context)
 
 @user_passes_test(admin_required, login_url='/login/')
-def edit_roles_permission(request):
-    roles = Roles.objects.prefetch_related('role_permissions__permission').all()
-    return render(request, 'admin_kt/user_edit_rnp.html', {'roles': roles})
+def edit_roles_permission(request, role_id):
+    role = get_object_or_404(Roles, id=role_id)
+    available_systems = System.objects.all()
+    available_packages = Package.objects.all()
+    assigned_packages = role.role_packages.all()
 
+    if request.method == 'POST':
+        if 'add_package' in request.POST:
+            package_id = request.POST.get('package_id')
+            package = get_object_or_404(Package, id=package_id)
+            RolePackage.objects.get_or_create(role=role, package=package)
+
+        if 'delete_package' in request.POST:
+            package_id = request.POST.get('package_id')
+            RolePackage.objects.filter(role=role, package_id=package_id).delete()
+
+        return redirect('edit_roles_permission', role_id=role.id)
+
+    context = {
+        'role': role,
+        'available_systems': available_systems,
+        'available_packages': available_packages,
+        'assigned_packages': assigned_packages,
+    }
+    return render(request, 'admin_kt/user_edit_rnp.html', context)
+
+
+
+def edit_roles_and_packages(request, role_id):
+    # Get the role using the role_id from the URL
+    role = get_object_or_404(Roles, id=role_id)
+
+    if request.method == "POST":
+        package_id = request.POST.get("package")
+        action = request.POST.get("add_package")
+
+        # Fetch the package using the ID
+        package = get_object_or_404(Package, id=package_id)
+
+        if action == "add_package":
+            RolePackage.objects.create(role=role, package=package)
+        elif action == "delete_package":
+            RolePackage.objects.filter(role=role, package=package).delete()
+
+    # Fetch data for dropdowns
+    systems = System.objects.all()
+    available_packages = Package.objects.all()
+    assigned_packages = RolePackage.objects.select_related("package").all()
+
+    # Pass role object to template context
+    context = {
+        "role": role,  # Make sure role is passed to template
+        "available_systems": systems,
+        "available_packages": available_packages,
+        "assigned_packages": assigned_packages,
+    }
+
+    return render(request, "admin_kt/user_edit_rnp.html", context)
+
+# API endpoint for dynamically populating dropdowns
+def fetch_related_data(request):
+    data_type = request.GET.get("type")
+    parent_id = request.GET.get("id")
+    
+    if data_type == "packages":
+        packages = Package.objects.filter(system_id=parent_id)
+        data = [{"id": pkg.id, "name": pkg.name} for pkg in packages]
+    elif data_type == "subpackages":
+        subpackages = SubPackage.objects.filter(package_id=parent_id)
+        data = [{"id": subpkg.id, "name": subpkg.name} for subpkg in subpackages]
+    elif data_type == "subpackages_2":
+        subpackages_2 = SubPackage_2.objects.filter(subpackage_id=parent_id)
+        data = [{"id": subpkg2.id, "name": subpkg2.name} for subpkg2 in subpackages_2]
+    else:
+        data = []
+
+    return JsonResponse({"data": data})
 # //////////////////////////////////////////////////////////////////////////////////
 @user_passes_test(admin_required, login_url='/login/')
 def user_roles(request):
@@ -636,3 +713,4 @@ def user_dashboard(request):
 #     data = WebsiteAnalytics.objects.filter(page_url='https://www.kataktravel.com').order_by('-timestamp')
 #     total_visits = data.count()
 #     return render(request, 'analytics/analytics_dashboard.html', {'data': data, 'total_visits': total_visits})
+# 

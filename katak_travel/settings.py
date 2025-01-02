@@ -62,7 +62,7 @@ INSTALLED_APPS = [
     'page',
     'analytics_kt',
     'package_kt',
-
+    'rest_framework',
     'userauths',
 ]
 

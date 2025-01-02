@@ -6,7 +6,7 @@ from django.http import HttpResponse
 from .models import WebsiteAnalytics
 from user_kt.models import User,Profile
 from page.models import MainPage,MainChoose,AboutUs,ContactUs
-from admin_kt.models import Permission,Roles,UserRole, RolePermission
+from admin_kt.models import Permission,Roles,UserRole
 import re
 from django.db.models import Q # Import the User model from user_kt app
 from datetime import timedelta

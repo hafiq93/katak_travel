@@ -8,23 +8,185 @@
 
      <body>
         <div class="flex">
-           
-            {% include 'base_kt/admin_sidebar.html' %}
-            <div class="flex-grow p-4 bg-gray-100 h-screen">
-
-                <!-- First Row (Metrics in One Row) -->
-                <div class="rounded-md">
+            <!-- Main Content -->
+            <div class="p-4 bg-gray-100 h-screen w-full">
                 
+                <!-- Tabs Navigation -->
+                <div class="mb-2">
+                    <ul class="flex border-b">
+                        <li class="mr-1">
+                            <a href="{% url 'user_roles' %}" class="bg-white inline-block px-4 py-2 text-green-500 font-semibold border-lg hover:text-green-700 focus:outline-none">
+                                User Role
+                            </a>
+                        </li>
+                        <li class="mr-1">
+                            <a href="{% url 'user_roles_permission' %}" class="bg-green-500 inline-block px-4 py-2 text-white font-semibold border-lg border-l border-t border-r rounded-t focus:outline-none">
+                                Roles & Permission
+                            </a>
+                        </li>
+                        <li class="mr-1">
+                            <a href="{% url 'list_roles' %}" class="bg-white inline-block px-4 py-2 text-green-500 font-semibold border-lg hover:text-green-700 focus:outline-none">
+                                Roles
+                            </a>
+                        </li>
+                        <li class="mr-1">
+                            <a href="{% url 'list_permission' %}" class="bg-white inline-block px-4 py-2 text-green-500 font-semibold border-lg hover:text-green-700 focus:outline-none">
+                                Permission
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+    
+              <!-- First Row (Metrics in One Row) -->
+                <div class="rounded-md">
+                    
                     <!-- Third Row (Below Second Row) -->
                     <div class="grid grid-cols-1 gap-4 mt-2">
-                
+                    
                         <!-- Second Column, Second Row: Another Sales Breakdown -->
                         <div class="bg-white shadow-md p-6 rounded-md">
-                            <h2 class="text-2xl font-bold mb-4">Edit Roles and Permission</h2>
+                            <h2 class="text-2xl font-bold mb-4">Edit Roles and Packages</h2>
+                            
+                            <!-- Role Information -->
+                            <div class="mb-4">
+                                <p class="text-lg font-semibold">Role:</p> 
+                            </div>
+                            <div class="mb-4">
+                                <p class="text-lg font-semibold border-2 rounded px-4 py-2 w-full mb-4 bg-gray-200" disabled>{{ role.no_siri }} : {{ role.role_name }}</p>
+                            </div>
+
+                            <!-- Select System -->
+                            <form method="POST" action="{% url 'edit_roles_permission' role.id %}">
+                                {% csrf_token %}
+                                <div>
+                                    <h3 class="text-lg font-semibold mb-2">Select System</h3>
+                                    <select id="systemSelect" name="system" class="border rounded px-4 py-2 w-full mb-4">
+                                        <option value="">-- Select System --</option>
+                                        {% for system in available_systems %}
+                                            <option value="{{ system.id }}">{{ system.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div>
+                                    <h3 class="text-lg font-semibold mb-2">Select Package</h3>
+                                    <select id="packageSelect" name="package" class="border rounded px-4 py-2 w-full mb-4"></select>
+                                </div>
+                                <div>
+                                    <h3 class="text-lg font-semibold mb-2">Select Sub Package</h3>
+                                    <select id="subPackageSelect" name="subpackage" class="border rounded px-4 py-2 w-full mb-4"></select>
+                                </div>
+                                <div>
+                                    <h3 class="text-lg font-semibold mb-2">Select Sub Package 2</h3>
+                                    <select id="subPackage2Select" name="subpackage_2" class="border rounded px-4 py-2 w-full mb-4"></select>
+                                </div>
+                                <button type="submit" name="add_package" class="bg-green-500 text-white px-4 py-2 rounded w-full">
+                                    Add Package
+                                </button>
+                            </form>
+                        
+                            <!-- Assigned Packages -->
+                            <div class="mb-6">
+                                <h3 class="text-lg font-semibold mb-2">Assigned Packages</h3>
+                                <table class="min-w-full table-auto border bg-white shadow-md rounded-md">
+                                    <thead>
+                                        <tr class="bg-gray-100">
+                                            <th class="px-4 py-2 text-left font-semibold border">No.</th>
+                                            <th class="px-4 py-2 text-left font-semibold border">Package Name</th>
+                                            <th class="px-4 py-2 text-left font-semibold border">Sub Package Name</th>
+                                            <th class="px-4 py-2 text-left font-semibold border">Sub Package 2 Name</th>
+                                            <th class="px-4 py-2 text-center font-semibold border">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for role_package in assigned_packages %}
+                                            <tr class="border-b">
+                                                <td class="px-4 py-2 border">{{ forloop.counter }}</td>
+                                                <td class="px-4 py-2 border">{{ role_package.package.name }}</td>
+                                                <td class="px-4 py-2 border">
+                                                    {% for sub_package in role_package.package.sub_packages.all %}
+                                                        {{ sub_package.name }}{% if not forloop.last %}, {% endif %}
+                                                    {% empty %}
+                                                        None
+                                                    {% endfor %}
+                                                </td>
+                                                <td class="px-4 py-2 border">
+                                                    {% for sub_package in role_package.package.sub_packages.all %}
+                                                        {% for sub_package_2 in sub_package.sub_packages_2.all %}
+                                                            {{ sub_package_2.name }}{% if not forloop.last %}, {% endif %}
+                                                        {% empty %}
+                                                            None
+                                                        {% endfor %}
+                                                    {% endfor %}
+                                                </td>
+                                                <td class="px-4 py-2 border text-center">
+                                                    <form method="post" action="">
+                                                        {% csrf_token %}
+                                                        <input type="hidden" name="package_id" value="{{ role_package.package.id }}">
+                                                        <button type="submit" name="delete_package" 
+                                                                class="bg-red-500 text-white px-4 py-2 rounded">
+                                                            Delete
+                                                        </button>
+                                                    </form>
+                                                </td>
+                                            </tr>
+                                        {% empty %}
+                                            <tr>
+                                                <td colspan="5" class="px-4 py-2 text-center border">No packages assigned to this role.</td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
                 </div>
+
             </div>
         </div>
     </html>
 </body>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const systemSelect = document.getElementById("systemSelect");
+        const packageSelect = document.getElementById("packageSelect");
+        const subPackageSelect = document.getElementById("subPackageSelect");
+        const subPackage2Select = document.getElementById("subPackage2Select");
+    
+        // Fetch packages when system changes
+        systemSelect.addEventListener("change", function () {
+            fetch(`/get-packages/${systemSelect.value}/`)
+                .then(response => response.json())
+                .then(data => {
+                    packageSelect.innerHTML = '<option value="">-- Select Package --</option>';
+                    data.forEach(pkg => {
+                        packageSelect.innerHTML += `<option value="${pkg.id}">${pkg.name}</option>`;
+                    });
+                });
+        });
+    
+        // Fetch subpackages when package changes
+        packageSelect.addEventListener("change", function () {
+            fetch(`/get-subpackages/${packageSelect.value}/`)
+                .then(response => response.json())
+                .then(data => {
+                    subPackageSelect.innerHTML = '<option value="">-- Select Sub Package --</option>';
+                    data.forEach(subpkg => {
+                        subPackageSelect.innerHTML += `<option value="${subpkg.id}">${subpkg.name}</option>`;
+                    });
+                });
+        });
+    
+        // Fetch subpackage_2 when subpackage changes
+        subPackageSelect.addEventListener("change", function () {
+            fetch(`/get-subpackage-2/${subPackageSelect.value}/`)
+                .then(response => response.json())
+                .then(data => {
+                    subPackage2Select.innerHTML = '<option value="">-- Select Sub Package 2 --</option>';
+                    data.forEach(subpkg2 => {
+                        subPackage2Select.innerHTML += `<option value="${subpkg2.id}">${subpkg2.name}</option>`;
+                    });
+                });
+        });
+    });
+    </script>
 {% endblock %}

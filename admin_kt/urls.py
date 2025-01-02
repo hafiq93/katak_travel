@@ -17,7 +17,9 @@ urlpatterns = [
     path('roles/', views.user_roles, name='user_roles'),
     
     path('roles_permission/', views.roles_permission, name='user_roles_permission'),
-    path('roles_permission/edit', views.edit_roles_permission, name='edit_roles_permission'),
+    path('roles_permission/edit/<int:role_id>/', views.edit_roles_and_packages, name='edit_roles_permission'),
+
+    # path('get-packages-by-system/<int:system_id>/', views.get_packages_by_system, name='get_packages_by_system'),
 
     path('roles/list', views.list_roles, name='list_roles'),
     path('roles/edit', views.edit_role, name='edit_role'),
@@ -79,6 +81,6 @@ urlpatterns = [
 
     path('sales/dashboard', views.sales_dashboard, name='sales_dashboard'),
     # ////////////////////////////////////////////
-
+   
 
 ]
