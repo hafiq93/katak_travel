@@ -146,47 +146,47 @@
     </html>
 </body>
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const systemSelect = document.getElementById("systemSelect");
-        const packageSelect = document.getElementById("packageSelect");
-        const subPackageSelect = document.getElementById("subPackageSelect");
-        const subPackage2Select = document.getElementById("subPackage2Select");
-    
-        // Fetch packages when system changes
-        systemSelect.addEventListener("change", function () {
-            fetch(`/get-packages/${systemSelect.value}/`)
-                .then(response => response.json())
-                .then(data => {
-                    packageSelect.innerHTML = '<option value="">-- Select Package --</option>';
-                    data.forEach(pkg => {
-                        packageSelect.innerHTML += `<option value="${pkg.id}">${pkg.name}</option>`;
-                    });
+   document.addEventListener("DOMContentLoaded", function () {
+    const systemSelect = document.getElementById("systemSelect");
+    const packageSelect = document.getElementById("packageSelect");
+    const subPackageSelect = document.getElementById("subPackageSelect");
+    const subPackage2Select = document.getElementById("subPackage2Select");
+
+    // Fetch packages when system changes
+    systemSelect.addEventListener("change", function () {
+        fetch(`/api/get-packages/${systemSelect.value}/`)  // Adjusted path here
+            .then(response => response.json())
+            .then(data => {
+                packageSelect.innerHTML = '<option value="">-- Select Package --</option>';
+                data.forEach(pkg => {
+                    packageSelect.innerHTML += `<option value="${pkg.id}">${pkg.name}</option>`;
                 });
-        });
-    
-        // Fetch subpackages when package changes
-        packageSelect.addEventListener("change", function () {
-            fetch(`/get-subpackages/${packageSelect.value}/`)
-                .then(response => response.json())
-                .then(data => {
-                    subPackageSelect.innerHTML = '<option value="">-- Select Sub Package --</option>';
-                    data.forEach(subpkg => {
-                        subPackageSelect.innerHTML += `<option value="${subpkg.id}">${subpkg.name}</option>`;
-                    });
-                });
-        });
-    
-        // Fetch subpackage_2 when subpackage changes
-        subPackageSelect.addEventListener("change", function () {
-            fetch(`/get-subpackage-2/${subPackageSelect.value}/`)
-                .then(response => response.json())
-                .then(data => {
-                    subPackage2Select.innerHTML = '<option value="">-- Select Sub Package 2 --</option>';
-                    data.forEach(subpkg2 => {
-                        subPackage2Select.innerHTML += `<option value="${subpkg2.id}">${subpkg2.name}</option>`;
-                    });
-                });
-        });
+            });
     });
+
+    // Fetch subpackages when package changes
+    packageSelect.addEventListener("change", function () {
+        fetch(`/api/get-subpackages/${packageSelect.value}/`)  // Adjusted path here
+            .then(response => response.json())
+            .then(data => {
+                subPackageSelect.innerHTML = '<option value="">-- Select Sub Package --</option>';
+                data.forEach(subpkg => {
+                    subPackageSelect.innerHTML += `<option value="${subpkg.id}">${subpkg.name}</option>`;
+                });
+            });
+    });
+
+    // Fetch subpackage_2 when subpackage changes
+    subPackageSelect.addEventListener("change", function () {
+        fetch(`/api/get-subpackage-2/${subPackageSelect.value}/`)  // Adjusted path here
+            .then(response => response.json())
+            .then(data => {
+                subPackage2Select.innerHTML = '<option value="">-- Select Sub Package 2 --</option>';
+                data.forEach(subpkg2 => {
+                    subPackage2Select.innerHTML += `<option value="${subpkg2.id}">${subpkg2.name}</option>`;
+                });
+            });
+    });
+});
     </script>
 {% endblock %}
