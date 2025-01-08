@@ -15,6 +15,9 @@ urlpatterns = [
     path('user/dashboard', views.user_dashboard, name='user_dashboard'),
     path('profile/<int:user_id>/', views.user_profile, name='user_profile'),
     path('roles/', views.user_roles, name='user_roles'),
+    path('roles/details/<int:role_id>/', views.user_roles_details, name='user_roles_details'),
+    path('roles/details/<int:role_id>/<int:user_id>/', views.user_roles_details, name='user_roles_details_with_user'),
+    path('get-user-details/<int:user_id>/', views.get_user_details, name='get_user_details'),
     
     path('roles_permission/', views.roles_permission, name='user_roles_permission'),
     path('roles_permission/edit/<int:role_id>/', views.edit_roles_and_packages, name='edit_roles_permission'),

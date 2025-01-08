@@ -15,6 +15,7 @@ import re
 from django.db.models import Q # Import the User model from user_kt app
 from django.core.paginator import Paginator
 from django.http import JsonResponse
+from collections import defaultdict
 
 def admin_required(user):
     return user.is_superuser or user.is_staff
@@ -557,14 +558,27 @@ def edit_roles_and_packages(request, role_id):
     # Fetch data for dropdowns
     systems = System.objects.all()
     available_packages = Package.objects.all()
-    assigned_packages = RolePackage.objects.select_related("package").all()
 
-    # Pass role object to template context
+    # Group assigned packages by system
+    assigned_packages_by_system = (
+        RolePackage.objects.filter(role=role)
+        .select_related("package__system")
+        .order_by("package__system__name")
+    )
+
+    # Group packages by their system
+    grouped_packages = {}
+    for rp in assigned_packages_by_system:
+        system_name = rp.package.system.name if rp.package.system else "No System"
+        if system_name not in grouped_packages:
+            grouped_packages[system_name] = []
+        grouped_packages[system_name].append(rp)
+
     context = {
-        "role": role,  # Make sure role is passed to template
+        "role": role,
         "available_systems": systems,
         "available_packages": available_packages,
-        "assigned_packages": assigned_packages,
+        "grouped_packages": grouped_packages,
     }
 
     return render(request, "admin_kt/user_edit_rnp.html", context)
@@ -590,26 +604,111 @@ def fetch_related_data(request):
 # //////////////////////////////////////////////////////////////////////////////////
 @user_passes_test(admin_required, login_url='/login/')
 def user_roles(request):
-    # Fetch all users with their roles and permissions
-    users = User.objects.prefetch_related('user_roles__role__role_permissions__permission')
+    users = User.objects.prefetch_related('user_roles__role__role_packages__package__system').all()
+    roles = Roles.objects.all()
 
-    # Prepare data structure
+    if request.method == "POST":
+        user_id = request.POST.get("user")
+        role_id = request.POST.get("role")
+
+        try:
+            # Retrieve the user and role objects
+            user = User.objects.get(id=user_id)
+            role = Roles.objects.get(id=role_id)
+
+            # Create or update the UserRole relationship
+            UserRole.objects.get_or_create(user=user, role=role)
+
+        except User.DoesNotExist:
+            messages.error(request, "Selected user does not exist.")
+        except Roles.DoesNotExist:
+            messages.error(request, "Selected role does not exist.")
+        except Exception as e:
+            messages.error(request, f"An error occurred: {e}")
+
+        # Redirect to the same page to prevent resubmission
+        return redirect("user_roles")
+
     user_data = []
     for user in users:
-        roles = user.user_roles.all()
-        role_permissions = {
-            role.role.role_name: [rp.permission.permission_name for rp in role.role.role_permissions.all()]
-            for role in roles
-        }
+        roles_for_user = user.user_roles.all()
+        roles_packages = []
+
+        for role in roles_for_user:
+            system_packages = {}
+            for role_package in role.role.role_packages.all():
+                system_name = role_package.package.system.name if role_package.package.system else "No System"
+                if system_name not in system_packages:
+                    system_packages[system_name] = []
+                system_packages[system_name].append(role_package.package.name)
+
+            roles_packages.append({
+                'role_id': role.role.id,
+                'role_name': role.role.role_name,
+                'system_packages': system_packages,
+            })
+
         user_data.append({
             'user': user,
-            'roles_permissions': role_permissions,
+            'roles_packages': roles_packages,
         })
 
     context = {
         'user_data': user_data,
+        'users': users,
+        'roles': roles,
     }
     return render(request, 'admin_kt/user_roles.html', context)
+
+
+
+
+@user_passes_test(admin_required, login_url='/login/')
+def user_roles_details(request, role_id, user_id):
+    role = get_object_or_404(Roles, id=role_id)
+    grouped_packages = {}
+
+    # Group packages by their systems
+    for role_package in role.role_packages.select_related('package', 'package__system').all():
+        package = role_package.package
+        system_name = package.system.name if package.system else "No System"
+
+        # Fetch sub-packages and sub-package 2
+        sub_packages = package.sub_packages.all()
+        package_data = {
+            "package_name": package.name,
+            "sub_packages": [
+                {
+                    "name": sub_package.name,
+                    "sub_packages_2": list(sub_package.sub_packages_2.all()),
+                }
+                for sub_package in sub_packages
+            ],
+        }
+
+        if system_name not in grouped_packages:
+            grouped_packages[system_name] = []
+        grouped_packages[system_name].append(package_data)
+
+    context = {
+        'role': role,
+        'grouped_packages': grouped_packages,
+    }
+
+    return render(request, 'admin_kt/user_role_details.html', context)
+
+
+
+
+@user_passes_test(admin_required, login_url='/login/')
+def get_user_details(request, user_id):
+    user = get_object_or_404(User, id=user_id)
+    roles = [role.role_name for role in user.user_roles.all()]  # Adjust based on your models
+    return JsonResponse({
+        'name': user.username,
+        'email': user.email,
+        'roles': roles,
+    })
 # /////////////////////////////////////////////////////////////////////////////////////////////////////
 
 @user_passes_test(admin_required, login_url='/login/')

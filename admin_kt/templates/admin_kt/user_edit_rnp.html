@@ -55,7 +55,6 @@
                                 <p class="text-lg font-semibold border-2 rounded px-4 py-2 w-full mb-4 bg-gray-200" disabled>{{ role.no_siri }} : {{ role.role_name }}</p>
                             </div>
 
-                            <!-- Select System -->
                             <form method="POST" action="{% url 'edit_roles_permission' role.id %}">
                                 {% csrf_token %}
                                 <div>
@@ -67,78 +66,115 @@
                                         {% endfor %}
                                     </select>
                                 </div>
-                                <div>
+                            
+                                <!-- Select Package -->
+                                <div id="packageDiv" class="hidden">
                                     <h3 class="text-lg font-semibold mb-2">Select Package</h3>
                                     <select id="packageSelect" name="package" class="border rounded px-4 py-2 w-full mb-4"></select>
                                 </div>
-                                <div>
+                            
+                                <!-- Select Sub Package -->
+                                <div id="subPackageDiv" class="hidden">
                                     <h3 class="text-lg font-semibold mb-2">Select Sub Package</h3>
                                     <select id="subPackageSelect" name="subpackage" class="border rounded px-4 py-2 w-full mb-4"></select>
                                 </div>
-                                <div>
+                            
+                                <!-- Select Sub Package 2 -->
+                                <div id="subPackage2Div" class="hidden">
                                     <h3 class="text-lg font-semibold mb-2">Select Sub Package 2</h3>
                                     <select id="subPackage2Select" name="subpackage_2" class="border rounded px-4 py-2 w-full mb-4"></select>
                                 </div>
-                                <button type="submit" name="add_package" class="bg-green-500 text-white px-4 py-2 rounded w-full">
+                            
+                                <button type="submit" name="add_package" value="add_package" class="bg-green-500 text-white px-4 py-2 rounded w-full">
                                     Add Package
                                 </button>
                             </form>
                         
                             <!-- Assigned Packages -->
+                            <!-- Assigned Packages -->
                             <div class="mb-6">
-                                <h3 class="text-lg font-semibold mb-2">Assigned Packages</h3>
-                                <table class="min-w-full table-auto border bg-white shadow-md rounded-md">
-                                    <thead>
-                                        <tr class="bg-gray-100">
-                                            <th class="px-4 py-2 text-left font-semibold border">No.</th>
-                                            <th class="px-4 py-2 text-left font-semibold border">Package Name</th>
-                                            <th class="px-4 py-2 text-left font-semibold border">Sub Package Name</th>
-                                            <th class="px-4 py-2 text-left font-semibold border">Sub Package 2 Name</th>
-                                            <th class="px-4 py-2 text-center font-semibold border">Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {% for role_package in assigned_packages %}
-                                            <tr class="border-b">
-                                                <td class="px-4 py-2 border">{{ forloop.counter }}</td>
-                                                <td class="px-4 py-2 border">{{ role_package.package.name }}</td>
-                                                <td class="px-4 py-2 border">
-                                                    {% for sub_package in role_package.package.sub_packages.all %}
-                                                        {{ sub_package.name }}{% if not forloop.last %}, {% endif %}
-                                                    {% empty %}
-                                                        None
+                                <div>
+                                    <!-- Tabs -->
+                                    <div class="mb-4">
+                                        <ul class="flex border-b">
+                                            {% for system_name in grouped_packages.keys %}
+                                                <li class="mr-1">
+                                                    <a href="#tab-{{ forloop.counter }}" 
+                                                       class="tab-link bg-white inline-block py-2 px-4 text-blue-500 hover:text-blue-800 font-semibold"
+                                                       data-tab="tab-{{ forloop.counter }}">
+                                                        {{ system_name }}
+                                                    </a>
+                                                </li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                            
+                                    <!-- Tab Contents -->
+                                    {% for system_name, role_packages in grouped_packages.items %}
+                                        <div id="tab-{{ forloop.counter }}" 
+                                             class="tab-content {% if forloop.first %}block{% else %}hidden{% endif %}">
+                                            <h3 class="text-lg font-semibold mb-2">{{ system_name }}</h3>
+                                            <table class="min-w-full table-auto border bg-white shadow-md rounded-md">
+                                                <thead>
+                                                    <tr class="bg-green-700 text-white">
+                                                        <th class="px-2 py-2 text-center font-semibold border w-12">No.</th>
+                                                        <th class="px-4 py-2 text-center font-semibold border w-1/5">Package Name</th>
+                                                        <th class="px-4 py-2 text-center font-semibold border w-1/5">Sub Package Name</th>
+                                                        <th class="px-4 py-2 text-center font-semibold border w-2/5">Sub Package 2 Name</th>
+                                                        <th class="px-2 py-2 text-center font-semibold border w-16">Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% for role_package in role_packages %}
+                                                        <tr class="border-b">
+                                                            <td class="px-4 py-2 border text-center">{{ forloop.counter }}</td>
+                                                            <td class="px-4 py-2 border">{{ role_package.package.name }}</td>
+                                                            <td class="px-4 py-2 border">
+                                                                {% for sub_package in role_package.package.sub_packages.all %}
+                                                                    <div class="py-2">
+                                                                        <i class="fa-solid fa-circle-check text-white bg-green-500 rounded-full p-1 mr-2"></i>
+                                                                        {{ sub_package.name }}
+                                                                    </div>
+                                                                {% endfor %}
+                                                            </td>
+                                                            <td class="px-4 py-2 border">
+                                                                {% for sub_package in role_package.package.sub_packages.all %}
+                                                                    <div class="flex items-center flex-wrap">
+                                                                        {% for sub_package_2 in sub_package.sub_packages_2.all %}
+                                                                            <div class="flex items-center py-1 mr-4">
+                                                                                <i class="fa-solid fa-circle-check text-white bg-green-500 rounded-full p-1 mr-2"></i>
+                                                                                {{ sub_package_2.name }}
+                                                                            </div>
+                                                                        {% endfor %}
+                                                                    </div>
+                                                                {% endfor %}
+                                                            </td>
+                                                            <td class="px-4 py-2 border text-center">
+                                                                <form method="post" action="">
+                                                                    {% csrf_token %}
+                                                                    <input type="hidden" name="package_id" value="{{ role_package.package.id }}">
+                                                                    <button type="submit" name="delete_package" class="bg-red-500 text-white px-4 py-2 rounded font-semibold items-center">
+                                                                        <i class="fa-solid fa-trash-can mr-2"></i> Delete
+                                                                    </button>
+                                                                </form>
+                                                            </td>
+                                                        </tr>
                                                     {% endfor %}
-                                                </td>
-                                                <td class="px-4 py-2 border">
-                                                    {% for sub_package in role_package.package.sub_packages.all %}
-                                                        {% for sub_package_2 in sub_package.sub_packages_2.all %}
-                                                            {{ sub_package_2.name }}{% if not forloop.last %}, {% endif %}
-                                                        {% empty %}
-                                                            None
-                                                        {% endfor %}
-                                                    {% endfor %}
-                                                </td>
-                                                <td class="px-4 py-2 border text-center">
-                                                    <form method="post" action="">
-                                                        {% csrf_token %}
-                                                        <input type="hidden" name="package_id" value="{{ role_package.package.id }}">
-                                                        <button type="submit" name="delete_package" 
-                                                                class="bg-red-500 text-white px-4 py-2 rounded">
-                                                            Delete
-                                                        </button>
-                                                    </form>
-                                                </td>
-                                            </tr>
-                                        {% empty %}
-                                            <tr>
-                                                <td colspan="5" class="px-4 py-2 text-center border">No packages assigned to this role.</td>
-                                            </tr>
-                                        {% endfor %}
-                                    </tbody>
-                                </table>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    {% endfor %}
+                                </div>
                             </div>
+                            <div class="justify-start flex">
+                            <a href="{% url 'user_roles_permission' %}" class="bg-red-500 text-white px-4 py-2 rounded flex items-center font-semibold">
+                                <i class="fa-solid fa-arrow-left mr-2"></i> Back
+                            </a>
+                            
+                        </div>
                         </div>
                     </div>
+                   
                 </div>
 
             </div>
@@ -146,47 +182,107 @@
     </html>
 </body>
 <script>
-   document.addEventListener("DOMContentLoaded", function () {
-    const systemSelect = document.getElementById("systemSelect");
-    const packageSelect = document.getElementById("packageSelect");
-    const subPackageSelect = document.getElementById("subPackageSelect");
-    const subPackage2Select = document.getElementById("subPackage2Select");
+    document.addEventListener("DOMContentLoaded", function () {
+        const systemSelect = document.getElementById("systemSelect");
+        const packageSelect = document.getElementById("packageSelect");
+        const subPackageSelect = document.getElementById("subPackageSelect");
+        const subPackage2Select = document.getElementById("subPackage2Select");
+        
+        // Div elements
+        const packageDiv = document.getElementById("packageDiv");
+        const subPackageDiv = document.getElementById("subPackageDiv");
+        const subPackage2Div = document.getElementById("subPackage2Div");
 
-    // Fetch packages when system changes
-    systemSelect.addEventListener("change", function () {
-        fetch(`/api/get-packages/${systemSelect.value}/`)  // Adjusted path here
-            .then(response => response.json())
-            .then(data => {
-                packageSelect.innerHTML = '<option value="">-- Select Package --</option>';
-                data.forEach(pkg => {
-                    packageSelect.innerHTML += `<option value="${pkg.id}">${pkg.name}</option>`;
-                });
-            });
-    });
+        // Fetch packages when system changes
+        systemSelect.addEventListener("change", function () {
+            if (systemSelect.value) {
+                packageDiv.classList.remove("hidden"); // Show package select
+                fetch(`/api/get-packages/${systemSelect.value}/`)
+                    .then(response => response.json())
+                    .then(data => {
+                        packageSelect.innerHTML = '<option value="">-- Select Package --</option>';
+                        data.forEach(pkg => {
+                            packageSelect.innerHTML += `<option value="${pkg.id}">${pkg.name}</option>`;
+                        });
+                    });
+            } else {
+                packageDiv.classList.add("hidden"); // Hide package select
+                subPackageDiv.classList.add("hidden"); // Hide subpackage select
+                subPackage2Div.classList.add("hidden"); // Hide subpackage2 select
+            }
+        });
 
-    // Fetch subpackages when package changes
-    packageSelect.addEventListener("change", function () {
-        fetch(`/api/get-subpackages/${packageSelect.value}/`)  // Adjusted path here
-            .then(response => response.json())
-            .then(data => {
-                subPackageSelect.innerHTML = '<option value="">-- Select Sub Package --</option>';
-                data.forEach(subpkg => {
-                    subPackageSelect.innerHTML += `<option value="${subpkg.id}">${subpkg.name}</option>`;
-                });
-            });
-    });
+        // Fetch subpackages when package changes
+        packageSelect.addEventListener("change", function () {
+            if (packageSelect.value) {
+                subPackageDiv.classList.remove("hidden"); // Show subpackage select
+                fetch(`/api/get-subpackages/${packageSelect.value}/`)
+                    .then(response => response.json())
+                    .then(data => {
+                        subPackageSelect.innerHTML = '<option value="">-- Select Sub Package --</option>';
+                        data.forEach(subpkg => {
+                            subPackageSelect.innerHTML += `<option value="${subpkg.id}">${subpkg.name}</option>`;
+                        });
+                    });
+            } else {
+                subPackageDiv.classList.add("hidden"); // Hide subpackage select
+                subPackage2Div.classList.add("hidden"); // Hide subpackage2 select
+            }
+        });
 
-    // Fetch subpackage_2 when subpackage changes
-    subPackageSelect.addEventListener("change", function () {
-        fetch(`/api/get-subpackage-2/${subPackageSelect.value}/`)  // Adjusted path here
-            .then(response => response.json())
-            .then(data => {
-                subPackage2Select.innerHTML = '<option value="">-- Select Sub Package 2 --</option>';
-                data.forEach(subpkg2 => {
-                    subPackage2Select.innerHTML += `<option value="${subpkg2.id}">${subpkg2.name}</option>`;
-                });
-            });
+        // Fetch subpackage_2 when subpackage changes
+        subPackageSelect.addEventListener("change", function () {
+            if (subPackageSelect.value) {
+                subPackage2Div.classList.remove("hidden"); // Show subpackage2 select
+                fetch(`/api/get-subpackage-2/${subPackageSelect.value}/`)
+                    .then(response => response.json())
+                    .then(data => {
+                        subPackage2Select.innerHTML = '<option value="">-- Select Sub Package 2 --</option>';
+                        data.forEach(subpkg2 => {
+                            subPackage2Select.innerHTML += `<option value="${subpkg2.id}">${subpkg2.name}</option>`;
+                        });
+                    });
+            } else {
+                subPackage2Div.classList.add("hidden"); // Hide subpackage2 select
+            }
+        });
     });
-});
-    </script>
+</script>
+
+<script>
+    // JavaScript to handle tab switching
+    document.addEventListener("DOMContentLoaded", function () {
+        const tabs = document.querySelectorAll(".tab-link");
+        const tabContents = document.querySelectorAll(".tab-content");
+
+        tabs.forEach(tab => {
+            tab.addEventListener("click", function (event) {
+                event.preventDefault();
+
+                // Get the target tab ID
+                const targetTab = this.getAttribute("data-tab");
+
+                // Hide all tab contents
+                tabContents.forEach(content => {
+                    content.classList.add("hidden");
+                    content.classList.remove("block");
+                });
+
+                // Remove active styles from all tabs
+                tabs.forEach(item => {
+                    item.classList.remove("bg-green-500", "text-white");
+                    item.classList.add("text-blue-500");
+                });
+
+                // Show the selected tab content
+                document.getElementById(targetTab).classList.remove("hidden");
+                document.getElementById(targetTab).classList.add("block");
+
+                // Add active styles to the selected tab
+                this.classList.remove("text-blue-500");
+                this.classList.add("bg-green-700", "text-green-500");
+            });
+        });
+    });
+</script>
 {% endblock %}
