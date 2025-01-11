@@ -2,6 +2,7 @@ from django.contrib.auth.decorators import user_passes_test
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Package, PackageItem, PackageType, Location
 from admin_kt.models import MerchantType
+from user_kt.models import User
 from django.utils import timezone
 from django.contrib import messages
 from django.shortcuts import redirect
@@ -20,6 +21,8 @@ def pack_list_add(request, id=None):
         description = request.POST.get('description', '')
         start_date = request.POST.get('start_date')
         end_date = request.POST.get('end_date')
+
+        user_pic = request.user  # Set the user who created the package
 
         location_country = request.POST.get('location')  # Get country (location)
         city_name = request.POST.get('city')  # City
@@ -44,6 +47,7 @@ def pack_list_add(request, id=None):
                 package.description = description
                 package.start_date = start_date
                 package.end_date = end_date
+                package.user_pic = user_pic  # Ensure this is set during update
                 package.save()
                 messages.success(request, 'Package updated successfully!')
             else:  # Create a new package
@@ -56,6 +60,7 @@ def pack_list_add(request, id=None):
                     description=description,
                     start_date=start_date,
                     end_date=end_date,
+                    user_pic=user_pic,  # Set the user who created the package
                 )
                 messages.success(request, 'Package added successfully!')
             
@@ -126,4 +131,6 @@ def pack_list_add_items(request, package_id):
 def pack_merchant(request, id):
     package = get_object_or_404(Package, id=id)  # Fetch the package using the id
     merchant_types = MerchantType.objects.all()  # Get all merchant types
-    return render(request, 'pack_list_kt/package_merchant.html', {'package': package, 'merchant_types': merchant_types})
+    user_pic = request.user  # If you want the logged-in user
+    return render(request, 'pack_list_kt/package_merchant.html', {
+        'package': package, 'merchant_types': merchant_types,'user_pic': user_pic,})

@@ -1,9 +1,11 @@
 # D:\Work\katak_travel\pack_list_kt\models.py
 from django.db import models
 from admin_kt.models import Location
+from user_kt.models import User
 from django.utils import timezone
 from datetime import timedelta
 from datetime import datetime
+
 
 class Location(models.Model):
     country = models.CharField(max_length=100)
@@ -33,10 +35,13 @@ class Package(models.Model):
     name = models.CharField(max_length=100)
     location = models.ForeignKey(Location, on_delete=models.CASCADE)
     city = models.CharField(max_length=100, blank=True, null=True)  # New city field
+
+    user_pic = models.ForeignKey(User, on_delete=models.CASCADE,null=True, blank=True)
     
     # Minimum and Maximum Pax
     min_pax = models.PositiveIntegerField(default=1,blank=True, null=True)
     max_pax = models.PositiveIntegerField(blank=True, null=True)
+    
 
     person = models.CharField(max_length=100, blank=True, null=True)
     description = models.TextField()
