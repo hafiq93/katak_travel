@@ -88,17 +88,31 @@ class RoomFacilities(models.Model):
 
 # use for view from room
 class RoomView(models.Model):
-    type_name = models.CharField(max_length=100)  # 'wifi.private pool,bathtub'
+    type_name = models.CharField(max_length=100)  
 
     def __str__(self):
         return self.type_name
 
 # use for bed room
 class RoomBed(models.Model):
-    type_name = models.CharField(max_length=100)  # 'wifi.private pool,bathtub'
+    type_name = models.CharField(max_length=100) 
 
     def __str__(self):
         return self.type_name
 
 # //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+class Location(models.Model):
+    city = models.CharField(max_length=100)
+    country = models.CharField(max_length=100)
+    latitude = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
+    longitude = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
 
+    def __str__(self):
+        return f"{self.city}, {self.country}"
+# ////////////////////////////////////////////////////////////////////////////////
+class MerchantType(models.Model):
+    name = models.CharField(max_length=50, unique=True)
+    icon_class = models.CharField(max_length=100, blank=True, null=True)
+
+    def __str__(self):
+        return self.name

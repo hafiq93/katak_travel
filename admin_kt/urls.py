@@ -34,6 +34,7 @@ urlpatterns = [
     # package
       path('package/', views.package_list, name='package_list'),
       path('package/dashboard', views.package_dashboard, name='package_dashboard'),
+      path('package/delete/<int:id>/', views.delete_package, name='delete_package'),
     # ////////////////////////////////////////////////////////////////////////////
 
    path('merchant/dashboard', views.merhotel_dashboard, name='merhotel_dashboard'),

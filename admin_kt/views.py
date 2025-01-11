@@ -16,6 +16,8 @@ from django.db.models import Q # Import the User model from user_kt app
 from django.core.paginator import Paginator
 from django.http import JsonResponse
 from collections import defaultdict
+from pack_list_kt.models import Package
+from django.contrib import messages
 
 def admin_required(user):
     return user.is_superuser or user.is_staff
@@ -108,8 +110,16 @@ def package_dashboard(request):
 @login_required(login_url='/login/')
 @user_passes_test(lambda u: u.is_staff, login_url='/login/')
 def package_list(request):
-    # Your dashboard view logic
-    return render(request, 'admin_kt/package_list.html')
+    packages = Package.objects.all()  # Assuming you're fetching all packages
+    return render(request, 'admin_kt/package_list.html', {'packages': packages})
+
+def delete_package(request, id):
+    package = get_object_or_404(Package, id=id)
+    if request.method == 'POST':
+        package.delete()
+        messages.success(request, 'Package deleted successfully.')
+        return redirect('package_list')  # Redirect to the package list page
+    return redirect('package_list')
 
 # ////////////////////////////////////////////////////////////////////////////////////////
 

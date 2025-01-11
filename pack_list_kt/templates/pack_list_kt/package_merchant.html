@@ -1,0 +1,238 @@
+{% block content %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'src/styles.css' %}">
+<html>
+    
+     <!-- Include the header -->
+     {% include 'base_kt/admin_header.html' %}
+
+     <body>
+        <div class="flex h-screen">
+            <!-- Main Content -->
+            <div class="p-4 bg-gray-100 w-full">
+                <!-- First Row (Metrics in One Row) -->
+                <div class="rounded-md">
+                    <div class="bg-white p-6 rounded-lg shadow-lg w-full ">
+                        <h2 class="text-2xl font-bold mb-4">Add Package</h2>
+                        
+                         <!-- Add Hotel Form -->
+                         <form method="POST" action="">
+                            {% csrf_token %}
+                            <div class="mb-4">
+                                <label for="name" class="block text-gray-700 font-semibold">Package Name:</label>
+                                <input type="text" id="name" name="name" value="{{ package.name }}" required class="mt-1 p-2 border border-gray-300 bg-gray-100 rounded w-full" readonly>
+                            </div>
+
+                           
+                            <div class="mb-4">
+                                <label for="merchant" class="block text-gray-700 font-semibold">Merchant Involve:</label>
+                            
+                                <div id="merchant-container">
+                                    <!-- Input Row -->
+                                    <div class="grid grid-cols-2 gap-2 mt-1 items-center merchant-row">
+                                        <!-- Merchant/Hotel Name -->
+                                        <input type="text" name="merchant[]" placeholder="Merchant/Hotel Name" required
+                                               class="p-2 border border-gray-300 rounded w-full">
+                                        
+                                        <!-- Type Selection -->
+                                        <select name="merchant_type[]" required class="p-2 border border-gray-300 rounded w-full type-selector">
+                                            <option value="">Select Type</option>
+                                            {% for merchant_type in merchant_types %}
+                                                <option value="{{ merchant_type.name }}">
+                                                    {% if merchant_type.icon_image %}
+                                                        <img src="{{ merchant_type.icon_image.url }}" alt="{{ merchant_type.name }}" width="20" height="20">
+                                                    {% endif %}
+                                                    {{ merchant_type.name }}
+                                                </option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                            
+                                   
+                               
+                            
+                                    <!-- Price & Commission Row -->
+                                    <!-- <div class="grid grid-cols-4 gap-2 mt-1 items-center merchant-row"> -->
+                                        <!-- Selling Price -->
+                                        <!-- <input type="number" name="selling_price[]" placeholder="Selling Price" required
+                                               class="p-2 border border-gray-300 rounded w-full selling-price"> -->
+                            
+                                        <!-- Agent Price -->
+                                        <!-- <input type="number" name="agent_price[]" placeholder="Agent Price" required
+                                               class="p-2 border border-gray-300 rounded w-full agent-price">
+                             -->
+                                        <!-- Commission (%) -->
+                                        <!-- <input type="text" name="commission[]" placeholder="Commission (%)" readonly
+                                               class="p-2 border border-gray-300 rounded w-full commission-percentage bg-gray-100"> -->
+                            
+                                        <!-- Delete Button -->
+                                        <button type="button" class="p-2 bg-red-500 text-white rounded delete-merchant">Delete</button>
+                                    </div>
+                            
+                                    <!-- Add Button -->
+                                    <button type="button" class="mt-2 p-2 bg-green-500 text-white rounded add-merchant">Add</button>
+                                </div>
+                            </div>
+                        
+            
+                        
+                            <div class="flex justify-between mt-6">
+                                <a href="{% if package and package.id %}{% url 'pack_list_add' id=package.id %}{% else %}{% url 'pack_list_add' %}{% endif %}" class="bg-red-700 text-white px-4 py-2 rounded hover:bg-red-600 mr-2 font-semibold inline-flex items-center">
+                                    <i class="fas fa-arrow-left mr-2"></i> <!-- Font Awesome cancel icon -->
+                                    Back
+                                </a>
+                        
+                                <div class="flex space-x-2">
+                                    <!-- Submit Button with Icon -->
+                                    <button type="submit" class="bg-blue-700 text-white px-4 py-2 rounded hover:bg-blue-600 font-semibold inline-flex items-center">
+                                        <i class="fas fa-paper-plane mr-2"></i> <!-- Submit icon -->
+                                        Submit
+                                    </button>
+                                    
+                                    <!-- Next Button with Right Arrow Icon -->
+                                    <a href="" class="bg-green-700 text-white px-4 py-2 rounded hover:bg-green-600 font-semibold inline-flex items-center">
+                                        Next
+                                        <i class="fas fa-arrow-right ml-2"></i> <!-- Right arrow icon -->
+                                    </a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+    const container = document.getElementById('merchant-container');
+
+    // Auto-calculate Commission
+    function calculateCommission(row) {
+        const sellingPrice = parseFloat(row.querySelector('.selling-price').value);
+        const agentPrice = parseFloat(row.querySelector('.agent-price').value);
+        const commissionField = row.querySelector('.commission-percentage');
+
+        if (sellingPrice && agentPrice && sellingPrice > 0) {
+            const commissionPercent = ((sellingPrice - agentPrice) / sellingPrice) * 100;
+            commissionField.value = commissionPercent.toFixed(2) + '%';
+        } else {
+            commissionField.value = '';
+        }
+    }
+
+    // Handle Type Change to Show Room Type or Category
+    function handleTypeChange(typeSelect) {
+        const row = typeSelect.closest('.merchant-row').parentElement;
+        const roomTypeDropdown = row.querySelector('.room-type');
+        const merchantCategoryDropdown = row.querySelector('.merchant-category');
+        const bedTypeDropdown = row.querySelector('.bed-type');
+
+        if (typeSelect.value === 'hotel') {
+            roomTypeDropdown.classList.remove('hidden');
+            merchantCategoryDropdown.classList.add('hidden');
+        } else if (typeSelect.value === 'merchant') {
+            merchantCategoryDropdown.classList.remove('hidden');
+            roomTypeDropdown.classList.add('hidden');
+            bedTypeDropdown.classList.add('hidden');  // Hide Bed Type for merchants
+        } else {
+            roomTypeDropdown.classList.add('hidden');
+            merchantCategoryDropdown.classList.add('hidden');
+            bedTypeDropdown.classList.add('hidden');
+        }
+    }
+
+    // Handle Room Type Change to Show Bed Type
+    function handleRoomTypeChange(roomTypeSelect) {
+        const row = roomTypeSelect.closest('.merchant-row').parentElement;
+        const bedTypeDropdown = row.querySelector('.bed-type');
+
+        if (roomTypeSelect.value !== '') {
+            bedTypeDropdown.classList.remove('hidden');
+        } else {
+            bedTypeDropdown.classList.add('hidden');
+        }
+    }
+
+    // Event delegation for dynamic behavior
+    container.addEventListener('input', function (event) {
+        if (event.target.classList.contains('selling-price') || event.target.classList.contains('agent-price')) {
+            const row = event.target.closest('.merchant-row');
+            calculateCommission(row);
+        }
+    });
+
+    container.addEventListener('change', function (event) {
+        if (event.target.classList.contains('type-selector')) {
+            handleTypeChange(event.target);
+        }
+
+        if (event.target.classList.contains('room-type')) {
+            handleRoomTypeChange(event.target);
+        }
+    });
+
+    // Add new row
+    document.querySelector('.add-merchant').addEventListener('click', function () {
+        const newRow = document.createElement('div');
+        newRow.innerHTML = `
+            <div class="grid grid-cols-2 gap-2 mt-2 items-center merchant-row">
+                <input type="text" name="merchant[]" placeholder="Merchant/Hotel Name" required
+                    class="p-2 border border-gray-300 rounded w-full">
+                <select name="merchant_type[]" required
+                    class="p-2 border border-gray-300 rounded w-full type-selector">
+                    <option value="">Select Type</option>
+                    <option value="merchant">Merchant</option>
+                    <option value="hotel">Hotel</option>
+                </select>
+            </div>
+            <div class="grid grid-cols-1 gap-2 mt-1 items-center">
+                <select name="room_type[]" class="p-2 border border-gray-300 rounded w-full room-type hidden">
+                    <option value="">Select Room Type</option>
+                    <option value="family">Family</option>
+                    <option value="single">Single</option>
+                    <option value="queen">Queen</option>
+                    <option value="king">King</option>
+                </select>
+
+                <select name="bed_type[]" class="p-2 border border-gray-300 rounded w-full bed-type hidden">
+                    <option value="">Select Bed Type</option>
+                    <option value="single">Single</option>
+                    <option value="queen">Queen</option>
+                    <option value="king">King</option>
+                </select>
+
+                <select name="merchant_category[]" class="p-2 border border-gray-300 rounded w-full merchant-category hidden">
+                    <option value="">Select Category</option>
+                    <option value="attraction">Attraction</option>
+                    <option value="bus">Bus</option>
+                    <option value="ferry">Ferry</option>
+                    <option value="flight">Flight</option>
+                    <option value="adventure">Adventure</option>
+                    <option value="car_rental">Car Rental</option>
+                </select>
+            </div>
+            <div class="grid grid-cols-4 gap-2 mt-1 items-center merchant-row">
+                <input type="number" name="selling_price[]" placeholder="Selling Price" required
+                    class="p-2 border border-gray-300 rounded w-full selling-price">
+                <input type="number" name="agent_price[]" placeholder="Agent Price" required
+                    class="p-2 border border-gray-300 rounded w-full agent-price">
+                <input type="text" name="commission[]" placeholder="Commission (%)" readonly
+                    class="p-2 border border-gray-300 rounded w-full commission-percentage bg-gray-100">
+                <button type="button" class="p-2 bg-red-500 text-white rounded delete-merchant">Delete</button>
+            </div>
+        `;
+        container.insertBefore(newRow, document.querySelector('.add-merchant'));
+    });
+
+    // Delete row
+    container.addEventListener('click', function (event) {
+        if (event.target.classList.contains('delete-merchant')) {
+            event.target.closest('.merchant-row').remove();
+        }
+    });
+});
+
+    </script>
+    
+{% endblock %}

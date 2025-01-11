@@ -1,0 +1,232 @@
+{% block content %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'src/styles.css' %}">
+<html>
+    
+     <!-- Include the header -->
+     {% include 'base_kt/admin_header.html' %}
+
+     <body>
+        <div class="flex h-screen">
+            <!-- Main Content -->
+            <div class="p-4 bg-gray-100 w-full">
+                <!-- First Row (Metrics in One Row) -->
+                <div class="rounded-md">
+                    <div class="bg-white p-6 rounded-lg shadow-lg w-full">
+                        <h2 class="text-2xl font-bold mb-4">Add Package</h2>
+                        
+                        <!-- Add Hotel Form -->
+                        <form method="POST" action="{% if package and package.id %}{% url 'pack_list_add' id=package.id %}{% else %}{% url 'pack_list_add' %}{% endif %}">
+                            {% csrf_token %}
+                            <!-- Package Name -->
+                            <div class="mb-4">
+                                <label for="hotel_name" class="block text-gray-700 font-semibold">Package Name:</label>
+                                <input type="text" id="hotel_name" name="hotel_name" 
+                                       value="{% if package %}{{ package.name }}{% else %}{% endif %}" 
+                                       required class="mt-1 p-2 border border-gray-300 rounded w-full">
+                            </div>
+                            
+                            <div class="mb-4 flex space-x-4">
+                                <!-- City Input -->
+                                <div class="flex-1">
+                                    <label for="city" class="block text-gray-700 font-semibold">City:</label>
+                                    <input type="text" id="city" name="city" 
+                                           value="{% if package %}{{ package.city }}{% else %}{% endif %}" 
+                                           required class="mt-1 p-2 border border-gray-300 rounded w-full" placeholder="Enter City">
+                                </div>
+                                
+                                <!-- Country Dropdown -->
+                                <div class="flex-1">
+                                    <label for="location" class="block text-gray-700 font-semibold">Country:</label>
+                                    <select id="location" name="location" required class="mt-1 p-2 border border-gray-300 rounded w-full">
+                                        <option value="">Select a Country</option>
+                                        {% for loc in locations %}
+                                            <option value="{{ loc.country }}" {% if loc.country == package.location.country %}selected{% endif %}>{{ loc.country }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <!-- Pax Range -->
+                            <div class="mb-4">
+                                <label class="block text-gray-700 font-semibold mb-1">Pax Range:</label>
+                                <div class="flex space-x-4">
+                                    <!-- Minimum Pax -->
+                                    <div class="w-1/2">
+                                        <input type="number" id="min_pax" name="min_pax" min="1" required 
+                                               value="{% if package %}{{ package.min_pax }}{% else %}{% endif %}"
+                                               placeholder="Min Pax" class="mt-1 p-2 border border-gray-300 rounded w-full">
+                                    </div>
+                                    
+                                    <!-- Maximum Pax -->
+                                    <div class="w-1/2">
+                                        <input type="number" id="max_pax" name="max_pax" min="1" required 
+                                               value="{% if package %}{{ package.max_pax }}{% else %}{% endif %}"
+                                               placeholder="Max Pax" class="mt-1 p-2 border border-gray-300 rounded w-full">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Package Duration -->
+                            <div class="mb-4">
+                                <label class="block text-gray-700 font-semibold mb-2">Package Duration:</label>
+                                <div class="flex items-center space-x-2">
+                                    <!-- Start Date -->
+                                    <input type="text" id="start_date" name="start_date" 
+                                           value="{% if package %}{{ package.start_date|date:'d/m/Y' }}{% else %}{% endif %}" 
+                                           placeholder="Start Date (dd/mm/yyyy)" required class="p-2 border border-gray-300 rounded w-1/3">
+                                    
+                                    <!-- End Date -->
+                                    <input type="text" id="end_date" name="end_date" 
+                                           value="{% if package %}{{ package.end_date|date:'d/m/Y' }}{% else %}{% endif %}" 
+                                           placeholder="End Date (dd/mm/yyyy)" required class="p-2 border border-gray-300 rounded w-1/3">
+                                    
+                                    <!-- Duration -->
+                                    <input type="text" id="duration" name="duration" placeholder="Duration (Days)" readonly 
+                                           value="{% if package %}{{ package.duration }} days {% else %}{% endif %}"
+                                           class="p-2 border border-gray-300 rounded w-1/3 bg-gray-100">
+                                           
+                                </div>
+                            </div>
+                            
+                            <!-- Submit and Cancel Buttons -->
+                            <div class="flex justify-between mt-6">
+                                <a href="{% url 'package_list' %}" class="bg-red-700 text-white px-4 py-2 rounded hover:bg-red-600 mr-2 font-semibold inline-flex items-center">
+                                    <i class="fas fa-times mr-2"></i> Cancel
+                                </a>
+                        
+                                <div class="flex space-x-2">
+                                    <button type="submit" class="bg-blue-700 text-white px-4 py-2 rounded hover:bg-blue-600 font-semibold inline-flex items-center">
+                                        <i class="fas fa-paper-plane mr-2"></i> Submit
+                                    </button>
+                                    
+                                    <a href="{% if package and package.id %}{% url 'pack_merchant' id=package.id %}{% else %}{% url 'package_list' %}{% endif %}" 
+                                    class="bg-green-700 text-white px-4 py-2 rounded hover:bg-green-600 font-semibold inline-flex items-center">
+                                        Next
+                                        <i class="fas fa-arrow-right ml-2"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </form>
+                    
+                        {% if messages %}
+                            {% for message in messages %}
+                                <div class="mt-2 p-3 rounded 
+                                    {% if message.tags == 'success' %}bg-green-100 text-green-700
+                                    {% elif message.tags == 'error' %}bg-red-100 text-red-700
+                                    {% endif %}">
+                                    {{ message }}
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const container = document.getElementById('merchant-container');
+    
+        // Add merchant field
+        container.addEventListener('click', function (e) {
+            if (e.target.classList.contains('add-merchant')) {
+                const newField = document.createElement('div');
+                newField.className = "flex items-center mt-2";
+                newField.innerHTML = `
+                    <input type="text" name="merchant[]" required 
+                        class="p-2 border border-gray-300 rounded w-full">
+                    <button type="button" class="ml-2 p-2 bg-red-500 text-white rounded delete-merchant">Delete</button>
+                `;
+                container.appendChild(newField);
+            }
+        });
+    
+        // Delete merchant field
+        container.addEventListener('click', function (e) {
+            if (e.target.classList.contains('delete-merchant')) {
+                e.target.parentElement.remove();
+            }
+        });
+    });
+    </script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const startDateInput = document.getElementById('start_date');
+        const endDateInput = document.getElementById('end_date');
+        const durationInput = document.getElementById('duration');
+
+        function calculateDuration() {
+            const startDate = new Date(startDateInput.value);
+            const endDate = new Date(endDateInput.value);
+
+            if (startDate && endDate && endDate >= startDate) {
+                const duration = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24)); // in days
+                durationInput.value = duration + " day(s)";
+            } else {
+                durationInput.value = "";
+            }
+        }
+
+        startDateInput.addEventListener('change', calculateDuration);
+        endDateInput.addEventListener('change', calculateDuration);
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        // Initialize Datepicker with dd/mm/yy format
+        $("#start_date, #end_date").datepicker({
+            dateFormat: 'dd/mm/yy',
+            onSelect: function () {
+                calculateDuration();
+            }
+        });
+
+        function calculateDuration() {
+            var startDate = $("#start_date").val();
+            var endDate = $("#end_date").val();
+
+            if (startDate && endDate) {
+                var partsStart = startDate.split('/');
+                var partsEnd = endDate.split('/');
+
+                var start = new Date(partsStart[2], partsStart[1] - 1, partsStart[0]);
+                var end = new Date(partsEnd[2], partsEnd[1] - 1, partsEnd[0]);
+
+                var diffTime = end - start;
+                var diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+                if (diffDays >= 0) {
+                    $("#duration").val(diffDays + " day(s)");
+                } else {
+                    $("#duration").val("");
+                    alert("End Date must be after Start Date.");
+                }
+            }
+        }
+    });
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const minPaxInput = document.getElementById('min_pax');
+        const maxPaxInput = document.getElementById('max_pax');
+
+        maxPaxInput.addEventListener('input', function () {
+            if (parseInt(minPaxInput.value) > parseInt(maxPaxInput.value)) {
+                alert("Minimum Pax cannot be greater than Maximum Pax.");
+                maxPaxInput.value = "";
+            }
+        });
+    });
+</script>
+<script>
+    $(document).ready(function() {
+        $('#location').select2({
+            placeholder: 'Select a Country',
+            allowClear: true
+        });
+    });
+</script>
+{% endblock %}

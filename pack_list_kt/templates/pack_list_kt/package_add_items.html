@@ -1,0 +1,58 @@
+{% block content %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'src/styles.css' %}">
+<html>
+    
+     <!-- Include the header -->
+     {% include 'base_kt/admin_header.html' %}
+
+     <body>
+        <div class="flex">
+            <!-- Main Content -->
+            <div class="p-4 bg-gray-100 h-screen w-full">
+                <!-- First Row (Metrics in One Row) -->
+                <div class="rounded-md">
+                    <div class="container mx-auto">
+                        <h1 class="text-xl font-bold mb-4">Add Items to {{ package.name }}</h1>
+                        <form method="post" action="{% url 'pack_list_add_items' package.id %}">
+                            {% csrf_token %}
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label for="item_name" class="block text-gray-700">Item Name:</label>
+                                    <input type="text" id="item_name" name="item_name" class="w-full border rounded px-3 py-2" required>
+                                </div>
+                                <div>
+                                    <label for="merchant_price" class="block text-gray-700">Merchant Price:</label>
+                                    <input type="number" id="merchant_price" name="merchant_price" class="w-full border rounded px-3 py-2" min="0" step="0.01" required>
+                                </div>
+                                <div>
+                                    <label for="selling_price" class="block text-gray-700">Selling Price:</label>
+                                    <input type="number" id="selling_price" name="selling_price" class="w-full border rounded px-3 py-2" min="0" step="0.01" required>
+                                </div>
+                                <div>
+                                    <label for="commission_percent" class="block text-gray-700">Commission (%):</label>
+                                    <input type="number" id="commission_percent" name="commission_percent" class="w-full border rounded px-3 py-2" min="0" max="100" step="0.01" required>
+                                </div>
+                            </div>
+                            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 mt-4">Add Item</button>
+                        </form>
+                    
+                        <h2 class="text-lg font-bold mt-8">Current Items</h2>
+                        <ul class="list-disc ml-8">
+                            {% for item in items %}
+                            <li>{{ item.name }} - Merchant Price: {{ item.merchant_price }} - Selling Price: {{ item.selling_price }} - Commission: {{ item.commission_amount }}</li>
+                            {% endfor %}
+                        </ul>
+                    
+                        <div class="mt-4">
+                            <p>Total Merchant Price: {{ total_merchant_price }}</p>
+                            <p>Total Selling Price: {{ total_selling_price }}</p>
+                            <p>Total Commission: {{ total_commission }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
+{% endblock %}              

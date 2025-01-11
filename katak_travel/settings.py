@@ -62,6 +62,8 @@ INSTALLED_APPS = [
     'page',
     'analytics_kt',
     'package_kt',
+    'pack_list_kt',
+    'data_api_kt',      # Your API app
     'rest_framework',
     'userauths',
 ]
@@ -200,5 +202,9 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'static/images/hotel')  # Make sure this is 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'user_kt.User'
+
+# settings.py
+OPENCAGE_API_KEY = '625042cf46b544c7a942831647c225f9'
+
 
 
