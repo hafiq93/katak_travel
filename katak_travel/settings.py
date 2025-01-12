@@ -34,8 +34,22 @@ CSRF_TRUSTED_ORIGINS = [
     'https://www.kataktravel.com'
 ]
 
-SESSION_COOKIE_SECURE = False
-CSRF_COOKIE_SECURE = False
+# Redirect HTTP to HTTPS
+SECURE_SSL_REDIRECT = True
+
+# Set secure cookies
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+
+# Prevent clickjacking
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+X_FRAME_OPTIONS = 'DENY'
+
+# Use HSTS (HTTP Strict Transport Security)
+SECURE_HSTS_SECONDS = 31536000  # 1 year
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True
 
 
 # Application definition
@@ -203,8 +217,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'user_kt.User'
 
-# settings.py
-OPENCAGE_API_KEY = '625042cf46b544c7a942831647c225f9'
 
 
 
