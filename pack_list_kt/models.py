@@ -8,7 +8,7 @@ from datetime import datetime
 from admin_kt.models import MainMerchant, MerchantType
 import random
 import string
-from django_countries.fields import CountryField  # Optional for country selection
+# from django_countries.fields import CountryField  # Optional for country selection
 
 class Location(models.Model):
     country = models.CharField(max_length=100)
