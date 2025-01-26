@@ -7,232 +7,354 @@
      {% include 'base_kt/admin_header.html' %}
 
      <body>
-        <div class="flex h-screen">
+        <div class="flex h-min-screen bg-gray-100">
             <!-- Main Content -->
-            <div class="p-4 bg-gray-100 w-full">
+            <div class="p-4 bg-gray-100 w-full ">
+                  <!-- Tabs Navigation -->
+                <div class="mb-2">
+                    <ul class="flex border-b">
+                        <li class="mr-1">
+                            <a href="{% if package and package.id %}{% url 'pack_merchant' id=package.id %}{% else %}{% url 'pack_merchant' %}{% endif %}" class="bg-green-500 inline-block px-4 py-2 text-white font-semibold border-lg border-l border-t border-r rounded-t focus:outline-none">
+                                Add Package
+                            </a>
+                        </li>
+                        <li class="mr-1">
+                            <a href="{% url 'pack_price' package_id=package.id %}" class="bg-white inline-block px-4 py-2 text-green-500 font-semibold border-lg hover:text-green-700 focus:outline-none">
+                                List Merchant in Package
+                            </a>
+                        </li>
+                      
+                        
+                    </ul>
+                </div>
                 <!-- First Row (Metrics in One Row) -->
                 <div class="rounded-md">
-                    <div class="bg-white p-6 rounded-lg shadow-lg w-full ">
+                    <div class="bg-white p-6 rounded-lg shadow-lg w-full">
                         <h2 class="text-2xl font-bold mb-4">Add Package</h2>
-                        
-                         <!-- Add Hotel Form -->
-                         <form method="POST" action="">
+                
+                        <form method="POST" action="{% if package and package.id %}{% url 'pack_merchant' id=package.id %}{% else %}{% url 'pack_merchant' %}{% endif %}">
                             {% csrf_token %}
-                            <div class="mb-4">
-                                <label for="name" class="block text-gray-700 font-semibold">Package Name:</label>
-                                <input type="text" id="name" name="name" value="{{ package.name }}" required class="mt-1 p-2 border border-gray-300 bg-gray-100 rounded w-full" readonly>
-                            </div>
-
-                           
-                            <div class="mb-4">
-                                <label for="merchant" class="block text-gray-700 font-semibold">Merchant Involve:</label>
-                            
-                                <div id="merchant-container">
-                                    <!-- Input Row -->
-                                    <div class="grid grid-cols-2 gap-2 mt-1 items-center merchant-row">
-                                        <!-- Merchant/Hotel Name -->
-                                        <input type="text" name="merchant[]" placeholder="Merchant/Hotel Name" required
-                                               class="p-2 border border-gray-300 rounded w-full">
-                                        
-                                        <!-- Type Selection -->
-                                        <select name="merchant_type[]" required class="p-2 border border-gray-300 rounded w-full type-selector">
-                                            <option value="">Select Type</option>
-                                            {% for merchant_type in merchant_types %}
-                                                <option value="{{ merchant_type.name }}">
-                                                    {% if merchant_type.icon_image %}
-                                                        <img src="{{ merchant_type.icon_image.url }}" alt="{{ merchant_type.name }}" width="20" height="20">
-                                                    {% endif %}
-                                                    {{ merchant_type.name }}
-                                                </option>
-                                            {% endfor %}
-                                        </select>
-                                    </div>
-                            
-                                   
-                               
-                            
-                                    <!-- Price & Commission Row -->
-                                    <!-- <div class="grid grid-cols-4 gap-2 mt-1 items-center merchant-row"> -->
-                                        <!-- Selling Price -->
-                                        <!-- <input type="number" name="selling_price[]" placeholder="Selling Price" required
-                                               class="p-2 border border-gray-300 rounded w-full selling-price"> -->
-                            
-                                        <!-- Agent Price -->
-                                        <!-- <input type="number" name="agent_price[]" placeholder="Agent Price" required
-                                               class="p-2 border border-gray-300 rounded w-full agent-price">
-                             -->
-                                        <!-- Commission (%) -->
-                                        <!-- <input type="text" name="commission[]" placeholder="Commission (%)" readonly
-                                               class="p-2 border border-gray-300 rounded w-full commission-percentage bg-gray-100"> -->
-                            
-                                        <!-- Delete Button -->
-                                        <button type="button" class="p-2 bg-red-500 text-white rounded delete-merchant">Delete</button>
-                                    </div>
-                            
-                                    <!-- Add Button -->
-                                    <button type="button" class="mt-2 p-2 bg-green-500 text-white rounded add-merchant">Add</button>
+                
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                                <div class=" col-span-1 md:col-span-2">
+                                    <label for="hotel_name" class="block text-gray-700 font-semibold">Package Name:</label>
+                                    <input type="text" id="hotel_name" name="hotel_name" 
+                                        value="{% if package %}{{ package.name }}{% else %}{% endif %}" 
+                                        required class="mt-1 p-2 border border-gray-300 rounded w-full bg-gray-100 " readonly>
+                                </div>
+                                <div class=" col-span-1 ">
+                                    <label for="hotel_name" class="block text-gray-700 font-semibold">Package Code:</label>
+                                    <input type="text" id="code" name="code" 
+                                        value="{% if package %}{{ package.code }}{% else %}{% endif %}" 
+                                        required class="mt-1 p-2 border border-gray-300 rounded w-full bg-gray-100 " readonly>
                                 </div>
                             </div>
-                        
-            
-                        
-                            <div class="flex justify-between mt-6">
-                                <a href="{% if package and package.id %}{% url 'pack_list_add' id=package.id %}{% else %}{% url 'pack_list_add' %}{% endif %}" class="bg-red-700 text-white px-4 py-2 rounded hover:bg-red-600 mr-2 font-semibold inline-flex items-center">
-                                    <i class="fas fa-arrow-left mr-2"></i> <!-- Font Awesome cancel icon -->
-                                    Back
+
+                            <div class="grid gird-cols-1 md:grid-cols-3 gap-4 mb-4">
+                                <div class="">
+                                    <label for="merchant_name" class="block text-gray-700 font-semibold">Merchant Name:</label>
+                                    <input type="text" id="merchant_name" name="merchant_name" required class="mt-1 p-2 border border-gray-300 rounded w-full">
+                                </div>
+                                <div class="">
+                                    <label for="merchant_code" class="block text-gray-700 font-semibold">Merchant Code:</label>
+                                    <input type="text" id="merchant_code" name="merchant_code" class="mt-1 p-2 border border-gray-300 rounded w-full">
+                                </div>
+                                <div class="">
+                                    <label for="merchant_type" class="block text-gray-700 font-semibold">Merchant Type:</label>
+                                    <select id="merchant_type" name="merchant_type" class="mt-1 p-2 border border-gray-300 rounded w-full">
+                                        <option value="">Select Merchant Type</option>
+                                        {% for merchant_type in merchant_types %}
+                                            <option value="{{ merchant_type.id }}">{{ merchant_type.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                
+                            <div class="grid gird-cols-1 md:grid-cols-2 gap-4 mb-4">
+                                <div class="">
+                                    <label for="street_address" class="block text-gray-700 font-semibold">Address:</label>
+                                    <input type="text" id="street_address" name="street_address" class="mt-1 p-2 border border-gray-300 rounded w-full">
+                                </div>
+                            
+                                <div class="">
+                                    <label for="city" class="block text-gray-700 font-semibold">City:</label>
+                                    <input type="text" id="city" name="city" class="mt-1 p-2 border border-gray-300 rounded w-full">
+                                </div>
+                            </div>
+
+                            <div class="grid gird-cols-1 md:grid-cols-3 gap-4 mb-4">
+                                <div class="">
+                                    <label for="postal_code" class="block text-gray-700 font-semibold">Postcode:</label>
+                                    <input type="text" id="postal_code" name="postal_code" class="mt-1 p-2 border border-gray-300 rounded w-full">
+                                </div>
+                                <div class="">
+                                    <label for="state" class="block text-gray-700 font-semibold">State:</label>
+                                    <input type="text" id="state" name="state" class="mt-1 p-2 border border-gray-300 rounded w-full">
+                                </div>
+                            
+                                <div class="">
+                                    <label for="country" class="block text-gray-700 font-semibold">Country:</label>
+                                    <select id="country" name="country" class="mt-1 p-2 border border-gray-300 rounded w-full">
+                                        <option value="">Select Country</option>
+                                        {% for country in countries %}
+                                            <option value="{{ country.country }}">{{ country.country }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                
+                            <div class="grid gird-cols-1 md:grid-cols-3 gap-4 mb-4">
+                                <div class="">
+                                    <label for="contact_person" class="block text-gray-700 font-semibold">Contact Person:</label>
+                                    <input type="text" id="contact_person" name="contact_person" class="mt-1 p-2 border border-gray-300 rounded w-full">
+                                </div>
+                
+                                <div class="">
+                                    <label for="contact_number" class="block text-gray-700 font-semibold">Contact Number:</label>
+                                    <input type="text" id="contact_number" name="contact_number" class="mt-1 p-2 border border-gray-300 rounded w-full">
+                                </div>
+                
+                                <div class="">
+                                    <label for="email" class="block text-gray-700 font-semibold">Email:</label>
+                                    <input type="email" id="email" name="email" class="mt-1 p-2 border border-gray-300 rounded w-full">
+                                </div>
+                            </div>
+
+                            
+                            <!-- Product Details Section -->
+                                              
+                            <div class="grid grid-cols-1 gap-4 mb-4">
+                                <h3 class="text-xl font-bold mb-4">Product Details</h3>
+
+                                <!-- Product Details Form -->
+                                <div id="product-details-section">
+                                    <!-- Add Product Button -->
+                                    <button type="button" id="add-product-btn" 
+                                        class="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 font-semibold mb-4"
+                                        onclick="addProduct()"><i class="fas fa-plus mr-2"></i>Add Product</button>
+
+                                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4 product-entry" data-id="1">
+                                        <div class="md:col-span-1">
+                                            <label for="product_name" class="block text-gray-700 font-semibold">Product Name:</label>
+                                            <input type="text" id="product_name" name="product_name[]" 
+                                                class="mt-1 p-2 border border-gray-300 rounded w-full" required>
+
+                                            <label for="product_description" class="block text-gray-700 font-semibold mt-4">Description:</label>
+                                            <textarea id="product_description" name="product_description[]" 
+                                                class="mt-1 p-2 border border-gray-300 rounded w-full" rows="3"></textarea>
+
+                                            <button type="button" class="bg-red-700 text-white py-2 px-4 rounded hover:bg-red-600 font-semibold mt-4"
+                                                onclick="deleteProduct(this)"><i class="fas fa-trash-alt mr-2"></i>Delete Product</button>
+                                        </div>
+                                        
+                                        <div>
+                                            <label for="product_image" class="block text-gray-700 font-semibold">Image:</label>
+                                            <input type="file" id="product_image" name="product_image[]" 
+                                                accept="image/*" class="mt-1 p-2 border border-gray-300 rounded w-full" onchange="previewImage(this)">
+                                            <p class="text-xs text-gray-600">
+                                                File size must not exceed 400KB, only allow .jpg .jpeg .png .gif .webp file type
+                                                <br>Recommend size 400x300(px); 640x480(px)SD / ratio 4:3
+                                            </p>
+                                            <div id="image-actions-1" class="flex gap-2 mt-2 hidden">
+                                                <button type="button" class="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-600" onclick="editImage(this)">Edit</button>
+                                                <button type="button" class="bg-red-500 text-white py-1 px-3 rounded hover:bg-red-600" onclick="deleteImage(this)">Delete</button>
+                                            </div>
+                                            
+                                        </div>
+                                        <div>
+                                            <div class="relative w-full">
+                                                <label class="font-semibold">Image Result:</label>
+                                                <p id="image_name" class="text-sm text-gray-700 "></p> <!-- For displaying image name -->
+                                                <div id="preview-container-1" class="bg-gray-100 border rounded p-2 h-80">
+                                                    <img id="preview_image_1" class="object-scale-down w-full h-full">
+                                                </div>
+                                                
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                                
+                
+                            <div class="flex justify-between mt-4">
+                                <!-- Back Button -->
+                                <a href="{% url 'pack_list_add' package.id %}" class="bg-red-700 text-white px-4 py-2 rounded hover:bg-red-600 mr-2 font-semibold inline-flex items-center">
+                                    <i class="fas fa-arrow-left mr-2"></i> Back
                                 </a>
-                        
                                 <div class="flex space-x-2">
-                                    <!-- Submit Button with Icon -->
-                                    <button type="submit" class="bg-blue-700 text-white px-4 py-2 rounded hover:bg-blue-600 font-semibold inline-flex items-center">
-                                        <i class="fas fa-paper-plane mr-2"></i> <!-- Submit icon -->
-                                        Submit
+                                    <!-- Add Button -->
+                                    <button type="submit" id="add-merchant" class="bg-blue-700 text-white px-4 py-2 rounded hover:bg-blue-600 font-semibold inline-flex items-center">
+                                        <i class="fas fa-paper-plane mr-2"></i> Add
                                     </button>
-                                    
-                                    <!-- Next Button with Right Arrow Icon -->
-                                    <a href="" class="bg-green-700 text-white px-4 py-2 rounded hover:bg-green-600 font-semibold inline-flex items-center">
-                                        Next
-                                        <i class="fas fa-arrow-right ml-2"></i> <!-- Right arrow icon -->
+                                    <!-- use for clean form -->
+                                    <button type="submit" id="add-merchant" class="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-400 font-semibold inline-flex items-center border">
+                                        <i class="fas fa-eraser mr-2"></i> Clean
+                                    </button>
+                
+                                    <!-- Next Button (Go to Next Page) -->
+                                    <a href="{% url 'pack_price' package_id=package.id %}" class="bg-green-700 text-white px-4 py-2 rounded hover:bg-green-600 font-semibold inline-flex items-center ml-2">
+                                        <i class="fas fa-arrow-right mr-2"></i> Next
                                     </a>
                                 </div>
                             </div>
                         </form>
+                
                     </div>
                 </div>
             </div>
         </div>
     </body>
 </html>
+                
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-    const container = document.getElementById('merchant-container');
+    // Function to preview the uploaded image
+    function previewImage(input) {
+        const file = input.files[0];
+        const productEntry = input.closest('.product-entry');
+        const previewId = `preview_image_${productEntry.dataset.id}`;
+        const previewElement = document.getElementById(previewId);
+        const imageName = document.getElementById('image_name'); // Element to display file name
+        const previewContainer = document.getElementById(`preview-container-${productEntry.dataset.id}`);
+        const actionButtons = document.getElementById(`image-actions-${productEntry.dataset.id}`);
 
-    // Auto-calculate Commission
-    function calculateCommission(row) {
-        const sellingPrice = parseFloat(row.querySelector('.selling-price').value);
-        const agentPrice = parseFloat(row.querySelector('.agent-price').value);
-        const commissionField = row.querySelector('.commission-percentage');
+        if (file) {
+        // Update the image preview
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            previewImage.src = e.target.result; // Set the image source to the file data
+        };
+        reader.readAsDataURL(file);
 
-        if (sellingPrice && agentPrice && sellingPrice > 0) {
-            const commissionPercent = ((sellingPrice - agentPrice) / sellingPrice) * 100;
-            commissionField.value = commissionPercent.toFixed(2) + '%';
+        // Update the file name
+        imageName.textContent = `Selected File: ${file.name}`;
         } else {
-            commissionField.value = '';
+            // Clear the preview and file name if no file is selected
+            previewImage.src = '';
+            imageName.textContent = '';
+        }
+
+        // Validate file size and type
+        if (file) {
+            const validTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+            const maxSize = 2 * 1024 * 1024; // 2MB
+            if (!validTypes.includes(file.type)) {
+                alert('Please upload a valid image file (.jpg, .jpeg, .png, .gif, .webp)');
+                input.value = ''; // Reset file input
+                return;
+            }
+
+            if (file.size > maxSize) {
+                alert('File size must not exceed 2MB');
+                input.value = ''; // Reset file input
+                return;
+            }
+
+            // Show image preview
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                previewElement.src = e.target.result;
+                previewElement.classList.remove('hidden');
+                previewContainer.classList.remove('hidden');
+                actionButtons.classList.remove('hidden');
+            };
+            reader.readAsDataURL(file);
         }
     }
 
-    // Handle Type Change to Show Room Type or Category
-    function handleTypeChange(typeSelect) {
-        const row = typeSelect.closest('.merchant-row').parentElement;
-        const roomTypeDropdown = row.querySelector('.room-type');
-        const merchantCategoryDropdown = row.querySelector('.merchant-category');
-        const bedTypeDropdown = row.querySelector('.bed-type');
+    // Function to delete the image
+    function deleteImage(button) {
+        const productEntry = button.closest('.product-entry');
+        const previewImage = productEntry.querySelector('img');
+        const fileInput = productEntry.querySelector('input[type="file"]');
+        const actionButtons = productEntry.querySelector(`#image-actions-${productEntry.dataset.id}`);
+        const previewContainer = productEntry.querySelector(`#preview-container-${productEntry.dataset.id}`);
 
-        if (typeSelect.value === 'hotel') {
-            roomTypeDropdown.classList.remove('hidden');
-            merchantCategoryDropdown.classList.add('hidden');
-        } else if (typeSelect.value === 'merchant') {
-            merchantCategoryDropdown.classList.remove('hidden');
-            roomTypeDropdown.classList.add('hidden');
-            bedTypeDropdown.classList.add('hidden');  // Hide Bed Type for merchants
-        } else {
-            roomTypeDropdown.classList.add('hidden');
-            merchantCategoryDropdown.classList.add('hidden');
-            bedTypeDropdown.classList.add('hidden');
-        }
+        previewImage.src = '';
+        previewImage.classList.add('hidden');
+        // previewContainer.classList.add('hidden');
+        // actionButtons.classList.add('hidden');
+        fileInput.value = ''; // Reset file input
     }
 
-    // Handle Room Type Change to Show Bed Type
-    function handleRoomTypeChange(roomTypeSelect) {
-        const row = roomTypeSelect.closest('.merchant-row').parentElement;
-        const bedTypeDropdown = row.querySelector('.bed-type');
-
-        if (roomTypeSelect.value !== '') {
-            bedTypeDropdown.classList.remove('hidden');
-        } else {
-            bedTypeDropdown.classList.add('hidden');
-        }
+    // Function to edit the image (trigger file input click)
+    function editImage(button) {
+        const productEntry = button.closest('.product-entry');
+        const fileInput = productEntry.querySelector('input[type="file"]');
+        fileInput.click();
     }
 
-    // Event delegation for dynamic behavior
-    container.addEventListener('input', function (event) {
-        if (event.target.classList.contains('selling-price') || event.target.classList.contains('agent-price')) {
-            const row = event.target.closest('.merchant-row');
-            calculateCommission(row);
-        }
-    });
+    // Function to delete a product entry row
+    function deleteProduct(button) {
+        const productEntry = button.closest('.product-entry');
+        productEntry.remove();
+    }
 
-    container.addEventListener('change', function (event) {
-        if (event.target.classList.contains('type-selector')) {
-            handleTypeChange(event.target);
-        }
+    // Function to dynamically add product fields
+    function addProduct() {
+        const section = document.getElementById('product-details-section');
+        const productCount = section.querySelectorAll('.product-entry').length + 1;
 
-        if (event.target.classList.contains('room-type')) {
-            handleRoomTypeChange(event.target);
-        }
-    });
+        const newProduct = `
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4 product-entry" data-id="${productCount}">
+            <div class="md:col-span-1">
+                <label for="product_name_${productCount}" class="block text-gray-700 font-semibold">Product Name:</label>
+                <input type="text" id="product_name_${productCount}" name="product_name[]" 
+                    class="mt-1 p-2 border border-gray-300 rounded w-full" required>
 
-    // Add new row
-    document.querySelector('.add-merchant').addEventListener('click', function () {
-        const newRow = document.createElement('div');
-        newRow.innerHTML = `
-            <div class="grid grid-cols-2 gap-2 mt-2 items-center merchant-row">
-                <input type="text" name="merchant[]" placeholder="Merchant/Hotel Name" required
-                    class="p-2 border border-gray-300 rounded w-full">
-                <select name="merchant_type[]" required
-                    class="p-2 border border-gray-300 rounded w-full type-selector">
-                    <option value="">Select Type</option>
-                    <option value="merchant">Merchant</option>
-                    <option value="hotel">Hotel</option>
-                </select>
+                <label for="product_description_${productCount}" class="block text-gray-700 font-semibold mt-4">Description:</label>
+                <textarea id="product_description_${productCount}" name="product_description[]" 
+                    class="mt-1 p-2 border border-gray-300 rounded w-full" rows="3"></textarea>
+
+                <button type="button" class="bg-red-700 text-white py-2 px-4 rounded hover:bg-red-600 mt-4 font-semibold"
+                    onclick="deleteProduct(this)"><i class="fas fa-trash-alt mr-2"></i>Delete Product</button>
             </div>
-            <div class="grid grid-cols-1 gap-2 mt-1 items-center">
-                <select name="room_type[]" class="p-2 border border-gray-300 rounded w-full room-type hidden">
-                    <option value="">Select Room Type</option>
-                    <option value="family">Family</option>
-                    <option value="single">Single</option>
-                    <option value="queen">Queen</option>
-                    <option value="king">King</option>
-                </select>
-
-                <select name="bed_type[]" class="p-2 border border-gray-300 rounded w-full bed-type hidden">
-                    <option value="">Select Bed Type</option>
-                    <option value="single">Single</option>
-                    <option value="queen">Queen</option>
-                    <option value="king">King</option>
-                </select>
-
-                <select name="merchant_category[]" class="p-2 border border-gray-300 rounded w-full merchant-category hidden">
-                    <option value="">Select Category</option>
-                    <option value="attraction">Attraction</option>
-                    <option value="bus">Bus</option>
-                    <option value="ferry">Ferry</option>
-                    <option value="flight">Flight</option>
-                    <option value="adventure">Adventure</option>
-                    <option value="car_rental">Car Rental</option>
-                </select>
+            <div>
+                <label for="product_image_${productCount}" class="block text-gray-700 font-semibold">Image:</label>
+                <input type="file" id="product_image_${productCount}" name="product_image[]" 
+                    accept="image/*" class="mt-1 p-2 border border-gray-300 rounded w-full" onchange="previewImage(this)">
+                <p class="text-xs text-gray-600">
+                    File size must not exceed 400KB, only allow .jpg .jpeg .png .gif .webp file type
+                    <br>Recommend size 400x300(px); 640x480(px)SD / ratio 4:3
+                </p>
+                <div id="image-actions-${productCount}" class="flex gap-2 mt-2 hidden">
+                    <button type="button" class="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-600" onclick="editImage(this)">Edit</button>
+                    <button type="button" class="bg-red-500 text-white py-1 px-3 rounded hover:bg-red-600" onclick="deleteImage(this)">Delete</button>
+                </div>
             </div>
-            <div class="grid grid-cols-4 gap-2 mt-1 items-center merchant-row">
-                <input type="number" name="selling_price[]" placeholder="Selling Price" required
-                    class="p-2 border border-gray-300 rounded w-full selling-price">
-                <input type="number" name="agent_price[]" placeholder="Agent Price" required
-                    class="p-2 border border-gray-300 rounded w-full agent-price">
-                <input type="text" name="commission[]" placeholder="Commission (%)" readonly
-                    class="p-2 border border-gray-300 rounded w-full commission-percentage bg-gray-100">
-                <button type="button" class="p-2 bg-red-500 text-white rounded delete-merchant">Delete</button>
+            <div>
+                <div class="relative w-full">
+                    <label class="font-semibold">Image Result:</label>
+                    <p id="image_name_${productCount}" class="text-sm text-gray-700"></p>
+                    <div id="preview-container-${productCount}" class="bg-gray-100 border rounded p-2 h-80">
+                        <img id="preview_image_${productCount}" class="object-scale-down w-full h-full">
+                    </div>
+                </div>
             </div>
-        `;
-        container.insertBefore(newRow, document.querySelector('.add-merchant'));
-    });
+            
+            
+        </div>
+    `;
+    section.insertAdjacentHTML('beforeend', newProduct);
+}
 
-    // Delete row
-    container.addEventListener('click', function (event) {
-        if (event.target.classList.contains('delete-merchant')) {
-            event.target.closest('.merchant-row').remove();
-        }
-    });
-});
+</script>
 
-    </script>
+<style>
+    /* .object-cover {
+        object-fit: cover;
+        width: 100%;
+        height: 100%;
+    } */
+
+    .hidden {
+        display: none;
+    }
+
     
+   
+
+    
+</style>
 {% endblock %}
+
