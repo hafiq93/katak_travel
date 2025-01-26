@@ -110,9 +110,55 @@ class Location(models.Model):
     def __str__(self):
         return f"{self.city}, {self.country}"
 # ////////////////////////////////////////////////////////////////////////////////
-class MerchantType(models.Model):
+class MerchantList(models.Model):
     name = models.CharField(max_length=50, unique=True)
-    icon_class = models.CharField(max_length=100, blank=True, null=True)
+    code = models.CharField(max_length=50, unique=True)
+    register_no = models.CharField(max_length=50, unique=True)
+    address = models.CharField(max_length=100, blank=True, null=True)
+    
 
     def __str__(self):
         return self.name
+
+
+class MainMerchant(models.Model):
+    name = models.CharField(max_length=50, unique=True)
+
+    def __str__(self):
+        return self.name
+        
+class MerchantType(models.Model):
+    name = models.CharField(max_length=50, unique=True)
+    icon_class = models.CharField(max_length=100, blank=True, null=True)
+    main_category = models.ForeignKey(MainMerchant, on_delete=models.CASCADE, related_name='merchant_types', blank=True, null=True)
+
+    def __str__(self):
+        return self.name
+
+# combine between merchant list and main merchant
+class MerchantCategory(models.Model):
+    merchant_list = models.ForeignKey(
+        MerchantList,
+        on_delete=models.CASCADE,
+        related_name='merchant_categories',  # Changed related_name to avoid conflicts
+        blank=True,
+        null=True
+    )
+    main_category = models.ForeignKey(
+        MainMerchant,
+        on_delete=models.CASCADE,
+        related_name='merchant_categories',  # Changed related_name to avoid conflicts
+        blank=True,
+        null=True
+    )
+
+    def __str__(self):
+        # Added a __str__ method to display meaningful information.
+        return f"{self.merchant_list} - {self.main_category}"
+    
+class MerchantLogin(models.Model):
+    username = models.CharField(max_length=50, unique=True)
+    password = models.CharField(max_length=128)  # Increased length for better security
+    
+    def __str__(self):
+        return self.username  # Fixed self.name to self.username
