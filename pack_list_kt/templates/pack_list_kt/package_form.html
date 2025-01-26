@@ -11,139 +11,281 @@
                     <div class="bg-white p-6 rounded-lg shadow-lg w-full">
                         <h2 class="text-2xl font-bold mb-4">Form Details Package</h2>
                       
-                        <form method="POST" action="{% url 'pack_form' merchant.id %}">
+                        <form method="POST" action="{% url 'pack_form' merchant.id %} " enctype="multipart/form-data">
                             {% csrf_token %}
                             <!-- Merchant Details -->
                             <h3 class="text-xl font-bold mb-4">Merchant Details</h3>
-                            <div class="mb-4 grid grid-cols-3 gap-4">
-                                <div>
-                                    <label class="block text-sm font-bold">Merchant Name</label>
-                                    <input type="text" class="w-full px-4 py-2 border rounded bg-gray-100" value="{{ merchant.merchant_list.merchant }}" readonly />
+
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                                <div class=" col-span-1 md:col-span-2">
+                                    <label for="hotel_name" class="block text-gray-700 font-semibold">Package Name:</label>
+                                    <input type="text" id="hotel_name" name="hotel_name" 
+                                        value="{% if package %}{{ package.name }}{% else %}{% endif %}" 
+                                        required class="mt-1 p-2 border border-gray-300 rounded w-full bg-gray-100 " readonly>
                                 </div>
-                                <div>
-                                    <label class="block text-sm font-bold">Merchant Code</label>
-                                    <input type="text" class="w-full px-4 py-2 border rounded bg-gray-100" value="{{ merchant.merchant_code }}" readonly />
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-bold">Merchant Type</label>
-                                    <input type="text" id="merchant-type" class="w-full px-4 py-2 border rounded bg-gray-100" value="{{ merchant.merchant_type.name }}" readonly />
-                                </div>
-                            </div>
-                            
-                            <!-- Product Details -->
-                            <h3 class="text-xl font-bold mb-4">Product & Pricing Details</h3>
-                            <div class="mb-4">
-                                <button type="button" id="add-row" class="mb-2 bg-green-600 text-white px-4 py-2 rounded font-semibold">Add Row</button>
-                                <table class="w-full border-collapse ">
-                                    <thead class="bg-green-500 text-white">
-                                        <tr>
-                                            <th class="border px-2 py-2 w-2/4 ">Description</th>
-                                            <th class="border px-2 py-2 w-1/6">Selling Price</th>
-                                            <th class="border px-2 py-2 w-1/6">Agent Price</th>
-                                            <th class="border px-2 py-2 w-1/6">Commission</th>
-                                            <th class="border px-4 py-2 w-1/12">Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="product-pricing-rows">
-                                        <tr>
-                                            <td class=" px-2 py-2">
-                                                <textarea name="product_description[]" class="w-full px-4 py-2 border rounded" rows="2" placeholder="Enter product description"></textarea>
-                                            </td>
-                                            <td class=" px-2 py-2">
-                                                <input type="number" name="selling_price[]" class="w-full px-4 py-2 border rounded" placeholder="Selling Price" required />
-                                            </td>
-                                            <td class=" px-2 py-2">
-                                                <input type="number" name="agent_price[]" class="w-full px-4 py-2 border rounded" placeholder="Agent Price" required />
-                                            </td>
-                                            <td class=" px-2 py-2">
-                                                <input type="text" name="commission[]" class="w-full px-4 py-2 border rounded bg-gray-100" placeholder="Commission" readonly />
-                                            </td>
-                                            <td class="px-2 py-2 items-center justify-start">
-                                                <button 
-                                                    type="button" 
-                                                    class="flex items-center justify-center gap-2 bg-red-600 text-white font-bold px-4 py-2 rounded hover:bg-red-700 delete-row">
-                                                    <i class="fas fa-trash"></i> Delete
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                               
-                            </div>
-                            <!-- <h3 class="text-xl font-bold mb-4 mt-4">Additional Details</h3> -->
-                            <div class="mb-4 grid grid-cols-5 gap-4">
-                                <div>
-                                    <label class="block text-sm font-bold">Number of Adults</label>
-                                    <input type="number" name="adults" class="w-full px-4 py-2 border rounded" placeholder="Enter number of adults" />
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-bold">Selling Price</label>
-                                    <input type="number" name="selling_price" class="w-full px-4 py-2 border rounded" value="{{ merchant.selling_price }}" required />
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-bold">Agent Price</label>
-                                    <input type="number" name="agent_price" class="w-full px-4 py-2 border rounded" value="{{ merchant.agent_price }}" required />
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-bold">Commission</label>
-                                    <input type="text" name="commission" class="w-full px-4 py-2 border rounded bg-gray-100" value="{{ merchant.commission }}" readonly />
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-bold">Total Price</label>
-                                    <input type="text" name="commission" class="w-full px-4 py-2 border rounded bg-gray-100" value="{{ merchant.commission }}" readonly />
-                                </div>
-                               
-                            </div>
-                            <div class="mb-4 grid grid-cols-5 gap-4">
-                                <div>
-                                    <label class="block text-sm font-bold">Number of Children</label>
-                                    <input type="number" name="children" class="w-full px-4 py-2 border rounded" placeholder="Enter number of children" />
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-bold">Selling Price</label>
-                                    <input type="number" name="selling_price" class="w-full px-4 py-2 border rounded" value="{{ merchant.selling_price }}" required />
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-bold">Agent Price</label>
-                                    <input type="number" name="agent_price" class="w-full px-4 py-2 border rounded" value="{{ merchant.agent_price }}" required />
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-bold">Commission</label>
-                                    <input type="text" name="commission" class="w-full px-4 py-2 border rounded bg-gray-100" value="{{ merchant.commission }}" readonly />
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-bold">Total Price</label>
-                                    <input type="text" name="commission" class="w-full px-4 py-2 border rounded bg-gray-100" value="{{ merchant.commission }}" readonly />
+                                <div class=" col-span-1 ">
+                                    <label for="hotel_name" class="block text-gray-700 font-semibold">Package Code:</label>
+                                    <input type="text" id="code" name="code" 
+                                        value="{% if package %}{{ package.code }}{% else %}{% endif %}" 
+                                        required class="mt-1 p-2 border border-gray-300 rounded w-full bg-gray-100 " readonly>
                                 </div>
                             </div>
 
-                           
-                            <div class="mb-4 grid grid-cols-2 gap-4">
-                                <div class="mb-4">
-                                    <label class="block text-sm font-bold">Discount (%)</label>
-                                    <input type="number" name="discount" class="w-full px-4 py-2 border rounded" placeholder="Enter discount" />
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                                <div>
+                                    <label for="merchant_name" class="block text-gray-700 font-semibold">Merchant Name:</label>
+                                    <input type="text" id="merchant_name" name="merchant_name" 
+                                           value="{{ merchant.merchant }}" required class="mt-1 p-2 border border-gray-300 rounded w-full">
                                 </div>
-                                <div class="mb-4">
-                                    <label class="block text-sm font-bold">Total Price</label>
-                                    <input type="number" name="total_price" class="w-full px-4 py-2 border rounded bg-gray-100" readonly />
+                                <div>
+                                    <label for="merchant_code" class="block text-gray-700 font-semibold">Merchant Code:</label>
+                                    <input type="text" id="merchant_code" name="merchant_code" 
+                                           value="{{ merchant.merchant_code }}" class="mt-1 p-2 border border-gray-300 rounded w-full">
+                                </div>
+                                <div>
+                                    <label for="merchant_type" class="block text-gray-700 font-semibold">Merchant Type:</label>
+                                    <select id="merchant_type" name="merchant_type" class="mt-1 p-2 border border-gray-300 rounded w-full">
+                                        <option value="">Select Merchant Type</option>
+                                        {% for merchant_type in merchant_types %}
+                                            <option value="{{ merchant_type.id }}" 
+                                                    {% if merchant.merchant_type and merchant.merchant_type.id == merchant_type.id %} selected {% endif %}>
+                                                {{ merchant_type.name }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
                                 </div>
                             </div>
                             
-                            <!-- Additional Details -->
-                           
-                            
-                            <!-- Operational Details -->
-                            <!-- <h3 class="text-xl font-bold mb-4">Operational Details</h3>
-                            <div class="mb-4 grid grid-cols-2 gap-4">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                                 <div>
-                                    <label class="block text-sm font-bold">Start Date</label>
-                                    <input type="date" name="start_date" class="w-full px-4 py-2 border rounded" />
+                                    <label for="street_address" class="block text-gray-700 font-semibold">Address:</label>
+                                    <input type="text" id="street_address" name="street_address" 
+                                           value="{{ merchant.street_address }}" class="mt-1 p-2 border border-gray-300 rounded w-full">
                                 </div>
                                 <div>
-                                    <label class="block text-sm font-bold">End Date</label>
-                                    <input type="date" name="end_date" class="w-full px-4 py-2 border rounded" />
+                                    <label for="city" class="block text-gray-700 font-semibold">City:</label>
+                                    <input type="text" id="city" name="city" 
+                                           value="{{ merchant.city }}" class="mt-1 p-2 border border-gray-300 rounded w-full">
+                                </div>
+                            </div>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                                <div>
+                                    <label for="postal_code" class="block text-gray-700 font-semibold">Postcode:</label>
+                                    <input type="text" id="postal_code" name="postal_code" 
+                                           value="{{ merchant.postal_code }}" class="mt-1 p-2 border border-gray-300 rounded w-full">
+                                </div>
+                                <div>
+                                    <label for="state" class="block text-gray-700 font-semibold">State:</label>
+                                    <input type="text" id="state" name="state" 
+                                           value="{{ merchant.state }}" class="mt-1 p-2 border border-gray-300 rounded w-full">
+                                </div>
+                                <div>
+                                    <label for="country" class="block text-gray-700 font-semibold">Country:</label>
+                                    <select id="country" name="country" class="mt-1 p-2 border border-gray-300 rounded w-full">
+                                        <option value="">Select Country</option>
+                                        {% for country in countries %}
+                                            <option value="{{ country.country }}" 
+                                                    {% if merchant.country and country.country == merchant.country.country %} selected {% endif %}>
+                                                {{ country.country }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                                <div>
+                                    <label for="contact_person" class="block text-gray-700 font-semibold">Contact Person:</label>
+                                    <input type="text" id="contact_person" name="contact_person" 
+                                           value="{{ merchant.contact_person }}" class="mt-1 p-2 border border-gray-300 rounded w-full">
+                                </div>
+                                <div>
+                                    <label for="contact_number" class="block text-gray-700 font-semibold">Contact Number:</label>
+                                    <input type="text" id="contact_number" name="contact_number" 
+                                           value="{{ merchant.contact_number }}" class="mt-1 p-2 border border-gray-300 rounded w-full">
+                                </div>
+                                <div>
+                                    <label for="email" class="block text-gray-700 font-semibold">Email:</label>
+                                    <input type="email" id="email" name="email" 
+                                           value="{{ merchant.email }}" class="mt-1 p-2 border border-gray-300 rounded w-full">
+                                </div>
+                            </div>
+
+                            <!-- <div class="mb-4 grid grid-cols-3 gap-4">
+                                <div>
+                                    <label class="block text-sm font-bold">Merchant Name</label>
+                                    <input type="text" class="w-full px-4 py-2 border rounded bg-gray-100"  readonly />
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-bold">Merchant Code</label>
+                                    <input type="text" class="w-full px-4 py-2 border rounded bg-gray-100"  readonly />
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-bold">Merchant Type</label>
+                                    <input type="text" id="merchant-type" class="w-full px-4 py-2 border rounded bg-gray-100"  value="{{ merchant.merchant_type.name }}"  readonly />
                                 </div>
                             </div> -->
+                            
+                            <!-- Product Details -->
+                               <!-- Product Details -->
+                               <h3 class="text-xl font-bold mb-4">Product & Pricing Details</h3>
+                               <div class="mb-4">
+                                   <button type="button" id="add-row" class="mb-2 bg-green-600 text-white px-4 py-2 rounded font-semibold">Add Row</button>
+                                   
+                                   <div class="overflow-x-auto">
+                                       <table class="w-full border-collapse">
+                                           <thead class="bg-green-500 text-white">
+                                               <tr>
+                                                   <th class="border px-4 py-2 w-96" rowspan="2">Product</th>
+                                                   <th class="border px-2 py-2" colspan="4">Category (Adult)</th>
+                                                   <th class="border px-2 py-2" colspan="4">Category (Children)</th>
+                                                   <th class="border px-4 py-2 w-12" rowspan="2">Action</th>
+                                               </tr>
+                                               <tr>
+                                                   <th class="border px-2 py-2 w-36">Number</th>
+                                                   <th class="border px-2 py-2 w-36">Selling</th>
+                                                   <th class="border px-2 py-2 w-36">Agent</th>
+                                                   <th class="border px-2 py-2 w-36">Commission(%)</th>
+                                                   <th class="border px-2 py-2 w-36">Number</th>
+                                                   <th class="border px-2 py-2 w-36">Selling</th>
+                                                   <th class="border px-2 py-2 w-36">Agent</th>
+                                                   <th class="border px-2 py-2 w-36">Commission(%)</th>
+                                               </tr>
+                                           </thead>
+                                           <tbody id="product-pricing-rows">
+                                               <!-- Initial row -->
+                                               <tr>
+                                                   <td class="px-2 py-2">
+                                                       <textarea name="product_type[]" class="w-full px-4 py-2 border rounded" rows="2" placeholder="Enter product details"></textarea>
+                                                   </td>
+                                                   <td class="px-2 py-2">
+                                                       <input type="number" name="adult_number[]" class="w-full px-4 py-2 border rounded" placeholder="Number of Adults" />
+                                                   </td>
+                                                   <td class="px-2 py-2">
+                                                       <input type="number" name="adult_selling[]" class="w-full px-4 py-2 border rounded selling-price" placeholder="Selling Price" />
+                                                   </td>
+                                                   <td class="px-2 py-2">
+                                                       <input type="number" name="adult_agent[]" class="w-full px-4 py-2 border rounded agent-price" placeholder="Agent Price" />
+                                                   </td>
+                                                   <td class="px-2 py-2">
+                                                       <input type="text" name="adult_commission[]" class="w-full px-4 py-2 border rounded bg-gray-100 commission" placeholder="Commission" readonly />
+                                                   </td>
+                                                   <td class="px-2 py-2">
+                                                       <input type="number" name="children_number[]" class="w-full px-4 py-2 border rounded" placeholder="Number of Children" />
+                                                   </td>
+                                                   <td class="px-2 py-2">
+                                                       <input type="number" name="children_selling[]" class="w-full px-4 py-2 border rounded selling-price" placeholder="Selling Price" />
+                                                   </td>
+                                                   <td class="px-2 py-2">
+                                                       <input type="number" name="children_agent[]" class="w-full px-4 py-2 border rounded agent-price" placeholder="Agent Price" />
+                                                   </td>
+                                                   <td class="px-2 py-2">
+                                                       <input type="text" name="children_commission[]" class="w-full px-4 py-2 border rounded bg-gray-100 commission" placeholder="Commission" readonly />
+                                                   </td>
+                                                   <td class="px-2 py-2 items-center justify-center">
+                                                       <button 
+                                                           type="button" 
+                                                           class="flex items-center justify-center gap-2 bg-red-600 text-white font-bold px-4 py-2 rounded hover:bg-red-700 delete-row">
+                                                           <i class="fas fa-trash"></i> 
+                                                       </button>
+                                                   </td>
+                                               </tr>
+                                           </tbody>
+                                       </table>
+                                   </div>
+                               </div>
+                               <!-- Product total price  -->
+                               <p class="text-lg font-bold mb-4">Total Price by Category</p>
+                               <div class="overflow-x-auto">
+                                   <table class="w-full border-collapse border border-gray-300 mb-4">
+                                       <thead class="bg-green-500 text-white">
+                                           <tr>
+                                               <th class="border px-4 py-2">Category</th>
+                                               <th class="border px-4 py-2">Number</th>
+                                               <th class="border px-4 py-2">Selling Price</th>
+                                               <th class="border px-4 py-2">Agent Price</th>
+                                               <th class="border px-4 py-2">Commission(%)</th>
+                                               <th class="border px-4 py-2">Total Selling Price</th>
+                                               <th class="border px-4 py-2">Total Agent Price</th>
+                                               <th class="border px-4 py-2">Total Commission(%)</th>
+                                           </tr>
+                                       </thead>
+                                       <tbody>
+                                           <!-- Row for Adults -->
+                                           <tr>
+                                               <td class="border px-4 py-2">Adults</td>
+                                               <td class="border px-4 py-2">
+                                                   <input type="number" name="adults" class="w-full px-4 py-2 border rounded bg-gray-100" readonly />
+                                               </td>
+                                               <td class="border px-4 py-2">
+                                                   <input type="number" name="selling_price" class="w-full px-4 py-2 border rounded" value="{{ merchant.selling_price }}" required />
+                                               </td>
+                                               <td class="border px-4 py-2">
+                                                   <input type="number" name="agent_price" class="w-full px-4 py-2 border rounded" value="{{ merchant.agent_price }}" required />
+                                               </td>
+                                               <td class="border px-4 py-2">
+                                                   <input type="text" name="commission" class="w-full px-4 py-2 border rounded bg-gray-100" value="{{ merchant.commission }}" readonly />
+                                               </td>
+                                               <td class="border px-4 py-2">
+                                                   <input type="text" name="total_selling_price" class="w-full px-4 py-2 border rounded bg-gray-100" value="{{ merchant.commission }}" readonly />
+                                               </td>
+                                               <td class="border px-4 py-2">
+                                                   <input type="text" name="total_agent_price" class="w-full px-4 py-2 border rounded bg-gray-100" value="{{ merchant.commission }}" readonly />
+                                               </td>
+                                               <td class="border px-4 py-2">
+                                                   <input type="text" name="total_commission" class="w-full px-4 py-2 border rounded bg-gray-100" value="{{ merchant.commission }}" readonly />
+                                               </td>
+                                           </tr>
+                                           <!-- Row for Children -->
+                                           <tr>
+                                               <td class="border px-4 py-2">Children</td>
+                                               <td class="border px-4 py-2">
+                                                   <input type="number" name="children" class="w-full px-4 py-2 border rounded bg-gray-100" readonly />
+                                               </td>
+                                               <td class="border px-4 py-2">
+                                                   <input type="number" name="selling_price" class="w-full px-4 py-2 border rounded" value="{{ merchant.selling_price }}" required />
+                                               </td>
+                                               <td class="border px-4 py-2">
+                                                   <input type="number" name="agent_price" class="w-full px-4 py-2 border rounded" value="{{ merchant.agent_price }}" required />
+                                               </td>
+                                               <td class="border px-4 py-2">
+                                                   <input type="text" name="commission" class="w-full px-4 py-2 border rounded bg-gray-100" value="{{ merchant.commission }}" readonly />
+                                               </td>
+                                               <td class="border px-4 py-2">
+                                                   <input type="text" name="total_selling_price" class="w-full px-4 py-2 border rounded bg-gray-100" value="{{ merchant.commission }}" readonly />
+                                               </td>
+                                               <td class="border px-4 py-2">
+                                                   <input type="text" name="total_agent_price" class="w-full px-4 py-2 border rounded bg-gray-100" value="{{ merchant.commission }}" readonly />
+                                               </td>
+                                               <td class="border px-4 py-2">
+                                                   <input type="text" name="total_commission" class="w-full px-4 py-2 border rounded bg-gray-100" value="{{ merchant.commission }}" readonly />
+                                               </td>
+                                           </tr>
+                                       </tbody>
+                                   </table>
+                               </div>
+   
+                               <p class="text-lg font-bold mb-4">Total Price </p>
+                               <p class="text-md mb-4">(Adult + Children = Total Price) </p>
+                               <div class="mb-4 grid-cols-1 md:grid grid-cols-4 gap-4">
+                                   <div class="">
+                                       <label class="block text-sm font-semibold mb-2">Discount (%)</label>
+                                       <input type="number" name="discount" class="w-full px-4 py-2 border rounded" placeholder="Enter discount" />
+                                   </div>
+                                   <div class="">
+                                       <label class="block text-sm font-semibold mb-2">Total Selling Price </label>
+                                       <input type="number" name="total_price" class="w-full px-4 py-2 border rounded bg-gray-100" readonly />
+                                   </div>
+                                   <div class="">
+                                       <label class="block text-sm font-semibold mb-2">Total Agent Price </label>
+                                       <input type="number" name="total_price" class="w-full px-4 py-2 border rounded bg-gray-100" readonly />
+                                   </div>
+                                   <div class="">
+                                       <label class="block text-sm font-semibold mb-2">Total Commisions</label>
+                                       <input type="number" name="total_price" class="w-full px-4 py-2 border rounded bg-gray-100" readonly />
+                                   </div>
+                               </div>
                         
                             <!-- Actions -->
                             <div class="flex justify-between space-x-2">
@@ -167,43 +309,94 @@
 </html>
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-    const tableBody = document.getElementById('product-pricing-rows');
-    const addRowButton = document.getElementById('add-row');
+        const tableBody = document.getElementById('product-pricing-rows');
+        const addRowButton = document.getElementById('add-row');
 
-    // Add new row
-    addRowButton.addEventListener('click', () => {
-        const newRow = `
-        <tr>
-            <td class=" px-2 py-2">
-                <textarea name="product_description[]" class="w-full px-4 py-2 border rounded" rows="2" placeholder="Enter product description"></textarea>
-            </td>
-            <td class=" px-2 py-2">
-                <input type="number" name="selling_price[]" class="w-full px-4 py-2 border rounded" placeholder="Selling Price" required />
-            </td>
-            <td class=" px-2 py-2">
-                <input type="number" name="agent_price[]" class="w-full px-4 py-2 border rounded" placeholder="Agent Price" required />
-            </td>
-            <td class=" px-2 py-2">
-                <input type="text" name="commission[]" class="w-full px-4 py-2 border rounded bg-gray-100" placeholder="Commission" readonly />
-            </td>
-           <td class="px-2 py-2 items-center justify-start">
-                <button 
-                    type="button" 
-                    class="flex items-center justify-center gap-2 bg-red-600 text-white font-bold px-4 py-2 rounded hover:bg-red-700 delete-row">
-                    <i class="fas fa-trash"></i> Delete
-                </button>
-            </td>
-        </tr>`;
-        tableBody.insertAdjacentHTML('beforeend', newRow);
-    });
+        // Function to calculate commission
+        function calculateCommission(row) {
+            const sellingPrice = row.querySelector('.selling-price').value;
+            const agentPrice = row.querySelector('.agent-price').value;
+            const commissionField = row.querySelector('.commission');
 
-    // Delete row
-    tableBody.addEventListener('click', (e) => {
-        if (e.target.classList.contains('delete-row')) {
-            const row = e.target.closest('tr');
-            if (row) row.remove();
+            if (sellingPrice && agentPrice) {
+                const difference = sellingPrice - agentPrice;
+                const percentage = ((difference / sellingPrice) * 100).toFixed(2);
+                commissionField.value = `${difference.toFixed(2)} (${percentage}%)`;
+            } else {
+                commissionField.value = '';
+            }
         }
+
+        // Add new row
+        addRowButton.addEventListener('click', () => {
+            const newRow = `
+            <tr>
+                <td class="px-2 py-2">
+                    <textarea name="product_type[]" class="w-full px-4 py-2 border rounded" rows="2" placeholder="Enter product details"></textarea>
+                </td>
+                <td class="px-2 py-2">
+                    <input type="number" name="adult_number[]" class="w-full px-4 py-2 border rounded" placeholder="Number of Adults" />
+                </td>
+                <td class="px-2 py-2">
+                    <input type="number" name="adult_selling[]" class="w-full px-4 py-2 border rounded selling-price" placeholder="Selling Price" />
+                </td>
+                <td class="px-2 py-2">
+                    <input type="number" name="adult_agent[]" class="w-full px-4 py-2 border rounded agent-price" placeholder="Agent Price" />
+                </td>
+                <td class="px-2 py-2">
+                    <input type="text" name="adult_commission[]" class="w-full px-4 py-2 border rounded bg-gray-100 commission" placeholder="Commission" readonly />
+                </td>
+                <td class="px-2 py-2">
+                    <input type="number" name="children_number[]" class="w-full px-4 py-2 border rounded" placeholder="Number of Children" />
+                </td>
+                <td class="px-2 py-2">
+                    <input type="number" name="children_selling[]" class="w-full px-4 py-2 border rounded selling-price" placeholder="Selling Price" />
+                </td>
+                <td class="px-2 py-2">
+                    <input type="number" name="children_agent[]" class="w-full px-4 py-2 border rounded agent-price" placeholder="Agent Price" />
+                </td>
+                <td class="px-2 py-2">
+                    <input type="text" name="children_commission[]" class="w-full px-4 py-2 border rounded bg-gray-100 commission" placeholder="Commission" readonly />
+                </td>
+                <td class="px-2 py-2 items-center justify-center">
+                    <button 
+                        type="button" 
+                        class="flex items-center justify-center gap-2 bg-red-600 text-white font-bold px-4 py-2 rounded hover:bg-red-700 delete-row">
+                        <i class="fas fa-trash"></i> 
+                    </button>
+                </td>
+            </tr>`;
+            tableBody.insertAdjacentHTML('beforeend', newRow);
+        });
+
+        // Listen for input changes to calculate commission
+        tableBody.addEventListener('input', (e) => {
+            const row = e.target.closest('tr');
+            if (row) calculateCommission(row);
+        });
+
+        // Delete row
+        tableBody.addEventListener('click', (e) => {
+            if (e.target.classList.contains('delete-row')) {
+                const row = e.target.closest('tr');
+                if (row) row.remove();
+            }
+        });
     });
-});
 </script>
+<style>
+    .table-container {
+    overflow-x: auto; /* Enables horizontal scrolling */
+    max-width: 100%;  /* Ensures the table doesn't exceed the container's width */
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%; /* Ensures the table stretches to fit the container */
+}
+
+th, td {
+    white-space: nowrap; /* Prevents text from wrapping */
+}
+</style>
 {% endblock %}

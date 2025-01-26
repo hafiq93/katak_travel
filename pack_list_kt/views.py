@@ -162,6 +162,11 @@ def pack_merchant(request, id):
         contact_number = request.POST.get('contact_number')
         email = request.POST.get('email')
 
+        # Product details fields
+        product_name = request.POST.get('product_name')  # Product name
+        product_description = request.POST.get('product_description')  # Product description
+        product_image = request.FILES.get('product_image')  # Image upload field for product image
+
         # Retrieve or create the Location instance for the country
         country_instance, _ = Location.objects.get_or_create(country=country_name)
 
@@ -202,28 +207,17 @@ def pack_merchant(request, id):
             merchant_list=merchant_package  # Assign the MerchantPackage instance
         )
 
-        # Return a JSON response with success confirmation and merchant data
-        return JsonResponse({
-            'success': True,
-            'merchant': {
-                'id': merchant.id,
-                'name': merchant.name,
-                'type': merchant.merchant_type.name if merchant.merchant_type else "N/A",
-                'list': merchant.merchant_list.merchant if merchant.merchant_list else "N/A",
-                'address': {
-                    'street_address': merchant.merchant_list.street_address,
-                    'city': merchant.merchant_list.city,
-                    'state': merchant.merchant_list.state,
-                    'postal_code': merchant.merchant_list.postal_code,
-                    'country': str(merchant.merchant_list.country),
-                },
-                'contact': {
-                    'person': merchant.merchant_list.contact_person,
-                    'number': merchant.merchant_list.contact_number,
-                    'email': merchant.merchant_list.email,
-                },
-            }
-        })
+        # Create ProductDetails for the new merchant (if product details were provided)
+        if product_name and product_description:
+            product_details = ProductDetails.objects.create(
+                product_name=product_name,
+                product_description=product_description,
+                product_image=product_image,  # This will save the uploaded image
+                package_merchant=merchant  # Associate it with the newly created PackageMerchant
+            )
+
+        # Redirect to the next page after saving
+        return redirect('pack_price', package_id=package.id)
 
     # If the request is not POST, render the merchant form template
     return render(request, 'pack_list_kt/package_merchant.html', {
@@ -331,17 +325,63 @@ def get_merchant_details(request, id):
 
 
 
-def pack_form(request, merchant_id):
-    merchant = get_object_or_404(PackageMerchant, id=merchant_id)
-    package = merchant.package  # Assuming the relationship exists
+def pack_form(request, merchant_id):  # Change `package_id` to `merchant_id`
+    # Retrieve the PackageMerchant by ID
+    package_merchant = get_object_or_404(PackageMerchant, id=merchant_id)
+    merchant = package_merchant.merchant_list  # Get the related MerchantPackage
+
+    # Get all countries from the Location model
+    countries = Location.objects.all()
+    merchant_types = MerchantType.objects.all()  # Get all merchant types
 
     if request.method == 'POST':
-        merchant.selling_price = request.POST.get('selling_price')
-        merchant.agent_price = request.POST.get('agent_price')
+        # Extract user input from the POST request
+        merchant_name = request.POST.get('merchant_name')
+        merchant_code = request.POST.get('merchant_code')
+        merchant_type_id = request.POST.get('merchant_type')
+
+        # Address and contact fields
+        street_address = request.POST.get('street_address')
+        city = request.POST.get('city')
+        state = request.POST.get('state')
+        postal_code = request.POST.get('postal_code')
+        country_name = request.POST.get('country')
+        contact_person = request.POST.get('contact_person')
+        contact_number = request.POST.get('contact_number')
+        email = request.POST.get('email')
+
+        # Product details fields
+        product_name = request.POST.get('product_name')
+        product_description = request.POST.get('product_description')
+        product_image = request.FILES.get('product_image')
+
+        # Retrieve or create the Location instance for the country
+        country_instance, _ = Location.objects.get_or_create(country=country_name)
+
+        # Update the MerchantPackage
+        merchant.street_address = street_address
+        merchant.city = city
+        merchant.state = state
+        merchant.postal_code = postal_code
+        merchant.country = country_instance
+        merchant.contact_person = contact_person
+        merchant.contact_number = contact_number
+        merchant.email = email
         merchant.save()
-        return redirect('pack_price', package_id=package.id)
+
+        # Update ProductDetails if product data is provided
+        if product_name and product_description:
+            ProductDetails.objects.update_or_create(
+                package_merchant=package_merchant,
+                defaults={'product_name': product_name, 'product_description': product_description, 'product_image': product_image},
+            )
+
+        # Redirect to the next page after saving
+        return redirect('pack_price', package_id=package_merchant.package.id)
 
     return render(request, 'pack_list_kt/package_form.html', {
+        'package': package_merchant.package,
         'merchant': merchant,
-        'package': package,
+        'merchant_types': merchant_types,
+        'countries': countries,
     })
