@@ -112,7 +112,7 @@ class PackageMerchant(models.Model):
     package = models.ForeignKey('Package', related_name="package_merchants", on_delete=models.CASCADE)
     merchant_list = models.ForeignKey(MerchantPackage, on_delete=models.CASCADE, related_name='package_merchants', blank=True, null=True)
     merchant_type = models.ForeignKey(MerchantType, on_delete=models.CASCADE, related_name="package_merchants", blank=True, null=True)
-    name = models.CharField(max_length=100)
+    # name = models.CharField(max_length=100)
     merchant_code = models.CharField(max_length=50, unique=True, blank=True, null=True)  # Merchant code field
 
     def generate_merchant_code(self):
