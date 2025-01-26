@@ -1,13 +1,11 @@
 from django.contrib.auth.decorators import user_passes_test
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Package, PackageItem, PackageType, Location,MerchantPackage,PackageMerchant
-from admin_kt.models import  MainMerchant, MerchantType
+from .models import Package, PackageItem, PackageType, Location
+from admin_kt.models import MerchantType
 from user_kt.models import User
 from django.utils import timezone
 from django.contrib import messages
 from django.shortcuts import redirect
-from django.http import JsonResponse
-from django_countries.fields import CountryField  # Optional for country selection
 
 
 def admin_required(user):
@@ -21,11 +19,8 @@ def pack_list_add(request, id=None):
         min_pax = int(request.POST.get('min_pax'))
         max_pax = int(request.POST.get('max_pax'))
         description = request.POST.get('description', '')
-        info = request.POST.get('info', '')  # New field for info
-        date_of_travel = request.POST.get('date_of_travel', '')  # New field for date_of_travel
         start_date = request.POST.get('start_date')
         end_date = request.POST.get('end_date')
-        code = request.POST.get('code')
 
         user_pic = request.user  # Set the user who created the package
 
@@ -50,11 +45,8 @@ def pack_list_add(request, id=None):
                 package.min_pax = min_pax
                 package.max_pax = max_pax
                 package.description = description
-                package.info = info  # Update info
-                package.date_of_travel = date_of_travel  # Update date_of_travel
                 package.start_date = start_date
                 package.end_date = end_date
-                package.code = code
                 package.user_pic = user_pic  # Ensure this is set during update
                 package.save()
                 messages.success(request, 'Package updated successfully!')
@@ -65,10 +57,7 @@ def pack_list_add(request, id=None):
                     city=city_name,
                     min_pax=min_pax,
                     max_pax=max_pax,
-                    code=code,
                     description=description,
-                    info=info,  # Save info
-                    date_of_travel=date_of_travel,  # Save date_of_travel
                     start_date=start_date,
                     end_date=end_date,
                     user_pic=user_pic,  # Set the user who created the package
@@ -138,210 +127,10 @@ def pack_list_add_items(request, package_id):
     return render(request, 'pack_list_kt/package_add_items.html', context)
 
 
-
+@user_passes_test(admin_required, login_url='/login/')
 def pack_merchant(request, id):
-    # Retrieve the package based on the ID
-    package = get_object_or_404(Package, id=id)
-
-    # Get all countries from the Location model
-    countries = Location.objects.all()
-
-    if request.method == 'POST':
-        # Extract user input from the POST request
-        merchant_name = request.POST.get('merchant_name')  # Merchant name
-        merchant_code = request.POST.get('merchant_code')  # Merchant code
-        merchant_type_id = request.POST.get('merchant_type')  # Merchant type ID
-        
-        # Address and contact fields
-        street_address = request.POST.get('street_address')
-        city = request.POST.get('city')
-        state = request.POST.get('state')
-        postal_code = request.POST.get('postal_code')
-        country_name = request.POST.get('country')  # Get the country name from the form
-        contact_person = request.POST.get('contact_person')
-        contact_number = request.POST.get('contact_number')
-        email = request.POST.get('email')
-
-        # Retrieve or create the Location instance for the country
-        country_instance, _ = Location.objects.get_or_create(country=country_name)
-
-        # Create or retrieve a MerchantPackage
-        merchant_package, created = MerchantPackage.objects.get_or_create(
-            merchant=merchant_name,
-            defaults={
-                'street_address': street_address,
-                'city': city,
-                'state': state,
-                'postal_code': postal_code,
-                'country': country_instance,  # Assign the Location instance
-                'contact_person': contact_person,
-                'contact_number': contact_number,
-                'email': email,
-            }
-        )
-
-        # If the MerchantPackage already exists but we need to update optional fields:
-        if not created:
-            MerchantPackage.objects.filter(id=merchant_package.id).update(
-                street_address=street_address or merchant_package.street_address,
-                city=city or merchant_package.city,
-                state=state or merchant_package.state,
-                postal_code=postal_code or merchant_package.postal_code,
-                country=country_instance or merchant_package.country,  # Update the Location instance
-                contact_person=contact_person or merchant_package.contact_person,
-                contact_number=contact_number or merchant_package.contact_number,
-                email=email or merchant_package.email,
-            )
-
-        # Create a new PackageMerchant record
-        merchant = PackageMerchant.objects.create(
-            package=package,
-            name=merchant_name,
-            merchant_code=merchant_code,
-            merchant_type_id=merchant_type_id,
-            merchant_list=merchant_package  # Assign the MerchantPackage instance
-        )
-
-        # Return a JSON response with success confirmation and merchant data
-        return JsonResponse({
-            'success': True,
-            'merchant': {
-                'id': merchant.id,
-                'name': merchant.name,
-                'type': merchant.merchant_type.name if merchant.merchant_type else "N/A",
-                'list': merchant.merchant_list.merchant if merchant.merchant_list else "N/A",
-                'address': {
-                    'street_address': merchant.merchant_list.street_address,
-                    'city': merchant.merchant_list.city,
-                    'state': merchant.merchant_list.state,
-                    'postal_code': merchant.merchant_list.postal_code,
-                    'country': str(merchant.merchant_list.country),
-                },
-                'contact': {
-                    'person': merchant.merchant_list.contact_person,
-                    'number': merchant.merchant_list.contact_number,
-                    'email': merchant.merchant_list.email,
-                },
-            }
-        })
-
-    # If the request is not POST, render the merchant form template
+    package = get_object_or_404(Package, id=id)  # Fetch the package using the id
+    merchant_types = MerchantType.objects.all()  # Get all merchant types
+    user_pic = request.user  # If you want the logged-in user
     return render(request, 'pack_list_kt/package_merchant.html', {
-        'package': package,
-        'merchant_types': MerchantType.objects.all(),  # Pass merchant types for the dropdown
-        'countries': countries,  # Pass countries for the dropdown
-    })
-    
-
-def pack_mer_edit(request, merchant_id):
-    merchant = get_object_or_404(PackageMerchant, id=merchant_id)
-    package = merchant.package  # Assuming the relationship exists
-
-    if request.method == 'POST':
-        merchant.selling_price = request.POST.get('selling_price')
-        merchant.agent_price = request.POST.get('agent_price')
-        merchant.save()
-        return redirect('package_merc_edit', package_id=package.id)
-
-    return render(request, 'pack_list_kt/package_merc_edit.html', {
-        'merchant': merchant,
-        'package': package,
-    })
-
-
-
-def delete_merchant(request, id):
-    merchant = get_object_or_404(PackageMerchant, id=id)
-    merchant.delete()
-    return JsonResponse({'success': True})
-
-def get_merchant(request, id):
-    merchant = get_object_or_404(PackageMerchant, id=id)
-    return JsonResponse({
-        'name': merchant.name,
-        'type_id': merchant.merchant_type.id if merchant.merchant_type else ''
-    })
-
-def pack_price(request, package_id):
-    package = get_object_or_404(Package, id=package_id)
-    
-
-    if request.method == 'POST':
-        merchant_name = request.POST.get('merchant_name')
-        merchant_code = request.POST.get('merchant_code')
-        merchant_type_id = request.POST.get('merchant_type')
-        selling_price = request.POST.get('selling_price')
-        agent_price = request.POST.get('agent_price')
-        commission = request.POST.get('commission')
-
-        if not merchant_name:
-            return JsonResponse({'success': False, 'error': 'Merchant name is required.'}, status=400)
-
-        merchant_package, created = MerchantPackage.objects.get_or_create(
-            merchant_name=merchant_name
-        )
-
-        merchant = PackageMerchant.objects.create(
-            package=package,
-            merchant_list=merchant_package,
-            merchant_code=merchant_code,
-            merchant_type_id=merchant_type_id,
-        )
-
-        PackageItem.objects.create(
-            merchant_list=merchant,
-            name=f'{merchant_name} Item',
-            merchant_price=agent_price,
-            selling_price=selling_price,
-            commission_percent=commission,
-        )
-
-        return JsonResponse({
-            'success': True,
-            'merchant': {
-                'id': merchant.id,
-                'name': merchant.merchant_list.merchant,
-                'type': merchant.merchant_type.name if merchant.merchant_type else "N/A",
-                'code': merchant.merchant_code,
-                'selling_price': merchant.selling_price,
-                'agent_price': merchant.agent_price,
-                'commission': merchant.commission,
-            }
-        })
-
-    return render(request, 'pack_list_kt/package_price.html', {
-        'package': package,
-        'merchant_types': MerchantType.objects.all(),
-    })
-
-
-def get_merchant_details(request, id):
-    try:
-        merchant = PackageMerchant.objects.get(id=id)
-        return JsonResponse({
-            'success': True,
-            'merchant': {
-                'name': merchant.merchant_list.merchant,
-                'code': merchant.merchant_code,
-                'type': merchant.merchant_type.name if merchant.merchant_type else "N/A",
-            }
-        })
-    except PackageMerchant.DoesNotExist:
-        return JsonResponse({'success': False, 'error': 'Merchant not found'}, status=404)
-
-
-
-def pack_form(request, merchant_id):
-    merchant = get_object_or_404(PackageMerchant, id=merchant_id)
-    package = merchant.package  # Assuming the relationship exists
-
-    if request.method == 'POST':
-        merchant.selling_price = request.POST.get('selling_price')
-        merchant.agent_price = request.POST.get('agent_price')
-        merchant.save()
-        return redirect('pack_price', package_id=package.id)
-
-    return render(request, 'pack_list_kt/package_form.html', {
-        'merchant': merchant,
-        'package': package,
-    })
+        'package': package, 'merchant_types': merchant_types,'user_pic': user_pic,})
