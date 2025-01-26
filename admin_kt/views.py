@@ -111,8 +111,7 @@ def package_dashboard(request):
 @user_passes_test(lambda u: u.is_staff, login_url='/login/')
 def package_list(request):
     packages = Package.objects.all()  # Assuming you're fetching all packages
-    user_pic = request.user  # If you want the logged-in user
-    return render(request, 'admin_kt/package_list.html', {'packages': packages,'user_pic': user_pic})
+    return render(request, 'admin_kt/package_list.html', {'packages': packages})
 
 def delete_package(request, id):
     package = get_object_or_404(Package, id=id)
