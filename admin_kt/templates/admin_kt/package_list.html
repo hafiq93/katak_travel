@@ -30,32 +30,34 @@
                             <table class="min-w-full table-auto">
                                 <thead>
                                     <tr>
-                                        <th class="px-4 py-2 text-left text-gray-600 font-semibold">No</th>
-                                        <th class="px-4 py-2 text-left text-gray-600 font-semibold">Package Name</th>
-                                        <th class="px-4 py-2 text-left text-gray-600 font-semibold">City</th>
-                                        <th class="px-4 py-2 text-left text-gray-600 font-semibold">Duration</th>
-                                        <th class="px-4 py-2 text-left text-gray-600 font-semibold">Status</th>
-                                        <th class="px-4 py-2 text-left text-gray-600 font-semibold">Price</th>
-                                        <th class="px-4 py-2 text-left text-gray-600 font-semibold">PIC</th>
-                                        <th class="px-4 py-2 text-left text-gray-600 font-semibold">Status Pack</th>
-                                        <th class="px-4 py-2 text-left text-gray-600 font-semibold">Actions</th>
+                                        <th class="px-4 py-2 text-left text-gray-600 font-semibold text-center">No</th>
+                                        <th class="px-4 py-2 text-left text-gray-600 font-semibold text-center">Code</th>
+                                        <th class="px-4 py-2 text-left text-gray-600 font-semibold text-center">Package Name</th>
+                                        <th class="px-4 py-2 text-left text-gray-600 font-semibold text-center">City</th>
+                                        <th class="px-4 py-2 text-left text-gray-600 font-semibold text-center">Duration</th>
+                                        <th class="px-4 py-2 text-left text-gray-600 font-semibold text-center">Status</th>
+                                        <!-- <th class="px-4 py-2 text-left text-gray-600 font-semibold">Price</th> -->
+                                        <th class="px-4 py-2 text-left text-gray-600 font-semibold text-center">PIC</th>
+                                        <th class="px-4 py-2 text-left text-gray-600 font-semibold text-center">Status</th>
+                                        <th class="px-4 py-2 text-left text-gray-600 font-semibold text-center w-48">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {% for package in packages %}
                                     <tr class="py-2">
-                                        <td class="px-4 py-2">{{ forloop.counter }}</td>
-                                        <td class="px-4 py-2">{{ package.name }}</td>
-                                        <td class="px-4 py-2">{{ package.city }},{{ package.location }}</td>
-                                        <td class="px-4 py-2">{{ package.duration }} days</td>
-                                        <td class="px-4 py-2">
-                                            <span class="px-2 py-1 rounded text-white bg-green-600 font-semibold">
+                                        <td class="px-4 py-2 text-center">{{ forloop.counter }}</td>
+                                        <td class="px-4 py-2 text-left">{{ package.code }}</td>
+                                        <td class="px-4 py-2 text-left">{{ package.name }}</td>
+                                        <td class="px-4 py-2 text-left">{{ package.city }},{{ package.location }}</td>
+                                        <td class="px-4 py-2 text-center">{{ package.duration }} days</td>
+                                        <td class="px-4 py-2 text-center">
+                                            <span class="px-2 py-1 rounded text-white bg-green-600 font-semibold text-center">
                                             {{ package.status }} 
                                             </span>
                                         </td>
-                                        <td class="px-4 py-2">{{ package.price }}</td>
-                                        <td class="px-4 py-2">{{ package.user_pic.username }}</td>
-                                        <td class="px-4 py-2">
+                                        <!-- <td class="px-4 py-2">{{ package.price }}</td> -->
+                                        <td class="px-4 py-2 text-center">{{ package.user_pic.username }}</td>
+                                        <td class="px-4 py-2 text-center">
                                             <span class="px-2 py-1 rounded text-white font-semibold" style="background-color: {{ package.pack_status.color }}">
                                                 {{ package.pack_status.name }}
                                             </span>
@@ -64,15 +66,21 @@
                                             {% csrf_token %}
                                         <td class="px-4 py-2 flex space-x-4">
                                             <!-- Edit Button -->
+                                            <a href="" 
+                                               class="flex items-center justify-center bg-green-700 text-white px-4 py-2  rounded hover:bg-green-600 font-semibold">
+                                                <i class="fas fa-eye mr-2"></i> Details
+                                            </a>
+
+                                            <!-- Edit Button -->
                                             <a href="{% url 'pack_list_add' package.id %}" 
-                                               class="flex items-center justify-center bg-blue-500 text-white px-4 py-2  rounded hover:bg-blue-600 font-semibold">
+                                               class="flex items-center justify-center bg-blue-700 text-white px-4 py-2  rounded hover:bg-blue-600 font-semibold">
                                                 <i class="fas fa-edit mr-2"></i> Edit
                                             </a>
                                         
                                             <!-- Delete Button -->
                                            
                                                 <button type="submit" 
-                                                        class="flex items-center justify-center bg-red-500 text-white px-4 py-2  rounded hover:bg-red-600 font-semibold">
+                                                        class="flex items-center justify-center bg-red-700 text-white px-4 py-2  rounded hover:bg-red-600 font-semibold">
                                                     <i class="fas fa-trash-alt mr-2"></i> Delete
                                                 </button>
                                             

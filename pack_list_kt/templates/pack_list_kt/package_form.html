@@ -1,0 +1,209 @@
+{% block content %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'src/styles.css' %}">
+<html>
+    {% include 'base_kt/admin_header.html' %}
+    <body>
+        <div class="flex h-screen">
+            <!-- Main Content -->
+            <div class="p-4 bg-gray-100 w-full">
+                <div class="rounded-md">
+                    <div class="bg-white p-6 rounded-lg shadow-lg w-full">
+                        <h2 class="text-2xl font-bold mb-4">Form Details Package</h2>
+                      
+                        <form method="POST" action="{% url 'pack_form' merchant.id %}">
+                            {% csrf_token %}
+                            <!-- Merchant Details -->
+                            <h3 class="text-xl font-bold mb-4">Merchant Details</h3>
+                            <div class="mb-4 grid grid-cols-3 gap-4">
+                                <div>
+                                    <label class="block text-sm font-bold">Merchant Name</label>
+                                    <input type="text" class="w-full px-4 py-2 border rounded bg-gray-100" value="{{ merchant.merchant_list.merchant }}" readonly />
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-bold">Merchant Code</label>
+                                    <input type="text" class="w-full px-4 py-2 border rounded bg-gray-100" value="{{ merchant.merchant_code }}" readonly />
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-bold">Merchant Type</label>
+                                    <input type="text" id="merchant-type" class="w-full px-4 py-2 border rounded bg-gray-100" value="{{ merchant.merchant_type.name }}" readonly />
+                                </div>
+                            </div>
+                            
+                            <!-- Product Details -->
+                            <h3 class="text-xl font-bold mb-4">Product & Pricing Details</h3>
+                            <div class="mb-4">
+                                <button type="button" id="add-row" class="mb-2 bg-green-600 text-white px-4 py-2 rounded font-semibold">Add Row</button>
+                                <table class="w-full border-collapse ">
+                                    <thead class="bg-green-500 text-white">
+                                        <tr>
+                                            <th class="border px-2 py-2 w-2/4 ">Description</th>
+                                            <th class="border px-2 py-2 w-1/6">Selling Price</th>
+                                            <th class="border px-2 py-2 w-1/6">Agent Price</th>
+                                            <th class="border px-2 py-2 w-1/6">Commission</th>
+                                            <th class="border px-4 py-2 w-1/12">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="product-pricing-rows">
+                                        <tr>
+                                            <td class=" px-2 py-2">
+                                                <textarea name="product_description[]" class="w-full px-4 py-2 border rounded" rows="2" placeholder="Enter product description"></textarea>
+                                            </td>
+                                            <td class=" px-2 py-2">
+                                                <input type="number" name="selling_price[]" class="w-full px-4 py-2 border rounded" placeholder="Selling Price" required />
+                                            </td>
+                                            <td class=" px-2 py-2">
+                                                <input type="number" name="agent_price[]" class="w-full px-4 py-2 border rounded" placeholder="Agent Price" required />
+                                            </td>
+                                            <td class=" px-2 py-2">
+                                                <input type="text" name="commission[]" class="w-full px-4 py-2 border rounded bg-gray-100" placeholder="Commission" readonly />
+                                            </td>
+                                            <td class="px-2 py-2 items-center justify-start">
+                                                <button 
+                                                    type="button" 
+                                                    class="flex items-center justify-center gap-2 bg-red-600 text-white font-bold px-4 py-2 rounded hover:bg-red-700 delete-row">
+                                                    <i class="fas fa-trash"></i> Delete
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                               
+                            </div>
+                            <!-- <h3 class="text-xl font-bold mb-4 mt-4">Additional Details</h3> -->
+                            <div class="mb-4 grid grid-cols-5 gap-4">
+                                <div>
+                                    <label class="block text-sm font-bold">Number of Adults</label>
+                                    <input type="number" name="adults" class="w-full px-4 py-2 border rounded" placeholder="Enter number of adults" />
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-bold">Selling Price</label>
+                                    <input type="number" name="selling_price" class="w-full px-4 py-2 border rounded" value="{{ merchant.selling_price }}" required />
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-bold">Agent Price</label>
+                                    <input type="number" name="agent_price" class="w-full px-4 py-2 border rounded" value="{{ merchant.agent_price }}" required />
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-bold">Commission</label>
+                                    <input type="text" name="commission" class="w-full px-4 py-2 border rounded bg-gray-100" value="{{ merchant.commission }}" readonly />
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-bold">Total Price</label>
+                                    <input type="text" name="commission" class="w-full px-4 py-2 border rounded bg-gray-100" value="{{ merchant.commission }}" readonly />
+                                </div>
+                               
+                            </div>
+                            <div class="mb-4 grid grid-cols-5 gap-4">
+                                <div>
+                                    <label class="block text-sm font-bold">Number of Children</label>
+                                    <input type="number" name="children" class="w-full px-4 py-2 border rounded" placeholder="Enter number of children" />
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-bold">Selling Price</label>
+                                    <input type="number" name="selling_price" class="w-full px-4 py-2 border rounded" value="{{ merchant.selling_price }}" required />
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-bold">Agent Price</label>
+                                    <input type="number" name="agent_price" class="w-full px-4 py-2 border rounded" value="{{ merchant.agent_price }}" required />
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-bold">Commission</label>
+                                    <input type="text" name="commission" class="w-full px-4 py-2 border rounded bg-gray-100" value="{{ merchant.commission }}" readonly />
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-bold">Total Price</label>
+                                    <input type="text" name="commission" class="w-full px-4 py-2 border rounded bg-gray-100" value="{{ merchant.commission }}" readonly />
+                                </div>
+                            </div>
+
+                           
+                            <div class="mb-4 grid grid-cols-2 gap-4">
+                                <div class="mb-4">
+                                    <label class="block text-sm font-bold">Discount (%)</label>
+                                    <input type="number" name="discount" class="w-full px-4 py-2 border rounded" placeholder="Enter discount" />
+                                </div>
+                                <div class="mb-4">
+                                    <label class="block text-sm font-bold">Total Price</label>
+                                    <input type="number" name="total_price" class="w-full px-4 py-2 border rounded bg-gray-100" readonly />
+                                </div>
+                            </div>
+                            
+                            <!-- Additional Details -->
+                           
+                            
+                            <!-- Operational Details -->
+                            <!-- <h3 class="text-xl font-bold mb-4">Operational Details</h3>
+                            <div class="mb-4 grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-bold">Start Date</label>
+                                    <input type="date" name="start_date" class="w-full px-4 py-2 border rounded" />
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-bold">End Date</label>
+                                    <input type="date" name="end_date" class="w-full px-4 py-2 border rounded" />
+                                </div>
+                            </div> -->
+                        
+                            <!-- Actions -->
+                            <div class="flex justify-between space-x-2">
+                                <button type="button" class="bg-red-700 text-white px-4 py-2 rounded flex items-center space-x-2">
+                                    <a href="{% url 'pack_price' package_id=package.id %}" class="flex items-center space-x-2 font-semibold">
+                                        <i class="fas fa-times"></i>
+                                        <span>Cancel</span>
+                                    </a>
+                                </button>
+                                <button type="submit" class="bg-green-700 text-white px-4 py-2 rounded flex items-center space-x-2 font-semibold">
+                                    <i class="fas fa-save"></i>
+                                    <span>Save</span>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+    const tableBody = document.getElementById('product-pricing-rows');
+    const addRowButton = document.getElementById('add-row');
+
+    // Add new row
+    addRowButton.addEventListener('click', () => {
+        const newRow = `
+        <tr>
+            <td class=" px-2 py-2">
+                <textarea name="product_description[]" class="w-full px-4 py-2 border rounded" rows="2" placeholder="Enter product description"></textarea>
+            </td>
+            <td class=" px-2 py-2">
+                <input type="number" name="selling_price[]" class="w-full px-4 py-2 border rounded" placeholder="Selling Price" required />
+            </td>
+            <td class=" px-2 py-2">
+                <input type="number" name="agent_price[]" class="w-full px-4 py-2 border rounded" placeholder="Agent Price" required />
+            </td>
+            <td class=" px-2 py-2">
+                <input type="text" name="commission[]" class="w-full px-4 py-2 border rounded bg-gray-100" placeholder="Commission" readonly />
+            </td>
+           <td class="px-2 py-2 items-center justify-start">
+                <button 
+                    type="button" 
+                    class="flex items-center justify-center gap-2 bg-red-600 text-white font-bold px-4 py-2 rounded hover:bg-red-700 delete-row">
+                    <i class="fas fa-trash"></i> Delete
+                </button>
+            </td>
+        </tr>`;
+        tableBody.insertAdjacentHTML('beforeend', newRow);
+    });
+
+    // Delete row
+    tableBody.addEventListener('click', (e) => {
+        if (e.target.classList.contains('delete-row')) {
+            const row = e.target.closest('tr');
+            if (row) row.remove();
+        }
+    });
+});
+</script>
+{% endblock %}

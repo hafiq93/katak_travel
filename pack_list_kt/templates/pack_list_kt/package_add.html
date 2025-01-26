@@ -7,7 +7,7 @@
      {% include 'base_kt/admin_header.html' %}
 
      <body>
-        <div class="flex h-screen">
+        <div class="flex h-min-screen">
             <!-- Main Content -->
             <div class="p-4 bg-gray-100 w-full">
                 <!-- First Row (Metrics in One Row) -->
@@ -19,57 +19,94 @@
                         <form method="POST" action="{% if package and package.id %}{% url 'pack_list_add' id=package.id %}{% else %}{% url 'pack_list_add' %}{% endif %}">
                             {% csrf_token %}
                             <!-- Package Name -->
-                            <div class="mb-4">
-                                <label for="hotel_name" class="block text-gray-700 font-semibold">Package Name:</label>
-                                <input type="text" id="hotel_name" name="hotel_name" 
-                                       value="{% if package %}{{ package.name }}{% else %}{% endif %}" 
-                                       required class="mt-1 p-2 border border-gray-300 rounded w-full">
-                            </div>
-                            
-                            <div class="mb-4 flex space-x-4">
-                                <!-- City Input -->
-                                <div class="flex-1">
-                                    <label for="city" class="block text-gray-700 font-semibold">City:</label>
-                                    <input type="text" id="city" name="city" 
-                                           value="{% if package %}{{ package.city }}{% else %}{% endif %}" 
-                                           required class="mt-1 p-2 border border-gray-300 rounded w-full" placeholder="Enter City">
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div class="mb-4 col-span-1 md:col-span-2">
+                                    <label for="hotel_name" class="block text-gray-700 font-semibold">Package Name:</label>
+                                    <input type="text" id="hotel_name" name="hotel_name" 
+                                        value="{% if package %}{{ package.name }}{% else %}{% endif %}" 
+                                        required class="mt-1 p-2 border border-gray-300 rounded w-full" required>
                                 </div>
-                                
-                                <!-- Country Dropdown -->
-                                <div class="flex-1">
-                                    <label for="location" class="block text-gray-700 font-semibold">Country:</label>
-                                    <select id="location" name="location" required class="mt-1 p-2 border border-gray-300 rounded w-full">
-                                        <option value="">Select a Country</option>
-                                        {% for loc in locations %}
-                                            <option value="{{ loc.country }}" {% if loc.country == package.location.country %}selected{% endif %}>{{ loc.country }}</option>
-                                        {% endfor %}
-                                    </select>
+                                <div class="mb-4 col-span-1 ">
+                                    <label for="hotel_name" class="block text-gray-700 font-semibold">Package Code:</label>
+                                    <input type="text" id="code" name="code" 
+                                        value="{% if package %}{{ package.code }}{% else %}{% endif %}" 
+                                        required class="mt-1 p-2 border border-gray-300 rounded w-full " required >
                                 </div>
                             </div>
+                            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                             
-                            <!-- Pax Range -->
-                            <div class="mb-4">
-                                <label class="block text-gray-700 font-semibold mb-1">Pax Range:</label>
-                                <div class="flex space-x-4">
-                                    <!-- Minimum Pax -->
-                                    <div class="w-1/2">
-                                        <input type="number" id="min_pax" name="min_pax" min="1" required 
-                                               value="{% if package %}{{ package.min_pax }}{% else %}{% endif %}"
-                                               placeholder="Min Pax" class="mt-1 p-2 border border-gray-300 rounded w-full">
-                                    </div>
-                                    
-                                    <!-- Maximum Pax -->
-                                    <div class="w-1/2">
-                                        <input type="number" id="max_pax" name="max_pax" min="1" required 
-                                               value="{% if package %}{{ package.max_pax }}{% else %}{% endif %}"
-                                               placeholder="Max Pax" class="mt-1 p-2 border border-gray-300 rounded w-full">
+                                <div class=" col-span-2">
+                                    <div class="mb-4 flex space-x-4">
+                                        <!-- City Input -->
+                                        <div class="flex-1">
+                                            <label for="city" class="block text-gray-700 font-semibold">City:</label>
+                                            <input type="text" id="city" name="city" 
+                                                value="{% if package %}{{ package.city }}{% else %}{% endif %}" 
+                                                required class="mt-1 p-2 border border-gray-300 rounded w-full" placeholder="Enter City" >
+                                        </div>
+                                        
+                                        <!-- Country Dropdown -->
+                                        <div class="flex-1">
+                                            <label for="location" class="block text-gray-700 font-semibold">Country:</label>
+                                            <select id="location" name="location" required class="mt-1 p-2 border border-gray-300 rounded w-full">
+                                                <option value="">Select a Country</option>
+                                                {% for loc in locations %}
+                                                    <option value="{{ loc.country }}" {% if loc.country == package.location.country %}selected{% endif %}>{{ loc.country }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
+                                <div class=" col-span-2">
+                                <!-- Pax Range -->
+                                    <div class="mb-4">
+                                        <label class="block text-gray-700 font-semibold">Pax Range:</label>
+                                        <div class="flex space-x-4">
+                                            <!-- Minimum Pax -->
+                                            <div class="w-1/2">
+                                                <input type="number" id="min_pax" name="min_pax" min="1" required 
+                                                    value="{% if package %}{{ package.min_pax }}{% else %}{% endif %}"
+                                                    placeholder="Min Pax" class="mt-1 p-2 border border-gray-300 rounded w-full">
+                                            </div>
+                                            
+                                            <!-- Maximum Pax -->
+                                            <div class="w-1/2">
+                                                <input type="number" id="max_pax" name="max_pax" min="1" required 
+                                                    value="{% if package %}{{ package.max_pax }}{% else %}{% endif %}"
+                                                    placeholder="Max Pax" class="mt-1 p-2 border border-gray-300 rounded w-full">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
+                          
+                            <!-- Package Description -->
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div class="mb-4">
+                                <label for="date_of_travel" class="block text-gray-700 font-semibold mb-2">Date of Travel:</label>
+                                <textarea id="date_of_travel" name="date_of_travel" rows="6"
+                                          placeholder="Enter the date of travel:"
+                                          class="p-2 border border-gray-300 rounded w-full resize-y">{% if package %}{{ package.date_of_travel }}{% endif %}</textarea>
+                            </div>
+                    
+                            <div class="mb-4">
+                                <label for="description" class="block text-gray-700 font-semibold mb-2">Package Description:</label>
+                                <textarea id="description" name="description" rows="6"
+                                          placeholder="Enter the description of the package"
+                                          class="p-2 border border-gray-300 rounded w-full resize-y">{% if package %}{{ package.description }}{% endif %}</textarea>
+                            </div>
+                    
+                            <div class="mb-4">
+                                <label for="info" class="block text-gray-700 font-semibold mb-2">Package Information:</label>
+                                <textarea id="info" name="info" rows="6"
+                                          placeholder="Enter additional information about the package"
+                                          class="p-2 border border-gray-300 rounded w-full resize-y">{% if package %}{{ package.info }}{% endif %}</textarea>
+                            </div>
+                        </div>
                             
                             <!-- Package Duration -->
                             <div class="mb-4">
-                                <label class="block text-gray-700 font-semibold mb-2">Package Duration:</label>
+                                <label class="block text-gray-700 font-semibold mb-2">Package Duration Publish:</label>
                                 <div class="flex items-center space-x-2">
                                     <!-- Start Date -->
                                     <input type="text" id="start_date" name="start_date" 
@@ -100,7 +137,7 @@
                                         <i class="fas fa-paper-plane mr-2"></i> Submit
                                     </button>
                                     
-                                    <a href="{% if package and package.id %}{% url 'pack_merchant' id=package.id %}{% else %}{% url 'package_list' %}{% endif %}" 
+                                    <a href="{% if package and package.id %}{% url 'pack_merchant' id=package.id %}{% else %}{% url 'pack_merchant' %}{% endif %}" 
                                     class="bg-green-700 text-white px-4 py-2 rounded hover:bg-green-600 font-semibold inline-flex items-center">
                                         Next
                                         <i class="fas fa-arrow-right ml-2"></i>
@@ -226,6 +263,77 @@
         $('#location').select2({
             placeholder: 'Select a Country',
             allowClear: true
+        });
+    });
+</script>
+
+<!-- Add JavaScript to Handle Adding/Removing Rows -->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const addTravelDateButton = document.getElementById('add-travel-date');
+        const travelDatesContainer = document.getElementById('travel-dates-container');
+
+        // Initialize Flatpickr on existing inputs
+        function initializeDatePickers() {
+            flatpickr('.start-date', {
+                dateFormat: "d/m/Y",
+            });
+            flatpickr('.end-date', {
+                dateFormat: "d/m/Y",
+            });
+        }
+
+        // Initialize Flatpickr for existing rows
+        initializeDatePickers();
+
+        // Function to add a new travel date row
+        addTravelDateButton.addEventListener('click', function () {
+            const newRow = document.createElement('div');
+            newRow.classList.add('flex', 'items-center', 'space-x-2', 'mb-2', 'travel-date-row');
+            newRow.innerHTML = `
+                <input type="text" class="start-date p-2 border border-gray-300 rounded w-1/3" 
+                       placeholder="Start Date (dd/mm/yyyy)" required>
+                <input type="text" class="end-date p-2 border border-gray-300 rounded w-1/3" 
+                       placeholder="End Date (dd/mm/yyyy)" required>
+                <input type="text" name="duration[]" placeholder="Duration (Days)" readonly 
+                       class="p-2 border border-gray-300 rounded w-1/3 bg-gray-100 duration">
+                <button type="button" class="remove-travel-date bg-red-600 text-white px-3 py-2 rounded">
+                    Remove
+                </button>
+            `;
+            travelDatesContainer.appendChild(newRow);
+            initializeDatePickers(); // Re-initialize Flatpickr for new inputs
+        });
+
+        // Function to remove a travel date row
+        travelDatesContainer.addEventListener('click', function (event) {
+            if (event.target.classList.contains('remove-travel-date')) {
+                event.target.parentElement.remove();
+            }
+        });
+
+        // Automatically calculate duration when start or end date changes
+        travelDatesContainer.addEventListener('input', function (event) {
+            if (event.target.classList.contains('start-date') || event.target.classList.contains('end-date')) {
+                const row = event.target.parentElement;
+                const startDateInput = row.querySelector('.start-date');
+                const endDateInput = row.querySelector('.end-date');
+                const durationInput = row.querySelector('.duration');
+
+                if (startDateInput.value && endDateInput.value) {
+                    const startDate = new Date(startDateInput.value.split('/').reverse().join('-'));
+                    const endDate = new Date(endDateInput.value.split('/').reverse().join('-'));
+
+                    if (!isNaN(startDate) && !isNaN(endDate)) {
+                        const duration = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24)) + 1;
+                        durationInput.value = duration > 0 ? `${duration} days` : 'Invalid Date';
+                    } else {
+                        durationInput.value = 'Invalid Date';
+                    }
+                } else {
+                    durationInput.value = '';
+                }
+            }
         });
     });
 </script>

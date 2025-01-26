@@ -207,7 +207,8 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # Media files settings (for uploaded images, files, etc.)
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'static/images/hotel')  # Make sure this is correct for your project
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'static/images/hotel')  # Make sure this is correct for your project
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # Absolute filesystem path to the 'media' directory
 
 
 # Default primary key field type
