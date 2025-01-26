@@ -126,7 +126,7 @@ class PackageMerchant(models.Model):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return self.name
+        return f"Merchant Code: {self.merchant_code}"
 
 class ProductDetails(models.Model):
     product_name = models.CharField(max_length=255)
@@ -142,17 +142,45 @@ class ProductDetails(models.Model):
         return self.product_name
 
 
-class PackageItem(models.Model):
+class PackageItem(models.Model): 
     merchant_list = models.ForeignKey(
-        PackageMerchant, on_delete=models.CASCADE, related_name='pack_price', blank=True, null=True
+        PackageMerchant, on_delete=models.CASCADE, related_name='pack_item', blank=True, null=True
+    )
+    product_details = models.ForeignKey(
+        ProductDetails, on_delete=models.CASCADE, related_name='pack_item', blank=True, null=True
     )
     name = models.CharField(max_length=100)
-    merchant_price = models.DecimalField(max_digits=10, decimal_places=2)
-    selling_price = models.DecimalField(max_digits=10, decimal_places=2)
-    commission_percent = models.DecimalField(max_digits=5, decimal_places=2)
+    # Adult pricing
+    adult_number = models.PositiveIntegerField(default=0, blank=True, null=True)
+    adult_selling_price = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    adult_agent_price = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    adult_commission_percent = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
 
-    def commission_amount(self):
-        return (self.selling_price - self.merchant_price) * (self.commission_percent / 100)
+    # Children pricing
+    children_number = models.PositiveIntegerField(default=0, blank=True, null=True)
+    children_selling_price = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    children_agent_price = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    children_commission_percent = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
+
+    def adult_commission_amount(self):
+        """Calculate commission for adult category"""
+        return (self.adult_selling_price - self.adult_agent_price) * (self.adult_commission_percent / 100)
+
+    def children_commission_amount(self):
+        """Calculate commission for children category"""
+        return (self.children_selling_price - self.children_agent_price) * (self.children_commission_percent / 100)
+
+    def total_adult_price(self):
+        """Calculate the total selling price for adults"""
+        return self.adult_number * self.adult_selling_price
+
+    def total_children_price(self):
+        """Calculate the total selling price for children"""
+        return self.children_number * self.children_selling_price
+
+    def total_commission(self):
+        """Calculate total commission for both adults and children"""
+        return self.adult_commission_amount() + self.children_commission_amount()
 
     def __str__(self):
         return self.name

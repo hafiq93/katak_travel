@@ -127,32 +127,32 @@
                                               
                             <div class="grid grid-cols-1 gap-4 mb-4">
                                 <h3 class="text-xl font-bold mb-4">Product Details</h3>
-
+                        
                                 <!-- Product Details Form -->
                                 <div id="product-details-section">
                                     <!-- Add Product Button -->
                                     <button type="button" id="add-product-btn" 
                                         class="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 font-semibold mb-4"
-                                        onclick="addProduct()"><i class="fas fa-plus mr-2"></i>Add Product</button>
-
+                                        onclick="addProduct()">Add Product</button>
+                        
                                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4 product-entry" data-id="1">
                                         <div class="md:col-span-1">
                                             <label for="product_name" class="block text-gray-700 font-semibold">Product Name:</label>
                                             <input type="text" id="product_name" name="product_name[]" 
-                                                class="mt-1 p-2 border border-gray-300 rounded w-full" >
-
+                                                class="mt-1 p-2 border border-gray-300 rounded w-full" required>
+                        
                                             <label for="product_description" class="block text-gray-700 font-semibold mt-4">Description:</label>
                                             <textarea id="product_description" name="product_description[]" 
-                                                class="mt-1 p-2 border border-gray-300 rounded w-full" rows="3"></textarea>
-
+                                                class="mt-1 p-2 border border-gray-300 rounded w-full" rows="3" required></textarea>
+                        
                                             <button type="button" class="bg-red-700 text-white py-2 px-4 rounded hover:bg-red-600 font-semibold mt-4"
-                                                onclick="deleteProduct(this)"><i class="fas fa-trash-alt mr-2"></i>Delete Product</button>
+                                                onclick="deleteProduct(this)">Delete Product</button>
                                         </div>
                                         
                                         <div>
                                             <label for="product_image" class="block text-gray-700 font-semibold">Image:</label>
-                                            <input type="file" id="product_image" name="product_image[]" 
-                                                accept="image/*" class="mt-1 p-2 border border-gray-300 rounded w-full" onchange="previewImage(this)">
+                                            <input type="file" id="product_image" name="product_image[]" accept="image/jpeg, image/png, image/gif, image/webp"
+                                                class="mt-1 p-2 border border-gray-300 rounded w-full" onchange="previewImage(this)" required>
                                             <p class="text-xs text-gray-600">
                                                 File size must not exceed 400KB, only allow .jpg .jpeg .png .gif .webp file type
                                                 <br>Recommend size 400x300(px); 640x480(px)SD / ratio 4:3
@@ -161,19 +161,17 @@
                                                 <button type="button" class="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-600" onclick="editImage(this)">Edit</button>
                                                 <button type="button" class="bg-red-500 text-white py-1 px-3 rounded hover:bg-red-600" onclick="deleteImage(this)">Delete</button>
                                             </div>
-                                            
                                         </div>
+                                        
                                         <div>
                                             <div class="relative w-full">
                                                 <label class="font-semibold">Image Result:</label>
                                                 <p id="image_name" class="text-sm text-gray-700 "></p> <!-- For displaying image name -->
                                                 <div id="preview-container-1" class="bg-gray-100 border rounded p-2 h-80">
-                                                    <img id="preview_image_1" class="object-scale-down w-full h-full">
+                                                    <img id="preview_image_1" class="object-scale-down w-full h-full  ">
                                                 </div>
-                                                
                                             </div>
                                         </div>
-                                        
                                     </div>
                                 </div>
                             </div>
@@ -239,16 +237,16 @@
         // Validate file size and type
         if (file) {
             const validTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
-            const maxSize = 2 * 1024 * 1024; // 2MB
+            const maxSize = 400 * 1024; // 400KB
             if (!validTypes.includes(file.type)) {
-                alert('Please upload a valid image file (.jpg, .jpeg, .png, .gif, .webp)');
-                input.value = ''; // Reset file input
+                alert("Please upload a valid image file (.jpg, .jpeg, .png, .gif, .webp)");
+                input.value = ""; // Reset file input
                 return;
             }
 
             if (file.size > maxSize) {
-                alert('File size must not exceed 2MB');
-                input.value = ''; // Reset file input
+                alert("File size must not exceed 400KB");
+                input.value = ""; // Reset file input
                 return;
             }
 
@@ -256,9 +254,9 @@
             const reader = new FileReader();
             reader.onload = function (e) {
                 previewElement.src = e.target.result;
-                previewElement.classList.remove('hidden');
-                previewContainer.classList.remove('hidden');
-                actionButtons.classList.remove('hidden');
+                previewElement.classList.remove("hidden");
+                previewContainer.classList.remove("hidden");
+                actionButtons.classList.remove("hidden");
             };
             reader.readAsDataURL(file);
         }
@@ -293,11 +291,12 @@
     }
 
     // Function to dynamically add product fields
-    function addProduct() {
-        const section = document.getElementById('product-details-section');
-        const productCount = section.querySelectorAll('.product-entry').length + 1;
+    // Function to dynamically add product fields
+function addProduct() {
+    const section = document.getElementById('product-details-section');
+    const productCount = section.querySelectorAll('.product-entry').length + 1;
 
-        const newProduct = `
+    const newProduct = `
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4 product-entry" data-id="${productCount}">
             <div class="md:col-span-1">
                 <label for="product_name_${productCount}" class="block text-gray-700 font-semibold">Product Name:</label>
@@ -306,15 +305,18 @@
 
                 <label for="product_description_${productCount}" class="block text-gray-700 font-semibold mt-4">Description:</label>
                 <textarea id="product_description_${productCount}" name="product_description[]" 
-                    class="mt-1 p-2 border border-gray-300 rounded w-full" rows="3"></textarea>
+                    class="mt-1 p-2 border border-gray-300 rounded w-full" rows="3" required></textarea>
 
-                <button type="button" class="bg-red-700 text-white py-2 px-4 rounded hover:bg-red-600 mt-4 font-semibold"
-                    onclick="deleteProduct(this)"><i class="fas fa-trash-alt mr-2"></i>Delete Product</button>
+                <button type="button" class="bg-red-700 text-white py-2 px-4 rounded hover:bg-red-600 font-semibold mt-4"
+                    onclick="deleteProduct(this)">Delete Product</button>
             </div>
+
             <div>
                 <label for="product_image_${productCount}" class="block text-gray-700 font-semibold">Image:</label>
                 <input type="file" id="product_image_${productCount}" name="product_image[]" 
-                    accept="image/*" class="mt-1 p-2 border border-gray-300 rounded w-full" onchange="previewImage(this)">
+                    accept="image/jpeg, image/png, image/gif, image/webp"
+                    class="mt-1 p-2 border border-gray-300 rounded w-full" 
+                    onchange="previewImage(this)" required>
                 <p class="text-xs text-gray-600">
                     File size must not exceed 400KB, only allow .jpg .jpeg .png .gif .webp file type
                     <br>Recommend size 400x300(px); 640x480(px)SD / ratio 4:3
@@ -324,22 +326,20 @@
                     <button type="button" class="bg-red-500 text-white py-1 px-3 rounded hover:bg-red-600" onclick="deleteImage(this)">Delete</button>
                 </div>
             </div>
+
             <div>
                 <div class="relative w-full">
-                    <label class="font-semibold">Image Result:</label>
-                    <p id="image_name_${productCount}" class="text-sm text-gray-700"></p>
+                    <label class="font-semibold">Image Preview:</label>
                     <div id="preview-container-${productCount}" class="bg-gray-100 border rounded p-2 h-80">
-                        <img id="preview_image_${productCount}" class="object-scale-down w-full h-full">
+                        <img id="preview_image_${productCount}" class="object-scale-down w-full h-full ">
                     </div>
                 </div>
             </div>
-            
-            
         </div>
     `;
+
     section.insertAdjacentHTML('beforeend', newProduct);
 }
-
 </script>
 
 <style>
