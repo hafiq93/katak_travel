@@ -11,15 +11,16 @@
                   <div class="mb-2">
                     <ul class="flex border-b">
                         <li class="mr-1">
+                            <li class="mr-1">
+                                <a href="{% url 'pack_price' package_id=package.id %}" class="bg-green-500 inline-block px-4 py-2 text-white font-semibold border-lg border-l border-t border-r rounded-t focus:outline-none">
+                                    List Merchant in Package
+                                </a>
+                            </li>
                             <a href="{% if package and package.id %}{% url 'pack_merchant' id=package.id %}{% else %}{% url 'pack_merchant' %}{% endif %}" class="bg-white inline-block px-4 py-2 text-green-500 font-semibold border-lg hover:text-green-700 focus:outline-none ">
                                 Add Package
                             </a>
                         </li>
-                        <li class="mr-1">
-                            <a href="{% url 'pack_price' package_id=package.id %}" class="bg-green-500 inline-block px-4 py-2 text-white font-semibold border-lg border-l border-t border-r rounded-t focus:outline-none">
-                                List Merchant in Package
-                            </a>
-                        </li>
+                        
                     
                     </ul>
                 </div>
@@ -44,6 +45,13 @@
                                         value="{% if package %}{{ package.code }}{% else %}{% endif %}" 
                                         required class="mt-1 p-2 border border-gray-300 rounded w-full bg-gray-100 " readonly>
                                 </div>
+                            </div>
+
+                            <div class="flex space-x-2 justify-end items-center mb-4">
+                                <a href="{% if package and package.id %}{% url 'pack_merchant' id=package.id %}{% else %}{% url 'pack_merchant' %}{% endif %}" 
+                                    class="bg-purple-700 text-white px-4 py-2 rounded hover:bg-purple-600 font-semibold inline-flex items-center">
+                                    <i class="fas fa-user-plus mr-2"></i> Add Merchant
+                                    </a>
                             </div>
 
                             <div class="max-w-full">
@@ -99,22 +107,24 @@
                             <div class="flex justify-between mt-6">
                                 <div class="flex-space-x-2">
                                 <!-- Back Button -->
-                                <a href="{% url 'package_list' %}" 
-                                   class="bg-red-700 text-white px-4 py-2 rounded hover:bg-red-600 mr-2 font-semibold inline-flex items-center">
-                                    <i class="fas fa-times mr-2"></i> Cancel
+                                <a href="{% url 'pack_list_add' package.id %}" class="bg-red-700 text-white px-4 py-2 rounded hover:bg-red-600 mr-2 font-semibold inline-flex items-center">
+                                    <i class="fas fa-arrow-left mr-2"></i> Back
                                 </a>
+                                <a href="{% url 'package_list' %}" 
+                                    class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-400 mr-2 font-semibold inline-flex items-center">
+                                    <i class="fas fa-list-alt mr-2"></i> Package
+                                </a>
+                                
                             
                                 <!-- New Button aligned to the right -->
                                 
-                                    <a href="{% if package and package.id %}{% url 'pack_merchant' id=package.id %}{% else %}{% url 'pack_merchant' %}{% endif %}" 
-                                       class="bg-green-700 text-white px-4 py-2 rounded hover:bg-green-600 font-semibold inline-flex items-center">
-                                       <i class="fa fa-file-alt mr-2"></i> New
-                                    </a>
+                                    
                                 </div>
                             
                                 <!-- Next Button -->
                                 <div class="flex space-x-2">
-                                    <a href="{% if package and package.id %}{% url 'pack_merchant' id=package.id %}{% else %}{% url 'package_list' %}{% endif %}" 
+                                    
+                                    <a href="" 
                                        class="bg-green-700 text-white px-4 py-2 rounded hover:bg-green-600 font-semibold inline-flex items-center">
                                         Next
                                         <i class="fas fa-arrow-right ml-2"></i>

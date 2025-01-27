@@ -2,29 +2,26 @@
 {% load static %}
 <link rel="stylesheet" href="{% static 'src/styles.css' %}">
 <html>
-    
-     <!-- Include the header -->
-     {% include 'base_kt/admin_header.html' %}
-
-     <body>
-        <div class="flex h-min-screen bg-gray-100">
+    {% include 'base_kt/admin_header.html' %}
+    <body>
+        <div class="flex h-screen">
             <!-- Main Content -->
-            <div class="p-4 bg-gray-100 w-full ">
+            <div class="p-4 bg-gray-100 w-full">
                   <!-- Tabs Navigation -->
-                <div class="mb-2">
+                  <div class="mb-2">
                     <ul class="flex border-b">
-                        <li class="mr-1">
-                            <a href="{% if package and package.id %}{% url 'pack_merchant' id=package.id %}{% else %}{% url 'pack_merchant' %}{% endif %}" class="bg-green-500 inline-block px-4 py-2 text-white font-semibold border-lg border-l border-t border-r rounded-t focus:outline-none">
-                                Add Package
-                            </a>
-                        </li>
-                        <li class="mr-1">
-                            <a href="{% url 'pack_price' package_id=package.id %}" class="bg-white inline-block px-4 py-2 text-green-500 font-semibold border-lg hover:text-green-700 focus:outline-none">
+                         <li class="mr-1">
+                            <a href="{% url 'pack_price' package_id=package.id %}" class="bg-white inline-block px-4 py-2 text-green-500 font-semibold border-lg hover:text-green-700 focus:outline-none ">
                                 List Merchant in Package
                             </a>
                         </li>
-                      
-                        
+                        <li class="mr-1">
+                            <a href="{% if package and package.id %}{% url 'pack_merchant' id=package.id %}{% else %}{% url 'pack_merchant' %}{% endif %}" class="bg-green-500 inline-block px-4 py-2 text-white font-semibold border-lg border-l border-t border-r rounded-t focus:outline-none ">
+                                Add Package
+                            </a>
+                        </li>
+                       
+                    
                     </ul>
                 </div>
                 <!-- First Row (Metrics in One Row) -->
@@ -179,7 +176,7 @@
                 
                             <div class="flex justify-between mt-4">
                                 <!-- Back Button -->
-                                <a href="{% url 'pack_list_add' package.id %}" class="bg-red-700 text-white px-4 py-2 rounded hover:bg-red-600 mr-2 font-semibold inline-flex items-center">
+                                <a href="{% url 'pack_price' package_id=package.id %}" class="bg-red-700 text-white px-4 py-2 rounded hover:bg-red-600 mr-2 font-semibold inline-flex items-center">
                                     <i class="fas fa-arrow-left mr-2"></i> Back
                                 </a>
                                 <div class="flex space-x-2">
@@ -193,9 +190,9 @@
                                     </button>
                 
                                     <!-- Next Button (Go to Next Page) -->
-                                    <a href="{% url 'pack_price' package_id=package.id %}" class="bg-green-700 text-white px-4 py-2 rounded hover:bg-green-600 font-semibold inline-flex items-center ml-2">
+                                    <!-- <a href="" class="bg-green-700 text-white px-4 py-2 rounded hover:bg-green-600 font-semibold inline-flex items-center ml-2">
                                         <i class="fas fa-arrow-right mr-2"></i> Next
-                                    </a>
+                                    </a> -->
                                 </div>
                             </div>
                         </form>

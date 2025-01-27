@@ -128,84 +128,106 @@
                                 </div>
                             </div> -->
                         </form>
-                    </div>
-                </div>
-            
-            
-           
-                <div class="rounded-md">
-                    <div class="bg-white p-6 rounded-lg shadow-lg w-full">
+                   
+                
             
  
                     
                             <!-- Product Details -->
                                <!-- Product Details -->
                                <h3 class="text-xl font-bold mb-4">Product & Pricing Details</h3>
-                               <div class="mb-4">
-                                   <button type="button" id="add-row" class="mb-2 bg-green-600 text-white px-4 py-2 rounded font-semibold">Add Row</button>
-                                   
-                                   <div class="overflow-x-auto">
-                                       <table class="w-full border-collapse">
-                                           <thead class="bg-green-500 text-white">
-                                               <tr>
-                                                   <th class="border px-4 py-2 w-96" rowspan="2">Product</th>
-                                                   <th class="border px-2 py-2" colspan="4">Category (Adult)</th>
-                                                   <th class="border px-2 py-2" colspan="4">Category (Children)</th>
-                                                   <th class="border px-4 py-2 w-12" rowspan="2">Action</th>
-                                               </tr>
-                                               <tr>
-                                                   <th class="border px-2 py-2 w-36">Number</th>
-                                                   <th class="border px-2 py-2 w-36">Selling</th>
-                                                   <th class="border px-2 py-2 w-36">Agent</th>
-                                                   <th class="border px-2 py-2 w-36">Commission(%)</th>
-                                                   <th class="border px-2 py-2 w-36">Number</th>
-                                                   <th class="border px-2 py-2 w-36">Selling</th>
-                                                   <th class="border px-2 py-2 w-36">Agent</th>
-                                                   <th class="border px-2 py-2 w-36">Commission(%)</th>
-                                               </tr>
-                                           </thead>
-                                           <tbody id="product-pricing-rows">
-                                               <!-- Initial row -->
-                                               <tr>
-                                                   <td class="px-2 py-2">
-                                                       <textarea name="product_type[]" class="w-full px-4 py-2 border rounded" rows="2" placeholder="Enter product details"></textarea>
-                                                   </td>
-                                                   <td class="px-2 py-2">
-                                                       <input type="number" name="adult_number[]" class="w-full px-4 py-2 border rounded" placeholder="Number of Adults" />
-                                                   </td>
-                                                   <td class="px-2 py-2">
-                                                       <input type="number" name="adult_selling[]" class="w-full px-4 py-2 border rounded selling-price" placeholder="Selling Price" />
-                                                   </td>
-                                                   <td class="px-2 py-2">
-                                                       <input type="number" name="adult_agent[]" class="w-full px-4 py-2 border rounded agent-price" placeholder="Agent Price" />
-                                                   </td>
-                                                   <td class="px-2 py-2">
-                                                       <input type="text" name="adult_commission[]" class="w-full px-4 py-2 border rounded bg-gray-100 commission" placeholder="Commission" readonly />
-                                                   </td>
-                                                   <td class="px-2 py-2">
-                                                       <input type="number" name="children_number[]" class="w-full px-4 py-2 border rounded" placeholder="Number of Children" />
-                                                   </td>
-                                                   <td class="px-2 py-2">
-                                                       <input type="number" name="children_selling[]" class="w-full px-4 py-2 border rounded selling-price" placeholder="Selling Price" />
-                                                   </td>
-                                                   <td class="px-2 py-2">
-                                                       <input type="number" name="children_agent[]" class="w-full px-4 py-2 border rounded agent-price" placeholder="Agent Price" />
-                                                   </td>
-                                                   <td class="px-2 py-2">
-                                                       <input type="text" name="children_commission[]" class="w-full px-4 py-2 border rounded bg-gray-100 commission" placeholder="Commission" readonly />
-                                                   </td>
-                                                   <td class="px-2 py-2 items-center justify-center">
-                                                       <button 
-                                                           type="button" 
-                                                           class="flex items-center justify-center gap-2 bg-red-600 text-white font-bold px-4 py-2 rounded hover:bg-red-700 delete-row">
-                                                           <i class="fas fa-trash"></i> 
-                                                       </button>
-                                                   </td>
-                                               </tr>
-                                           </tbody>
-                                       </table>
-                                   </div>
-                               </div>
+                                <div class="mb-4">
+                                    <button type="button" id="add-row" class="mb-2 bg-green-600 text-white px-4 py-2 rounded font-semibold">Add Row</button>
+                                    <div class="overflow-x-auto">
+                                        <table class="w-full border-collapse">
+                                            <thead class="bg-green-500 text-white">
+                                                <tr>
+                                                    <th class="border px-4 py-2 w-96" rowspan="2">Product</th>
+                                                    <th class="border px-2 py-2" colspan="4">Category (Adult)</th>
+                                                    <th class="border px-2 py-2" colspan="4">Category (Children)</th>
+                                                    <th class="border px-4 py-2 w-12" rowspan="2">Action</th>
+                                                </tr>
+                                                <tr>
+                                                    <th class="border px-2 py-2 w-36">Number</th>
+                                                    <th class="border px-2 py-2 w-36">Selling</th>
+                                                    <th class="border px-2 py-2 w-36">Agent</th>
+                                                    <th class="border px-2 py-2 w-36">Commission(%)</th>
+                                                    <th class="border px-2 py-2 w-36">Number</th>
+                                                    <th class="border px-2 py-2 w-36">Selling</th>
+                                                    <th class="border px-2 py-2 w-36">Agent</th>
+                                                    <th class="border px-2 py-2 w-36">Commission(%)</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="product-pricing-rows">
+                                                {% for product in product_details %}
+                                                <tr>
+                                                    <td class="px-2 py-2">
+                                                        <a 
+                                                            href="{% url 'add_price' product.id %}" 
+                                                            class="w-full px-4 py-2 border rounded bg-gray-100 block font-semibold hover:underline hover:text-blue-600"
+                                                            title="View Product Details"
+                                                        >
+                                                            {{ product.product_name }}
+                                                        </a>
+                                                    </td>
+                                                    
+                                                    <!-- Adult Pricing -->
+                                                    {% if product.adult_number %}
+                                                    <td class="px-2 py-2">
+                                                        <input type="number" name="adult_number[]" class="w-full px-4 py-2 border rounded" value="{{ product.adult_number }}" />
+                                                    </td>
+                                                    <td class="px-2 py-2">
+                                                        <input type="number" name="adult_selling[]" class="w-full px-4 py-2 border rounded selling-price" value="{{ product.adult_selling_price }}" />
+                                                    </td>
+                                                    <td class="px-2 py-2">
+                                                        <input type="number" name="adult_agent[]" class="w-full px-4 py-2 border rounded agent-price" value="{{ product.adult_agent_price }}" />
+                                                    </td>
+                                                    <td class="px-2 py-2">
+                                                        <input type="text" name="adult_commission[]" class="w-full px-4 py-2 border rounded bg-gray-100 commission" value="{{ product.adult_commission_percent }}" readonly />
+                                                    </td>
+                                                    {% else %}
+                                                    <td class="px-2 py-2 text-center" colspan="4">
+                                                        <a href="{% url 'add_price' product.id %}" class="bg-blue-600 text-white px-4 py-2 rounded">Add Price</a>
+                                                    </td>
+                                                    {% endif %}
+                                                    
+                                                    <!-- Children Pricing -->
+                                                    {% if product.children_number %}
+                                                    <td class="px-2 py-2">
+                                                        <input type="number" name="children_number[]" class="w-full px-4 py-2 border rounded" value="{{ product.children_number }}" />
+                                                    </td>
+                                                    <td class="px-2 py-2">
+                                                        <input type="number" name="children_selling[]" class="w-full px-4 py-2 border rounded selling-price" value="{{ product.children_selling_price }}" />
+                                                    </td>
+                                                    <td class="px-2 py-2">
+                                                        <input type="number" name="children_agent[]" class="w-full px-4 py-2 border rounded agent-price" value="{{ product.children_agent_price }}" />
+                                                    </td>
+                                                    <td class="px-2 py-2">
+                                                        <input type="text" name="children_commission[]" class="w-full px-4 py-2 border rounded bg-gray-100 commission" value="{{ product.children_commission_percent }}" readonly />
+                                                    </td>
+                                                    {% else %}
+                                                    <td class="px-2 py-2 text-center" colspan="4">
+                                                        <a href="{% url 'add_price' product.id %}" class="bg-blue-600 text-white px-4 py-2 rounded">Add Price</a>
+                                                    </td>
+                                                    {% endif %}
+                                                    
+                                                    <td class="px-2 py-2 items-center justify-center">
+                                                        <button 
+                                                            type="button" 
+                                                            class="flex items-center justify-center gap-2 bg-red-600 text-white font-bold px-4 py-2 rounded hover:bg-red-700 delete-row">
+                                                            <i class="fas fa-trash"></i> 
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+
+
+
                                <!-- Product total price  -->
                                <p class="text-lg font-bold mb-4">Total Price by Category</p>
                                <div class="overflow-x-auto">

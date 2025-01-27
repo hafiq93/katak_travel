@@ -15,5 +15,7 @@ urlpatterns = [
     path('add/page_3/<int:package_id>/', views.pack_price, name='pack_price'),
     path('merchant-details/<int:id>/', views.get_merchant_details, name='merchant-details'),
     path('add/page_3/form/<int:merchant_id>/', views.pack_form, name='pack_form'),  # For editing merchant
+
+    path('add_price/<int:product_id>/', views.add_price, name='add_price'),
    
 ]

@@ -329,7 +329,7 @@ def get_merchant_details(request, id):
 
 
 
-def pack_form(request, merchant_id):  # Change `package_id` to `merchant_id`
+def pack_form(request, merchant_id):
     # Retrieve the PackageMerchant by ID
     package_merchant = get_object_or_404(PackageMerchant, id=merchant_id)
     merchant = package_merchant.merchant_list  # Get the related MerchantPackage
@@ -338,7 +338,8 @@ def pack_form(request, merchant_id):  # Change `package_id` to `merchant_id`
     countries = Location.objects.all()
     merchant_types = MerchantType.objects.all()  # Get all merchant types
 
-   
+    # Retrieve the ProductDetails associated with the PackageMerchant
+    product_details = ProductDetails.objects.filter(package_merchant=package_merchant)
 
     if request.method == 'POST':
         # Extract user input from the POST request
@@ -383,12 +384,63 @@ def pack_form(request, merchant_id):  # Change `package_id` to `merchant_id`
             )
 
         # Redirect to the next page after saving
-        return redirect('pack_price', package_id=package_merchant.package.id)
+        return redirect('pack_form', package_id=package_merchant.package.id)
 
     return render(request, 'pack_list_kt/package_form.html', {
         'package': package_merchant.package,
         'merchant': merchant,
         'merchant_types': merchant_types,
         'countries': countries,
-        'package_merchant': package_merchant,  # Pass the PackageMerchant instance
+        'package_merchant': package_merchant,
+        'product_details': product_details,  # Pass the ProductDetails queryset
     })
+
+def add_price(request, product_id):
+    product = get_object_or_404(ProductDetails, id=product_id)
+
+    if request.method == 'POST':
+        # Update product details
+        product.product_name = request.POST.get('product_name')
+        product.product_description = request.POST.get('product_description')
+
+        # Check if an image was uploaded
+        if 'product_image' in request.FILES:
+            product.product_image = request.FILES['product_image']
+
+        # Get pricing details from the form
+        adult_number = request.POST.get('adult_number')
+        adult_selling_price = request.POST.get('adult_selling_price')
+        adult_agent_price = request.POST.get('adult_agent_price')
+        adult_commission_percent = request.POST.get('adult_commission_percent')
+
+        children_number = request.POST.get('children_number')
+        children_selling_price = request.POST.get('children_selling_price')
+        children_agent_price = request.POST.get('children_agent_price')
+        children_commission_percent = request.POST.get('children_commission_percent')
+
+        # Save data to the product (pricing)
+        # Make sure to convert to appropriate types (e.g., Decimal for prices)
+        product.save()
+
+        # Create or update PackageItem for pricing
+        package_item = PackageItem.objects.filter(product_details=product).first()
+        if not package_item:
+            package_item = PackageItem(product_details=product)
+
+        package_item.adult_number = adult_number
+        package_item.adult_selling_price = adult_selling_price
+        package_item.adult_agent_price = adult_agent_price
+        package_item.adult_commission_percent = adult_commission_percent
+
+        package_item.children_number = children_number
+        package_item.children_selling_price = children_selling_price
+        package_item.children_agent_price = children_agent_price
+        package_item.children_commission_percent = children_commission_percent
+
+        # Save the PackageItem
+        package_item.save()
+
+        # Redirect back to the main page
+        return redirect('pack_form', merchant_id=product.package_merchant.id)
+
+    return render(request, 'pack_list_kt/package_add_price.html', {'product': product})
