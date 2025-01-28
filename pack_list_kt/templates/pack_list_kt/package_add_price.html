@@ -62,59 +62,153 @@
                                 </div>
                      
 
-                        <h3 class="text-xl font-bold mb-4">Add Price</h3>
-                        {% csrf_token %}
-                        <p class="font-semibold text-md">Adult Price</p>
-                        <div class="grid grid-cols-1 md:grid-cols-5 gap-4 mb-4" id="adult-row">
-                            <div>
-                                <label for="adult_number" class="block text-gray-700 font-semibold">Number of Adults</label>
-                                <input type="number" id="adult_number" name="adult_number" class="mt-1 p-2 border border-gray-500 rounded w-full" />
-                                <p class="text-xs text-gray-600">
-                                    Total of adults 
-                                </p>
-                            </div>
-                            <div>
-                                <label for="adult_selling_price" class="block text-gray-700 font-semibold">Selling Price</label>
-                                <input type="number" id="adult_selling_price" name="adult_selling_price" class="mt-1 p-2 border border-gray-500 rounded w-full selling-price" oninput="calculateCommission(document.getElementById('adult-row'))" />
-                            </div>
-                            <div>
-                                <label for="adult_agent_price" class="block text-gray-700 font-semibold">Agent Price</label>
-                                <input type="number" id="adult_agent_price" name="adult_agent_price" class="mt-1 p-2 border border-gray-500 rounded w-full agent-price" oninput="calculateCommission(document.getElementById('adult-row'))" />
-                            </div>
-                            <!-- Commission (Price) -->
-                            <div>
-                                <label for="adult_commission_price" class="block text-gray-700 font-semibold">Commission (Price)</label>
-                                <input type="number" id="adult_commission_price" name="adult_commission_price" class="mt-1 p-2 border border-gray-500 rounded w-full bg-gray-100 commission-price" readonly />
+                                <h3 class="text-xl font-bold mb-4">Add Price</h3>
+                                {% csrf_token %}
+                                <p class="font-semibold text-md">Adult Price</p>
+                                <div class="grid grid-cols-1 md:grid-cols-4 gap-4 " id="adult-row">
+                                    <div>
+                                        <label for="adult_selling_price" class="block text-gray-700 font-semibold">Selling Price</label>
+                                        <input 
+                                            type="number" 
+                                            id="adult_selling_price" 
+                                            name="adult_selling_price" 
+                                            class="mt-1 p-2 border border-gray-500 rounded w-full selling-price" 
+                                            oninput="calculateCommissionAndTotal()"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label for="adult_agent_price" class="block text-gray-700 font-semibold">Agent Price</label>
+                                        <input 
+                                            type="number" 
+                                            id="adult_agent_price" 
+                                            name="adult_agent_price" 
+                                            class="mt-1 p-2 border border-gray-500 rounded w-full agent-price" 
+                                            oninput="calculateCommissionAndTotal()"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label for="adult_commission_price" class="block text-gray-700 font-semibold">Profit Amount</label>
+                                        <div class="flex space-x-2">
+                                            <input 
+                                                type="number" 
+                                                id="adult_commission_price" 
+                                                name="adult_commission_price" 
+                                                placeholder="Price" 
+                                                class="mt-1 p-2 border border-gray-500 rounded w-full bg-gray-100 commission-price" 
+                                                readonly 
+                                            />
+                                            <input 
+                                                type="text" 
+                                                id="adult_commission_percent" 
+                                                name="adult_commission_percent" 
+                                                placeholder="Percentage" 
+                                                class="mt-1 p-2 border border-gray-500 rounded w-full bg-gray-100 commission-percent" 
+                                                readonly 
+                                            />
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label for="adult_number" class="block text-gray-700 font-semibold">Number of Adults</label>
+                                        <input 
+                                            type="number" 
+                                            id="adult_number" 
+                                            name="adult_number" 
+                                            class="mt-1 p-2 border border-gray-500 rounded w-full" 
+                                            oninput="calculateCommissionAndTotal()"
+                                        />
+                                        <p class="text-xs text-gray-600">Total of adults</p>
+                                    </div>
+                                </div>
+                                
+                                <p class="font-semibold text-md">Children Price</p>
+                                <div class="grid grid-cols-1 md:grid-cols-4 gap-4 " id="children-row">
+                                    <div>
+                                        <label for="children_selling_price" class="block text-gray-700 font-semibold">Selling Price</label>
+                                        <input 
+                                            type="number" 
+                                            id="children_selling_price" 
+                                            name="children_selling_price" 
+                                            class="mt-1 p-2 border border-gray-500 rounded w-full selling-price" 
+                                            oninput="calculateCommissionAndTotal()"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label for="children_agent_price" class="block text-gray-700 font-semibold">Agent Price</label>
+                                        <input 
+                                            type="number" 
+                                            id="children_agent_price" 
+                                            name="children_agent_price" 
+                                            class="mt-1 p-2 border border-gray-500 rounded w-full agent-price" 
+                                            oninput="calculateCommissionAndTotal()"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label for="children_commission_price" class="block text-gray-700 font-semibold">Profit Amount</label>
+                                        <div class="flex space-x-2">
+                                            <input 
+                                                type="number" 
+                                                id="children_commission_price" 
+                                                name="children_commission_price" 
+                                                placeholder="Price" 
+                                                class="mt-1 p-2 border border-gray-500 rounded w-full bg-gray-100 commission-price" 
+                                                readonly 
+                                            />
+                                            <input 
+                                                type="text" 
+                                                id="children_commission_percent" 
+                                                name="children_commission_percent" 
+                                                placeholder="Percentage" 
+                                                class="mt-1 p-2 border border-gray-500 rounded w-full bg-gray-100 commission-percent" 
+                                                readonly 
+                                            />
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label for="children_number" class="block text-gray-700 font-semibold">Number of Children</label>
+                                        <input 
+                                            type="number" 
+                                            id="children_number" 
+                                            name="children_number" 
+                                            class="mt-1 p-2 border border-gray-500 rounded w-full" 
+                                            oninput="calculateCommissionAndTotal()"
+                                            
+                                        />
+                                        <p class="text-xs text-gray-600">Total of children</p>
+                                    </div>
+                                </div>
+                                
+                                <!-- Table for Displaying Prices and Total -->
+                                <h3 class="text-xl font-bold mt-2">Summary</h3>
+                                <table class="table-auto w-full ">
+                                    <thead>
+                                        <tr class="bg-green-500">
+                                            <th class="px-4 py-2 border text-white w-64">Description</th>
+                                            <th class="px-4 py-2 border text-white w-64">Price Per Person</th>
+                                            <th class="px-4 py-2 border text-white w-48">Total</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="px-4 py-2 border text-white bg-yellow-500 font-semibold">Adult Price</td>
+                                            <td class="px-4 py-2 border" id="adult-price-per-person">0.00</td>
+                                            <td class="px-4 py-2 border" id="adult-total-price">0.00</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="px-4 py-2 border  text-white bg-purple-500 font-semibold">Children Price</td>
+                                            <td class="px-4 py-2 border" id="children-price-per-person">0.00</td>
+                                            <td class="px-4 py-2 border" id="children-total-price">0.00</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="px-4 py-2 border font-bold bg-sky-500 text-white">Grand Total</td>
+                                            <td class="px-4 py-2 border" id="grand-total-price" colspan="2">0.00</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
 
-                            <!-- Commission (%) -->
-                            <div>
-                                <label for="adult_commission_percent" class="block text-gray-700 font-semibold">Commission (%)</label>
-                                <input type="number" id="adult_commission_percent" name="adult_commission_percent" class="mt-1 p-2 border border-gray-500 rounded w-full bg-gray-100 commission-percent" readonly />
-                            </div>
-                        </div>
-                    
-                        <p class="font-semibold text-md">Children Price</p>
-                        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4" id="children-row">
-                            <div>
-                                <label for="children_number" class="block text-gray-700 font-semibold">Number of Children</label>
-                                <input type="number" id="children_number" name="children_number" class="mt-1 p-2 border border-gray-500 rounded w-full" />
-                            </div>
-                            <div>
-                                <label for="children_selling_price" class="block text-gray-700 font-semibold">Selling Price</label>
-                                <input type="number" id="children_selling_price" name="children_selling_price" class="mt-1 p-2 border border-gray-500 rounded w-full selling-price" oninput="calculateCommission(document.getElementById('children-row'))" />
-                            </div>
-                            <div>
-                                <label for="children_agent_price" class="block text-gray-700 font-semibold">Agent Price</label>
-                                <input type="number" id="children_agent_price" name="children_agent_price" class="mt-1 p-2 border border-gray-500 rounded w-full agent-price" oninput="calculateCommission(document.getElementById('children-row'))" />
-                            </div>
-                            <div>
-                                <label for="children_commission_percent" class="block text-gray-700 font-semibold">Commission (Price (%)) </label>
-                                <input type="text" id="children_commission_percent" name="children_commission_percent" class="mt-1 p-2 border border-gray-500 rounded w-full bg-gray-100 commission" readonly />
-                            </div>
-                        </div>
+                        
                          <!-- Actions -->
-                         <div class="flex justify-between space-x-2 mt-4">
+                        <div class="flex justify-between space-x-2 mt-4">
                             <button type="button" class="bg-red-700 text-white px-4 py-2 rounded flex items-center space-x-2">
                                 <a href="{% url 'pack_form' merchant_id=product.package_merchant.id %}" class="flex items-center space-x-2 font-semibold">
                                     <i class="fas fa-times"></i>
@@ -136,24 +230,59 @@
 </html>
 
 <script>
-    // Function to calculate commission
-    function calculateCommission(row) {
-        const sellingPrice = parseFloat(row.querySelector('.selling-price').value) || 0;
-        const agentPrice = parseFloat(row.querySelector('.agent-price').value) || 0;
-        const commissionPriceField = row.querySelector('.commission-price');
-        const commissionPercentField = row.querySelector('.commission-percent');
+// Function to calculate commission and total price
+function calculateCommissionAndTotal() {
+    // Adult Prices
+    const adultSellingPrice = parseFloat(document.getElementById('adult_selling_price').value) || 0;
+    const adultAgentPrice = parseFloat(document.getElementById('adult_agent_price').value) || 0;
+    const adultNumber = parseInt(document.getElementById('adult_number').value) || 0;
+    const adultCommissionPriceField = document.getElementById('adult_commission_price');
+    const adultCommissionPercentField = document.getElementById('adult_commission_percent');
+    
+    // Children Prices
+    const childrenSellingPrice = parseFloat(document.getElementById('children_selling_price').value) || 0;
+    const childrenAgentPrice = parseFloat(document.getElementById('children_agent_price').value) || 0;
+    const childrenNumber = parseInt(document.getElementById('children_number').value) || 0;
+    const childrenCommissionPriceField = document.getElementById('children_commission_price');
+    const childrenCommissionPercentField = document.getElementById('children_commission_percent');
 
-        if (sellingPrice > 0 && agentPrice >= 0) {
-            const difference = sellingPrice - agentPrice; // Commission (Price)
-            const percentage = (difference / sellingPrice) * 100; // Commission (%)
-
-            commissionPriceField.value = difference.toFixed(2); // Set the Commission (Price) field
-            commissionPercentField.value = percentage.toFixed(2); // Set the Commission (%) field
-        } else {
-            // Clear fields if values are invalid
-            commissionPriceField.value = '';
-            commissionPercentField.value = '';
-        }
+    // Adult Commission Calculation
+    if (adultSellingPrice > 0 && adultAgentPrice >= 0) {
+        const adultProfit = adultSellingPrice - adultAgentPrice;
+        const adultPercentage = (adultProfit / adultSellingPrice) * 100;
+        adultCommissionPriceField.value = adultProfit.toFixed(2);
+        adultCommissionPercentField.value = `${adultPercentage.toFixed(2)}%`;
+    } else {
+        adultCommissionPriceField.value = '';
+        adultCommissionPercentField.value = '';
     }
+
+    // Children Commission Calculation
+    if (childrenSellingPrice > 0 && childrenAgentPrice >= 0) {
+        const childrenProfit = childrenSellingPrice - childrenAgentPrice;
+        const childrenPercentage = (childrenProfit / childrenSellingPrice) * 100;
+        childrenCommissionPriceField.value = childrenProfit.toFixed(2);
+        childrenCommissionPercentField.value = `${childrenPercentage.toFixed(2)}%`;
+    } else {
+        childrenCommissionPriceField.value = '';
+        childrenCommissionPercentField.value = '';
+    }
+
+    // Update Table with Prices and Totals
+    const adultPricePerPerson = adultSellingPrice.toFixed(2);
+    const adultTotalPrice = (adultPricePerPerson * adultNumber).toFixed(2);
+    const childrenPricePerPerson = childrenSellingPrice.toFixed(2);
+    const childrenTotalPrice = (childrenPricePerPerson * childrenNumber).toFixed(2);
+
+    // Set values in the table
+    document.getElementById('adult-price-per-person').textContent = adultPricePerPerson;
+    document.getElementById('adult-total-price').textContent = adultTotalPrice;
+    document.getElementById('children-price-per-person').textContent = childrenPricePerPerson;
+    document.getElementById('children-total-price').textContent = childrenTotalPrice;
+
+    // Grand Total
+    const grandTotal = (parseFloat(adultTotalPrice) + parseFloat(childrenTotalPrice)).toFixed(2);
+    document.getElementById('grand-total-price').textContent = grandTotal;
+}
 </script>
 {% endblock %}

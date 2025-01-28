@@ -149,39 +149,44 @@ class PackageItem(models.Model):
     product_details = models.ForeignKey(
         ProductDetails, on_delete=models.CASCADE, related_name='pack_item', blank=True, null=True
     )
-    name = models.CharField(max_length=100)
-    # Adult pricing
-    adult_number = models.PositiveIntegerField(default=0, blank=True, null=True)
+    # Price Details
     adult_selling_price = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     adult_agent_price = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    adult_commission_price = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     adult_commission_percent = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
-
-    # Children pricing
-    children_number = models.PositiveIntegerField(default=0, blank=True, null=True)
+    adult_number = models.PositiveIntegerField(default=0)
+    
     children_selling_price = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     children_agent_price = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    children_commission_price = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     children_commission_percent = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
+    children_number = models.PositiveIntegerField(default=0)
+    
+    # Summary and Total Price Calculation
+    total_adult_price = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    total_children_price = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    grand_total_price = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    
+    created_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
+    updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)
 
-    def adult_commission_amount(self):
-        """Calculate commission for adult category"""
-        return (self.adult_selling_price - self.adult_agent_price) * (self.adult_commission_percent / 100)
-
-    def children_commission_amount(self):
-        """Calculate commission for children category"""
-        return (self.children_selling_price - self.children_agent_price) * (self.children_commission_percent / 100)
-
-    def total_adult_price(self):
-        """Calculate the total selling price for adults"""
-        return self.adult_number * self.adult_selling_price
-
-    def total_children_price(self):
-        """Calculate the total selling price for children"""
-        return self.children_number * self.children_selling_price
-
-    def total_commission(self):
-        """Calculate total commission for both adults and children"""
-        return self.adult_commission_amount() + self.children_commission_amount()
+    def save(self, *args, **kwargs):
+        # Calculate commissions and total prices before saving
+        self.adult_commission_price = self.adult_selling_price - self.adult_agent_price
+        self.adult_commission_percent = (self.adult_commission_price / self.adult_selling_price) * 100 if self.adult_selling_price else 0
+        self.total_adult_price = self.adult_selling_price * self.adult_number
+        
+        self.children_commission_price = self.children_selling_price - self.children_agent_price
+        self.children_commission_percent = (self.children_commission_price / self.children_selling_price) * 100 if self.children_selling_price else 0
+        self.total_children_price = self.children_selling_price * self.children_number
+        
+        self.grand_total_price = self.total_adult_price + self.total_children_price
+        super().save(*args, **kwargs)
 
     def __str__(self):
-        return self.name
+        return self.product_name
+
+    # Optionally, a function to get the formatted total prices
+    def get_formatted_price(self, price):
+        return f"${price:.2f}" if price else "$0.00"
 

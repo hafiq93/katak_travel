@@ -4,7 +4,41 @@
 <html>
     {% include 'base_kt/admin_header.html' %}
     <body>
-        <div class="flex h-screen">
+      
+        <!-- Subheader -->
+        <div class="bg-green-500 h-8 flex items-center justify-start px-4 shadow space-x-2">
+            <!-- Home Icon with URL -->
+            <a href="{% url 'admin-dashboard' %}" class="text-white flex items-center">
+                <i class="fa-solid fa-house mr-1"></i> <!-- Font Awesome Home Icon -->
+               
+                
+            </a>
+            <span class="text-white">></span>
+            <!-- Dashboard -->
+            <a href="{% url 'admin-dashboard' %}" class="text-md font-semibold text-white">
+                Home
+            </a>
+            <span class="text-white">></span>
+        
+            <!-- Dashboard -->
+            <a href="{% url 'package_dashboard' %}" class="text-md font-semibold text-white">
+                Dashboard
+            </a>
+            <span class="text-white">></span>
+        
+            <!-- List Package -->
+            <a href="{% url 'package_list' %}" class="text-md font-semibold text-white">
+                Package
+            </a>
+            <span class="text-white">></span>
+        
+            <!-- List Merchant -->
+            <a href="{% url 'pack_price' package_id=package.id %}" class="text-md font-semibold text-white">
+                List Merchant
+            </a>
+        </div>
+  
+        <div class="flex h-min-screen">
             <!-- Main Content -->
             <div class="p-4 bg-gray-100 w-full">
                   <!-- Tabs Navigation -->
@@ -54,7 +88,7 @@
                                     </a>
                             </div>
 
-                            <div class="max-w-full">
+                            <div class="max-w-full overflow-x-auto">
                                 <table class="w-full table-auto">
                                     <thead>
                                         <tr class="bg-green-500 text-white">
