@@ -15,9 +15,7 @@
             <!-- Tabs -->
             <ul class="flex flex-wrap justify-center pt-1 space-x-0 space-y-2 sm:space-y-0 sm:space-x-2 px-2">
                 <li>
-                    <a href="{% url 'home' %}" class=" tab-link inline-block py-2 px-4 text-white font-semibold border-transparent rounded-lg custom-bg" data-tab="hotel">
-                        <i class="fas fa-hotel mr-2"></i>Hotel
-                    </a>
+                    <a href="{% url 'home' %}" class="inline-block py-2 px-4 text-blue-600 font-semibold border-transparent rounded-lg  custom" data-tab="hotel"><i class="fas fa-hotel mr-2"></i>Hotel</a>
                 </li>
                 <!-- <li>
                     <a href="javascript:void(0)" class="tab-link inline-block py-2 px-4 text-blue-600 font-semibold border-transparent rounded-lg " data-tab="flight"><i class="fa fa-plane mr-2"></i>FLIGHT</a>
@@ -26,23 +24,19 @@
                     <a href="javascript:void(0)" class="tab-link inline-block py-2 px-4 text-blue-600 font-semibold  border-transparent rounded-lg " data-tab="train"><i class="fa fa-train mr-2"></i>TRAIN</a>
                 </li> -->
                  <!-- Main Category -->
-                 <li>
-                    <a href="" class="tab-link inline-block py-2 px-4 text-blue-600 font-semibold border-transparent rounded-lg custom" data-tab="sea-transport">
+                <li>
+                    <a href="javascript:void(0)" class="tab-link inline-block py-2 px-4 text-blue-600 font-semibold border-transparent rounded-lg custom"  data-tab="sea-transport">
                         <i class="fa fa-ship mr-2"></i>Sea Transport
                     </a>
                 </li>
                 <li>
-                    <a href="" class="tab-link inline-block py-2 px-4 text-blue-600 font-semibold border-transparent rounded-lg custom" data-tab="rental">
-                        <i class="fa fa-car mr-2"></i>Car Rentals
-                    </a>
+                    <a href="javascript:void(0)" class="tab-link inline-block py-2 px-4 text-blue-600 font-semibold  border-transparent rounded-lg custom" data-tab="rental"><i class="fa fa-car mr-2"></i>Car Rentals</a>
                 </li>
                 <li>
-                    <a href="" class="tab-link inline-block py-2 px-4 text-blue-600 font-semibold border-transparent rounded-lg custom" data-tab="attrac">
-                        <i class="fa fa-camera-retro mr-2"></i>Attractions
-                    </a>
+                    <a href="javascript:void(0)" class="tab-link inline-block py-2 px-4 text-blue-600 font-semibold  border-transparent rounded-lg   custom" data-tab="attrac"><i class="fa fa-camera-retro mr-2"></i>Attractions</a>
                 </li>
                 <li>
-                    <a href="{% url 'main_packages' %}" class="inline-block py-2 px-4 text-blue-600 font-semibold border-transparent rounded-lg custom ">
+                    <a href="{% url 'main_packages' %}" class="tab-link inline-block py-2 px-4 text-blue-600 font-semibold border-transparent rounded-lg active-tab hover">
                        <i class="fas fa-suitcase mr-2"></i>Packages
                     </a>
                 </li>
@@ -336,24 +330,21 @@
 
 <!-- tab -->
 <script>
-document.querySelectorAll(".tab-link").forEach(tab => {
-    tab.addEventListener("click", function () {
-        let targetTab = this.getAttribute("data-tab");
-
-        if (!targetTab) {
-            return; // If no data-tab, just navigate to the URL
+    document.querySelectorAll(".tab-link").forEach(tab => {
+    tab.addEventListener("click", function (event) {
+        // Allow normal anchor clicks
+        if (this.getAttribute("href") && this.getAttribute("href") !== "javascript:void(0)") {
+            return;
         }
+        event.preventDefault();
+        event.stopPropagation();
 
-        // Hide all tab content
+        let targetTab = this.getAttribute("data-tab");
         document.querySelectorAll(".tab-content").forEach(content => {
             content.style.display = "none";
         });
 
-        // Show the clicked tab's content
-        let targetContent = document.querySelector(`[data-tab="${targetTab}"]`);
-        if (targetContent) {
-            targetContent.style.display = "block";
-        }
+        document.querySelector(`[data-tab="${targetTab}"]`).style.display = "block";
     });
 });
 </script>
@@ -776,5 +767,10 @@ document.addEventListener('DOMContentLoaded', function() {
 }
 
 /* Hover effect for all tabs (including active ones) */
-
+.sub-tab-link:hover,
+.tab-link:hover,
+.trip-type-tab:hover {
+    background-color: #009A00; /* Darker green */
+    color: white;
+}
 </style>
