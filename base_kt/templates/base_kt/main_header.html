@@ -22,62 +22,98 @@
 <body>
     <header class="bg-white border-b-2" style="color: #009A00;">
         <div class="container mx-auto p-2 sm:px-4 md:px-8">
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 items-center">
+            <div class="grid grid-cols-1 sm:grid-cols-4 items-center">
                 <!-- Left side: Logo and Site Title -->
-                <div class="flex items-center justify-center sm:justify-start ml-6 px-5">
+                <a href="{% url 'home' %}" class="flex items-center justify-start ml-6 px-5">
                     <img src="{% static 'images/KATAK_2.jpg' %}" alt="Company Logo" class="h-12 w-15">
-                    <h1 class="text-2xl font-bold ml-4">KATAK TRAVEL</h1>
-                </div>
+                    <!-- <h1 class="text-2xl font-bold ml-4">KATAK TRAVEL</h1> -->
+                </a>
 
-                <!-- Center: Navigation and currency selector -->
-                <div class="flex items-center justify-center sm:justify-center space-x-4 sm:space-x-8">
-                    <!-- Navigation Menu (Hidden on small screens) -->
-                    <nav class="md:flex space-x-4">
-                        <a href="{% url 'home' %}" class="text-lg font-medium">Home</a>
+                 <!-- Center: Navigation, Support Dropdown, and Language Selector -->
+                <div class="flex items-center justify-end gap-3 col-span-3">
+                    <!-- Navigation Menu -->
+                  
+                    <div class="relative flex gap-4 items-center  p-2">
+                        <a href="{% url 'home' %}" class="text-md font-medium">Home</a>
+                    </div>
 
-                        <!-- Support Dropdown -->
-                        <div class="relative">
-                            <button type="button" class="inline-flex items-center text-lg font-medium">
-                                Support
-                                <svg class="ml-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                                    <path fill-rule="evenodd" d="M5.292 7.293a1 1 0 011.415 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-                                </svg>
-                            </button>
-                            <div id="dropdown-menu" class="absolute mt-2 w-48 rounded-md shadow-lg bg-white hidden">
-                                <a href="/support/faq" class="block px-4 py-2 text-sm hover:bg-gray-100">FAQ</a>
-                                <a href="/contact" class="block px-4 py-2 text-sm hover:bg-gray-100">Contact Us</a>
-                                <a href="/support" class="block px-4 py-2 text-sm hover:bg-gray-100">Live Chat</a>
+                    <div class="relative flex gap-4 items-center  p-2">
+                        <a href="" class="text-md font-medium">Blog</a>
+                    </div>
+
+                    <!-- Support Dropdown -->
+                    <div class="relative">
+                        <button id="support-btn" class="text-md font-medium flex items-center">
+                            Support <i class="fas fa-chevron-down ml-1"></i>
+                        </button>
+                        <div id="support-dropdown" class="hidden absolute mt-2 bg-white border rounded-lg shadow-lg w-48">
+                            <a href="" class="block px-4 py-2 hover:bg-gray-100">Customer Service</a>
+                        </div>
+                    </div>
+                  
+
+                    <!-- Language Selector -->
+                    <div class="relative">
+                        <button id="language-btn" class="flex items-center  p-2 ">
+                            <img src="{% static 'images/malaysia-flag.png' %}" alt="MY" class="w-5 h-5">
+                            <i class="fas fa-chevron-down ml-1"></i>
+                        </button>
+                        <div id="language-dropdown" class="hidden absolute mt-2 bg-white border rounded-lg shadow-lg w-48">
+                            <div class="px-4 py-2 border-b">
+                                <h3 class="text-sm font-semibold">Pilih Bahasa</h3>
                             </div>
+                            <button class="flex items-center w-full px-4 py-2 hover:bg-gray-100" onclick="changeLanguage('en')">
+                                <img src="{% static 'images/uk-flag.png' %}" alt="EN" class="w-5 h-5">
+                                <span class="ml-2">English</span>
+                            </button>
+                            <button class="flex items-center w-full px-4 py-2 hover:bg-gray-100" onclick="changeLanguage('ms')">
+                                <img src="{% static 'images/malaysia-flag.png' %}" alt="MY" class="w-5 h-5">
+                                <span class="ml-2">Bahasa Melayu</span>
+                            </button>
                         </div>
+                    </div>
+                
 
-                        <!-- Currency Selector -->
-                        <div class="flex">
-                            <select id="country-select" class="border p-1 rounded-md text-lg">
-                                <option value="MYR" data-currency="MYR">MYR</option>
-                                <option value="USD" data-currency="USD">USD</option>
-                                <option value="EUR" data-currency="EUR">EUR</option>
-                                <option value="GBP" data-currency="GBP">GBP</option>
-                            </select>
-                        </div>
-                    </nav>
-                </div>
-
-                <!-- Right side: Search, Profile, Cart, Notifications -->
-                <div class="flex items-center justify-center sm:justify-end space-x-4">
-                    <!-- Search Bar -->
-                    <div class="hidden sm:block relative">
-                        <input type="text" class="pl-10 pr-4 py-2 w-full rounded-lg border border-gray-300" placeholder="Search...">
-                        <div class="absolute inset-y-0 left-0 flex items-center pl-3">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16a6 6 0 100-12 6 6 0 000 12zM21 21l-4.35-4.35" />
-                            </svg>
+                      <!-- Right side: Search, Profile, Cart, Notifications -->
+                    
+                    <!-- 👤 Profile and Authentication -->
+                    {% if user.is_authenticated %}
+                    <!-- 🛒 Cart -->
+                    <div class="relative ">
+                        <button id="cart-btn" class="relative p-2 text-[#009A00]">
+                            🛒
+                            <span id="cart-count" class="absolute -top-2 -right-2 bg-red-500 text-white text-xs px-2 py-0.5 rounded-full">0</span>
+                        </button>
+                        <!-- Cart Dropdown -->
+                        <div id="cart-dropdown" class="hidden absolute right-0 mt-2 w-64 bg-white border rounded-lg shadow-lg p-4">
+                            <h3 class="text-md font-semibold mb-2">Shopping Cart</h3>
+                            <ul id="cart-items" class="space-y-2"></ul>
+                            <div class="mt-4 border-t pt-2 flex space-x-2">
+                                <button class="w-1/2 bg-green-500 text-white py-2 rounded-lg">Cart List</button>
+                                <button class="w-1/2 bg-blue-500 text-white py-2 rounded-lg">Checkout</button>
+                            </div>
                         </div>
                     </div>
 
-                    <!-- Profile and other buttons -->
-                    {% if user.is_authenticated %}
-                    <!-- Show profile and logout options -->
-                    <div class="relative">
+                    <!-- 🔔 Notification -->
+                    <div class="relative inline-block ">
+                        <button id="notification-btn" class="relative p-2 text-[#009A00]">
+                            🔔
+                            <span id="notification-count" class="absolute -top-2 -right-2 bg-red-500 text-white text-xs px-2 py-0.5 rounded-full">0</span>
+                        </button>
+                        <!-- Notification Dropdown -->
+                        <div id="notification-dropdown" class="hidden absolute right-0 mt-2 w-64 bg-white border rounded-lg shadow-lg p-4">
+                            <h3 class="text-md font-semibold mb-2">Notifications</h3>
+                            <ul id="notification-list" class="space-y-2"></ul>
+                            <div class="mt-4 border-t pt-2 flex space-x-2">
+                                <a href="" class="w-1/2 bg-blue-500 text-white py-2 rounded-lg text-center block">List</a>
+                                <button id="clear-notifications" class="w-1/2 bg-red-500 text-white py-2 rounded-lg">Clear All</button>
+                            </div>
+                        </div>
+                    </div>
+                        
+                        
+                    <div class="relative justify-end pr-12">
                         <button id="profileButton" class="flex items-center space-x-2">
                             <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80" alt="Profile picture" class="w-8 h-8 rounded-full">
                             <i class="fas fa-chevron-down ml-2"></i>
@@ -87,44 +123,233 @@
                             <a href="{% url 'profile' %}" class="block px-4 py-2">Profile</a>
                             <a href="{% url 'logout' %}" class="block px-4 py-2">Log Out</a>
                         </div>
+                    
+                        {% else %}
+                        <!-- Show login and register options -->
+                        <div class="flex gap-4">
+                            <a href="{% url 'login' %}" class="py-1 px-4 bg-blue-500 text-white rounded font-semibold">Login</a>
+                            <a href="{% url 'register' %}" class="py-1 px-4 bg-blue-500 text-white rounded font-semibold">Register</a>
+                        </div>
+                        {% endif %}
+                            <!-- 
+                        <a href="{% url 'login' %}" class="py-2 px-5 bg-blue-500 text-white rounded font-semibold">Login</a>
+                        <a href="{% url 'register' %}" class="py-2 px-5 bg-blue-500 text-white rounded font-semibold">Register</a> -->
                     </div>
-                {% else %}
-                    <!-- Show login and register options -->
-                    <a href="{% url 'login' %}" class="py-2 px-5 bg-blue-500 text-white rounded font-semibold">Login</a>
-                    <a href="{% url 'register' %}" class="py-2 px-5 bg-blue-500 text-white rounded font-semibold">Register</a>
-                {% endif %}
-<!-- 
-                    <a href="{% url 'login' %}" class="py-2 px-5 bg-blue-500 text-white rounded font-semibold">Login</a>
-                    <a href="{% url 'register' %}" class="py-2 px-5 bg-blue-500 text-white rounded font-semibold">Register</a> -->
+                </div>
+            </div>
+            <!-- Second Row: Additional Navigation -->
+            <div class="mt-2 py-2 container mx-auto px-8 p-2 sm:px-4 md:px-8">
+                <div class="flex justify-start gap-4">
+                    <a href="{% url 'home' %}" class="nav-link text-md font-medium hover:bg-green-700 hover:text-white px-2 py-1 rounded">Hotel</a>
+                    <a href="" class="nav-link text-md font-medium hover:bg-green-700 hover:text-white px-2 py-1 rounded">Car Rentals</a>
+                    <a href="" class="nav-link text-md font-medium hover:bg-green-700 hover:text-white px-2 py-1 rounded">Attractions</a>
+                    <a href="{% url 'main_packages' %}" class="nav-link text-md font-medium hover:bg-green-700 hover:text-white px-2 py-1 rounded">Packages</a>
+                    <a href="" class="nav-link text-md font-medium hover:bg-green-700 hover:text-white px-2 py-1 rounded">Best Destination</a>
                 </div>
             </div>
         </div>
+        
+            
+      
+        
+           
+      
+
+      
     </header>
 
-    <!-- JavaScript to handle dropdown and responsiveness -->
-    <script>
-        const profileButton = document.getElementById('profileButton');
-        const dropdownMenu = document.getElementById('dropdownMenu');
-
-        profileButton.addEventListener('click', function () {
-            dropdownMenu.classList.toggle('hidden');
-        });
-
-        document.addEventListener('click', function (event) {
-            if (!profileButton.contains(event.target) && !dropdownMenu.contains(event.target)) {
-                dropdownMenu.classList.add('hidden');
-            }
-        });
-
-        const countrySelect = document.getElementById('country-select');
-        const currencyDisplay = document.getElementById('currency-display');
-
-        countrySelect.addEventListener('change', function () {
-            const selectedOption = countrySelect.options[countrySelect.selectedIndex];
-            const selectedCurrency = selectedOption.getAttribute('data-currency');
-            currencyDisplay.textContent = selectedCurrency;
-        });
-    </script>
+  
 </body>
 
 </html>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const cartBtn = document.getElementById("cart-btn");
+    const cartDropdown = document.getElementById("cart-dropdown");
+    const cartItemsList = document.getElementById("cart-items");
+    const cartCount = document.getElementById("cart-count");
+    const addToCartButtons = document.querySelectorAll(".add-to-cart");
+
+    let cart = [];
+
+    // Toggle Cart Display
+    cartBtn.addEventListener("click", (event) => {
+        event.stopPropagation(); // Prevent immediate closing when clicking cart button
+        cartDropdown.classList.toggle("hidden");
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener("click", (event) => {
+        if (!cartDropdown.contains(event.target) && event.target !== cartBtn) {
+            cartDropdown.classList.add("hidden");
+        }
+    });
+
+    // Add to Cart Function
+    addToCartButtons.forEach(button => {
+        button.addEventListener("click", function () {
+            const name = this.getAttribute("data-name");
+            const price = this.getAttribute("data-price");
+
+            // Check if product already in cart
+            const existingItem = cart.find(item => item.name === name);
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({ name, price, quantity: 1 });
+            }
+
+            updateCart();
+        });
+    });
+
+    // Update Cart UI
+    function updateCart() {
+        cartItemsList.innerHTML = "";
+        let totalQuantity = 0;
+
+        cart.forEach(item => {
+            totalQuantity += item.quantity;
+            const li = document.createElement("li");
+            li.classList.add("flex", "justify-between", "items-center", "border-b", "pb-2");
+            li.innerHTML = `
+                <span>${item.name} (${item.quantity})</span>
+                <span>$${item.price * item.quantity}</span>
+            `;
+            cartItemsList.appendChild(li);
+        });
+
+        cartCount.textContent = totalQuantity;
+    }
+});
+</script>
+
+  <!-- JavaScript to handle dropdown and responsiveness -->
+  <script>
+    const profileButton = document.getElementById('profileButton');
+    const dropdownMenu = document.getElementById('dropdownMenu');
+
+    profileButton.addEventListener('click', function () {
+        dropdownMenu.classList.toggle('hidden');
+    });
+
+    document.addEventListener('click', function (event) {
+        if (!profileButton.contains(event.target) && !dropdownMenu.contains(event.target)) {
+            dropdownMenu.classList.add('hidden');
+        }
+    });
+
+    const countrySelect = document.getElementById('country-select');
+    const currencyDisplay = document.getElementById('currency-display');
+
+    countrySelect.addEventListener('change', function () {
+        const selectedOption = countrySelect.options[countrySelect.selectedIndex];
+        const selectedCurrency = selectedOption.getAttribute('data-currency');
+        currencyDisplay.textContent = selectedCurrency;
+    });
+</script>
+
+<!-- notifications -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const notificationBtn = document.getElementById("notification-btn");
+        const notificationDropdown = document.getElementById("notification-dropdown");
+        const notificationList = document.getElementById("notification-list");
+        const notificationCount = document.getElementById("notification-count");
+        const clearNotificationsBtn = document.getElementById("clear-notifications");
+    
+        let notifications = [];
+    
+        // Toggle Notification Dropdown
+        notificationBtn.addEventListener("click", (event) => {
+            event.stopPropagation();
+            notificationDropdown.classList.toggle("hidden");
+            document.getElementById("cart-dropdown").classList.add("hidden"); // Close cart
+        });
+    
+        // Close Notification Dropdown when clicking outside
+        document.addEventListener("click", (event) => {
+            if (!notificationDropdown.contains(event.target) && event.target !== notificationBtn) {
+                notificationDropdown.classList.add("hidden");
+            }
+        });
+    
+        // Add a new notification
+        function addNotification(message) {
+            notifications.push(message);
+            updateNotifications();
+        }
+    
+        // Update notifications UI
+        function updateNotifications() {
+            notificationList.innerHTML = "";
+            notificationCount.textContent = notifications.length;
+    
+            if (notifications.length === 0) {
+                notificationList.innerHTML = "<li class='text-gray-500 text-sm'>No new notifications</li>";
+                notificationCount.classList.add("hidden");
+            } else {
+                notificationCount.classList.remove("hidden");
+                notifications.forEach((msg, index) => {
+                    const li = document.createElement("li");
+                    li.classList.add("border-b", "pb-2", "text-sm");
+                    li.innerHTML = `<span>${index + 1}. ${msg}</span>`;
+                    notificationList.appendChild(li);
+                });
+            }
+        }
+    
+        // Clear all notifications
+        clearNotificationsBtn.addEventListener("click", () => {
+            notifications = [];
+            updateNotifications();
+        });
+    
+        // Example notifications
+        setTimeout(() => {
+            addNotification("New booking confirmed!");
+            addNotification("Special discount available 🎉");
+        }, 2000);
+    });
+    </script>
+
+    <script>
+        document.getElementById("support-btn").addEventListener("click", function () {
+    document.getElementById("support-dropdown").classList.toggle("hidden");
+});
+
+document.getElementById("language-btn").addEventListener("click", function () {
+    document.getElementById("language-dropdown").classList.toggle("hidden");
+});
+
+function changeLanguage(lang) {
+    if (lang === "en") {
+        // Change UI or redirect to English version
+        alert("Language changed to English!");
+    } else if (lang === "ms") {
+        // Change UI or redirect to Bahasa Melayu version
+        alert("Bahasa ditukar ke Bahasa Melayu!");
+    }
+}
+    </script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const links = document.querySelectorAll(".nav-link");
+
+    links.forEach(link => {
+        link.addEventListener("click", function (event) {
+            if (this.getAttribute("href") === "") {
+                event.preventDefault(); // Prevent default only for empty links
+            }
+
+            // Remove active styles from all links
+            links.forEach(l => l.classList.remove("bg-green-700", "text-white"));
+
+            // Add active styles to clicked link
+            this.classList.add("bg-green-700", "text-white");
+        });
+    });
+});
+    </script>
