@@ -16,13 +16,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path,include
-from django.shortcuts import redirect 
+
 
 from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
-    path('', lambda request: redirect('home_page', permanent=True)),
+   
     path("__reload__/", include("django_browser_reload.urls")),
     # path('admin/', admin.site.urls),
     path('', include('page.urls')),
@@ -30,12 +30,14 @@ urlpatterns = [
     path('hms/', include('hms_kt.urls')),
     path('merchant/', include('merchant_kt.urls')),
     path('', include('main_kt.urls')),
+    path('', include('main_pack_kt.urls')),
     path('', include('user_kt.urls')),
     path('', include('hote_kt.urls')),
     path('api/', include('package_kt.urls')),  # Include the API URLs
     path('analytics/', include('analytics_kt.urls')),
     path('package/', include('pack_list_kt.urls')),
     path('data/', include('data_api_kt.urls')),  # Correct path
+    
     # path("hotel/", include("hote_kt.urls")),
     # path("katak_travel/", include("main_kt.urls")),
     # path("merchant/", include("merchant_kt.urls")),
@@ -44,3 +46,5 @@ urlpatterns = [
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)  # Add this line
+    
