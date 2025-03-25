@@ -35,21 +35,16 @@ CSRF_TRUSTED_ORIGINS = [
 ]
 
 # Redirect HTTP to HTTPS
- SECURE_SSL_REDIRECT = True
+
 
 # Set secure cookies
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
+
 
 # Prevent clickjacking
- SECURE_BROWSER_XSS_FILTER = True
-SECURE_CONTENT_TYPE_NOSNIFF = True
-X_FRAME_OPTIONS = 'DENY'
+
 
 # Use HSTS (HTTP Strict Transport Security)
-SECURE_HSTS_SECONDS = 31536000  # 1 year
-SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-SECURE_HSTS_PRELOAD = True
+
 
 
 # Application definition
