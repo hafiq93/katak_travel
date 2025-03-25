@@ -35,14 +35,14 @@ CSRF_TRUSTED_ORIGINS = [
 ]
 
 # Redirect HTTP to HTTPS
-SECURE_SSL_REDIRECT = True
+ SECURE_SSL_REDIRECT = True
 
 # Set secure cookies
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
 
 # Prevent clickjacking
-SECURE_BROWSER_XSS_FILTER = True
+ SECURE_BROWSER_XSS_FILTER = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
 X_FRAME_OPTIONS = 'DENY'
 
@@ -70,7 +70,10 @@ INSTALLED_APPS = [
     'hote_kt',
     'hms_kt',
     'merchant_kt',
+    # 
     'main_kt',
+    'main_pack_kt',  # Ensure this is added
+    
     'user_kt',
     'base_kt',
     'page',
