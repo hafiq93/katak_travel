@@ -5,9 +5,10 @@ from user_kt.models import User
 from django.utils import timezone
 from datetime import timedelta
 from datetime import datetime
-from admin_kt.models import MainMerchant, MerchantType
+from admin_kt.models import MainMerchant, MerchantType, Status, UserRole
 import random
 import string
+from decimal import Decimal
 # from django_countries.fields import CountryField  # Optional for country selection
 
 class Location(models.Model):
@@ -42,12 +43,12 @@ class PackageType(models.Model):
     def __str__(self):
         return self.name
 
-class Status(models.Model):
-    name = models.CharField(max_length=50, unique=True)
-    color = models.CharField(max_length=7, default="#FFFFFF")
+# class Status(models.Model):
+#     name = models.CharField(max_length=50, unique=True)
+#     color = models.CharField(max_length=7, default="#FFFFFF")
 
-    def __str__(self):
-        return self.name
+#     def __str__(self):
+#         return self.name
 
 class Package(models.Model):
     STATUS_CHOICES = [
@@ -79,7 +80,7 @@ class Package(models.Model):
 
     code = models.CharField(max_length=50, blank=True, null=True)
 
-    pack_status = models.ForeignKey(Status, on_delete=models.SET_NULL, null=True)
+    pack_status = models.ForeignKey(Status, on_delete=models.SET_NULL, null=True, blank=True)
 
     def save(self, *args, **kwargs):
         # Ensure that start_date and end_date are datetime.date objects
@@ -104,6 +105,22 @@ class Package(models.Model):
             raise ValueError("Minimum Pax cannot be greater than Maximum Pax.")
 
         super().save(*args, **kwargs)
+
+    def get_send_back_userroles(self, allowed_roles=None, base_userrole=None):
+        from user.models import UserRole  # Local import avoids circular dependencies
+
+        queryset = UserRole.objects.all().select_related('user', 'role')
+
+        if allowed_roles:
+            queryset = queryset.filter(role__in=allowed_roles)
+
+        if base_userrole:
+            queryset = queryset.filter(
+                department=base_userrole.department,
+                company=base_userrole.company
+            )
+
+        return queryset
 
     def __str__(self):
         return self.name
@@ -142,13 +159,43 @@ class ProductDetails(models.Model):
         return self.product_name
 
 
-class PackageItem(models.Model): 
+
+class ProductItemTotal(models.Model):
+    merchant = models.ForeignKey(
+        PackageMerchant, on_delete=models.CASCADE, related_name='product_totals',blank=True, null=True
+    )
+    total_selling_price = models.DecimalField(max_digits=10, decimal_places=2, default=Decimal('0.00'))
+    
+    created_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
+    updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)
+
+    def __str__(self):
+        return f"Total for Merchant {self.merchant.id} - Total Selling Price: ${self.total_selling_price:.2f}"
+
+
+class PackageItemTotalLink(models.Model):
+    package_item = models.ForeignKey(
+        'PackageItem', on_delete=models.CASCADE, related_name='item_totals',blank=True, null=True
+    )
+    product_item_total = models.ForeignKey(
+        'ProductItemTotal', on_delete=models.CASCADE, related_name='package_items',blank=True, null=True
+    )
+    
+    quantity = models.PositiveIntegerField(default=1)
+
+    def __str__(self):
+        return f"Link between {self.package_item} and {self.product_item_total}"
+
+
+
+class PackageItem(models.Model):
     merchant_list = models.ForeignKey(
         PackageMerchant, on_delete=models.CASCADE, related_name='pack_item', blank=True, null=True
     )
     product_details = models.ForeignKey(
         ProductDetails, on_delete=models.CASCADE, related_name='pack_item', blank=True, null=True
     )
+
     # Price Details
     adult_selling_price = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     adult_agent_price = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
@@ -171,7 +218,13 @@ class PackageItem(models.Model):
     updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)
 
     def save(self, *args, **kwargs):
-        # Calculate commissions and total prices before saving
+        # Ensure that all price fields are not None, and replace None with Decimal('0.00')
+        self.adult_selling_price = self.adult_selling_price if self.adult_selling_price is not None else Decimal('0.00')
+        self.adult_agent_price = self.adult_agent_price if self.adult_agent_price is not None else Decimal('0.00')
+        self.children_selling_price = self.children_selling_price if self.children_selling_price is not None else Decimal('0.00')
+        self.children_agent_price = self.children_agent_price if self.children_agent_price is not None else Decimal('0.00')
+
+        # Now perform the calculations
         self.adult_commission_price = self.adult_selling_price - self.adult_agent_price
         self.adult_commission_percent = (self.adult_commission_price / self.adult_selling_price) * 100 if self.adult_selling_price else 0
         self.total_adult_price = self.adult_selling_price * self.adult_number
@@ -183,10 +236,60 @@ class PackageItem(models.Model):
         self.grand_total_price = self.total_adult_price + self.total_children_price
         super().save(*args, **kwargs)
 
+        # **Ensure that PackageItem is linked to ProductItemTotal**
+        self.link_to_product_item_total()
+
+    def link_to_product_item_total(self):
+        # Get the first ProductItemTotal or specify a filter to ensure only one
+        product_total = ProductItemTotal.objects.first()  # Or use a filter to get the right one
+
+        if product_total:  # Ensure that there's a valid ProductItemTotal
+            # Check if the link already exists
+            link_exists = PackageItemTotalLink.objects.filter(
+                package_item=self, product_item_total=product_total
+            ).exists()
+
+            # If link does not exist, create it
+            if not link_exists:
+                PackageItemTotalLink.objects.create(
+                    package_item=self,
+                    product_item_total=product_total
+                )
+
     def __str__(self):
-        return self.product_name
+        return self.product_details.product_name
 
-    # Optionally, a function to get the formatted total prices
-    def get_formatted_price(self, price):
-        return f"${price:.2f}" if price else "$0.00"
 
+class PackageLog(models.Model):
+    package = models.ForeignKey(Package, related_name="status_history", on_delete=models.CASCADE)
+    from_user_role = models.ForeignKey(
+        UserRole, on_delete=models.SET_NULL, null=True, blank=True, related_name="sent_packages"
+    )
+    
+    to_user_role = models.ForeignKey(
+        UserRole, on_delete=models.SET_NULL, null=True, blank=True, related_name="received_packages"
+    )
+    status = models.ForeignKey(Status, on_delete=models.SET_NULL, null=True)
+    remarks = models.TextField(blank=True, null=True)
+    updated_at = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return f"{self.package.name} | From: {self.from_user_role} → To: {self.to_user_role}"
+
+    class Meta:
+        ordering = ['-updated_at']
+    
+    def save(self, *args, **kwargs):
+        # No need to store the role as it's linked through the UserRole model
+        super().save(*args, **kwargs)
+
+
+class PackCategory(models.Model):
+    package = models.ForeignKey('Package', on_delete=models.CASCADE, related_name='pack_categories')
+    merchant_type = models.ForeignKey(MerchantType, on_delete=models.CASCADE, related_name='pack_categories')
+
+    class Meta:
+        unique_together = ('package', 'merchant_type')
+
+    def __str__(self):
+        return f"{self.package.name} - {self.merchant_type.name}"
