@@ -7,7 +7,9 @@ from .views import (
     RoomFacilitiesViewSet,
     RoomViewViewSet,
     RoomBedViewSet,
-    MerchantTypeViewSet
+    MerchantTypeViewSet,
+    MainMerchantViewSet,
+    MerchantsByTypeView
 )
 
 
@@ -20,7 +22,9 @@ router.register(r'room-facilities', RoomFacilitiesViewSet)
 router.register(r'room-views', RoomViewViewSet)
 router.register(r'room-beds', RoomBedViewSet)
 router.register(r'merchant-types', MerchantTypeViewSet)
+router.register(r'main-merchant', MainMerchantViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
+    path('merchants-by-type/<int:type_id>/', MerchantsByTypeView.as_view(), name='merchants_by_type'),
 ]

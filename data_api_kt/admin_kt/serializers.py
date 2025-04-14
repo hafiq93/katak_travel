@@ -2,7 +2,7 @@ from rest_framework import serializers
 from rest_framework import serializers
 from admin_kt.models import (
     HotelType, HotelFacilities, HotelRoom, 
-    RoomFacilities, RoomView, RoomBed, MerchantType
+    RoomFacilities, RoomView, RoomBed, MerchantType,MainMerchant
 )
 
 
@@ -39,4 +39,11 @@ class RoomBedSerializer(serializers.ModelSerializer):
 class MerchantTypeSerializer(serializers.ModelSerializer):
     class Meta:
         model = MerchantType
+        fields = '__all__'
+
+class MainMerchantSerializer(serializers.ModelSerializer):
+    merchant_types = MerchantTypeSerializer(many=True, read_only=True)  # Nested merchant types
+
+    class Meta:
+        model = MainMerchant
         fields = '__all__'
