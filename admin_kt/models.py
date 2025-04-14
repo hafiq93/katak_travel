@@ -1,7 +1,6 @@
 from django.db import models
 from user_kt.models import User
 from package_kt.models import System,Package,SubPackage,SubPackage_2
-from merchant_kt.models import Company
 
 # Create your models here.
 # /////////////////////////////////roles database/////////////////////////////////////////////////
@@ -10,8 +9,6 @@ class Roles(models.Model):
     role_name = models.CharField(max_length=255)
     no_siri = models.CharField(max_length=255, null=True)
     description = models.TextField(blank=True, null=True)
-    # ✅ New field to control who can receive status updates
-    can_receive_status_update = models.BooleanField(default=False)
 
     def __str__(self):
         return self.role_name
@@ -38,10 +35,9 @@ class Permission(models.Model):
 class UserRole(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user_roles")
     role = models.ForeignKey(Roles, on_delete=models.CASCADE, related_name="role_users")
-    company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name="company_roles",blank=True, null=True)
 
     def __str__(self):
-        return f"{self.user.email} - {self.role.role_name} - {self.company.name}"
+        return f"{self.user.email} - {self.role.role_name}"
 
 class RolePackage(models.Model):  # Modified RolePermission to RolePackage
     role = models.ForeignKey(Roles, on_delete=models.CASCADE, related_name="role_packages")
@@ -166,13 +162,3 @@ class MerchantLogin(models.Model):
     
     def __str__(self):
         return self.username  # Fixed self.name to self.username
-
-
-# //////////////////////status 
-class Status(models.Model):
-    name = models.CharField(max_length=50, unique=True)
-    color = models.CharField(max_length=7, default="#FFFFFF")
-    allowed_roles = models.ManyToManyField('Roles', blank=True)
-
-    def __str__(self):
-        return self.name  
