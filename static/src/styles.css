@@ -46,10 +46,23 @@
 
 .hover {
     background-color: #009A00;
+    color: white;
   }
+
+  .sub-tab-link:hover,
+.tab-link:hover,
+.trip-type-tab:hover,
+.custom:hover {
+    background-color: #009A00; /* Darker green */
+    color: white;
+}
 
   .custom-border {
     border-color: #009A00 !important;
+  }
+  
+  .custom-bg{
+    background-color: #009A00;
   }
 
   .star {
