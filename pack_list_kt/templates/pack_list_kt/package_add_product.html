@@ -1,0 +1,308 @@
+{% block content %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'src/styles.css' %}">
+<html>
+    {% include 'base_kt/admin_header.html' %}
+    <body>
+        <div class="flex h-min-screen">
+            <!-- Main Content -->
+            <div class="p-4 bg-gray-100 w-full">
+                <div class="rounded-md space-y-2">
+                    <div class="bg-white p-6 rounded-lg shadow-lg w-full">
+                        <h2 class="text-2xl font-bold mb-4">Add Details Product and Price</h2>
+                      
+                        <form method="POST" action="{% url 'add_product' product.id %}" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <!-- Merchant Details -->
+                           
+                            <div class="grid grid-cols-1 gap-4 mb-4">
+                                <h3 class="text-xl font-bold mb-4">Product Details</h3>
+                        
+                               <!-- Product Details Form -->
+                               <div id="product-details-section">
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4 product-entry">
+                                        <div class="md:col-span-1">
+                                            <label for="product_name[]" class="block text-gray-700 font-semibold">Product Name:</label>
+                                            <input type="text" id="product_name[]" name="product_name[]"
+                                                class="mt-1 p-2 border border-gray-300 rounded w-full" required>
+                                
+                                            <label for="product_description[]" class="block text-gray-700 font-semibold mt-4">Description:</label>
+                                            <textarea id="product_description[]" name="product_description[]"
+                                                class="mt-1 p-2 border border-gray-300 rounded w-full" rows="3" required></textarea>
+                                
+                                            <label for="product_image[]" class="block text-gray-700 font-semibold mt-4">Image:</label>
+                                            <input type="file" id="product_image[]" name="product_image[]" accept="image/*"
+                                                class="mt-1 p-2 border border-gray-300 rounded w-full"> <!-- Initially hidden -->
+                                
+                                            <p class="text-xs text-gray-600">
+                                                File size must not exceed 400KB, only allow .jpg, .jpeg, .png, .gif, .webp file types
+                                                <br>Recommend size 400x300(px); 640x480(px) SD / ratio 4:3
+                                            </p>
+                                
+                                            <!-- Edit & Delete Buttons -->
+                                            <div id="image-actions" class="flex gap-2 mt-2">
+                                                <button type="button" id="delete-image-btn" class="bg-red-500 text-white py-1 px-3 rounded hover:bg-red-600 hidden">Delete</button>
+                                            </div>
+                                        </div>
+                                
+                                        <div class="mt-4">
+                                            <div class="relative w-full">
+                                                <label class="font-semibold">Image Result:</label>
+                                                <p id="image_name" class="text-sm text-gray-700"></p> <!-- Display image name -->
+                                                <div id="preview-container-1" class="bg-gray-100 border rounded p-2 h-80 flex justify-center items-center">
+                                                    <img id="preview_image_1" class="object-scale-down w-full h-full hidden">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            
+                     
+
+                                <h3 class="text-xl font-bold mb-4">Add Price</h3>
+                                
+                                
+                                <!-- Adult Section -->
+                                <p class="font-semibold text-md">Adult Price</p>
+                                <div class="grid grid-cols-1 md:grid-cols-4 gap-4" id="adult-row">
+                                    <div>
+                                        <label for="adult_selling_price" class="block text-gray-700 font-semibold">Selling Price</label>
+                                        <input type="number" id="adult_selling_price" name="adult_selling_price" class="mt-1 p-2 border border-gray-500 rounded w-full selling-price" value="{{ adult_selling_price }}" oninput="calculateCommissionAndTotal()" />
+                                    </div>
+                                    <div>
+                                        <label for="adult_agent_price" class="block text-gray-700 font-semibold">Agent Price</label>
+                                        <input type="number" id="adult_agent_price" name="adult_agent_price" class="mt-1 p-2 border border-gray-500 rounded w-full agent-price" value="{{ adult_agent_price }}" oninput="calculateCommissionAndTotal()" />
+                                    </div>
+                                    <div>
+                                        <label for="adult_commission_price" class="block text-gray-700 font-semibold">Profit Amount</label>
+                                        <div class="flex space-x-2">
+                                            <input type="number" id="adult_commission_price" name="adult_commission_price"  class="mt-1 p-2 border border-gray-500 rounded w-full bg-gray-100 commission-price" readonly />
+                                            <input type="text" id="adult_commission_percent" name="adult_commission_percent"  class="mt-1 p-2 border border-gray-500 rounded w-full bg-gray-100 commission-percent" readonly />
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label for="adult_number" class="block text-gray-700 font-semibold">Number of Adults</label>
+                                        <input type="number" id="adult_number" name="adult_number" class="mt-1 p-2 border border-gray-500 rounded w-full" oninput="calculateCommissionAndTotal()" />
+                                        <p class="text-xs text-gray-600">Total of adults</p>
+                                    </div>
+                                </div>
+
+                                <!-- Children Section -->
+                                <p class="font-semibold text-md">Children Price</p>
+                                <div class="grid grid-cols-1 md:grid-cols-4 gap-4" id="children-row">
+                                    <div>
+                                        <label for="children_selling_price" class="block text-gray-700 font-semibold">Selling Price</label>
+                                        <input type="number" id="children_selling_price" name="children_selling_price" class="mt-1 p-2 border border-gray-500 rounded w-full selling-price"  oninput="calculateCommissionAndTotal()" />
+                                    </div>
+                                    <div>
+                                        <label for="children_agent_price" class="block text-gray-700 font-semibold">Agent Price</label>
+                                        <input type="number" id="children_agent_price" name="children_agent_price" class="mt-1 p-2 border border-gray-500 rounded w-full agent-price" oninput="calculateCommissionAndTotal()" />
+                                    </div>
+                                    <div>
+                                        <label for="children_commission_price" class="block text-gray-700 font-semibold">Profit Amount</label>
+                                        <div class="flex space-x-2">
+                                            <input type="number" id="children_commission_price" name="children_commission_price"   class="mt-1 p-2 border border-gray-500 rounded w-full bg-gray-100 commission-price" readonly />
+                                            <input type="text" id="children_commission_percent" name="children_commission_percent"  class="mt-1 p-2 border border-gray-500 rounded w-full bg-gray-100 commission-percent" readonly />
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label for="children_number" class="block text-gray-700 font-semibold">Number of Children</label>
+                                        <input type="number" id="children_number" name="children_number" class="mt-1 p-2 border border-gray-500 rounded w-full"  oninput="calculateCommissionAndTotal()" />
+                                        <p class="text-xs text-gray-600">Total of children</p>
+                                    </div>
+                                </div>
+
+                                <!-- Summary Section -->
+                                <h3 class="text-xl font-bold mt-2">Summary</h3>
+                                <table class="table-auto w-full">
+                                    <thead>
+                                        <tr class="bg-green-500">
+                                            <th class="px-4 py-2 border text-white w-64">Description</th>
+                                            <th class="px-4 py-2 border text-white w-64">Price Per Person</th>
+                                            <th class="px-4 py-2 border text-white w-48">Number</th>
+                                            <th class="px-4 py-2 border text-white w-48">Total</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="px-4 py-2 border text-white bg-yellow-500 font-semibold">Adult Price</td>
+                                            <td class="px-4 py-2 border" id="adult-price-per-person"></td>
+                                            <td class="px-4 py-2 border" id="adult-number"></td>
+                                            <td class="px-4 py-2 border" id="adult-total-price"></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="px-4 py-2 border text-white bg-purple-500 font-semibold">Children Price</td>
+                                            <td class="px-4 py-2 border" id="children-price-per-person"></td>
+                                            <td class="px-4 py-2 border" id="children-number"></td>
+                                            <td class="px-4 py-2 border" id="children-total-price"></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="px-4 py-2 border font-bold bg-sky-500 text-white">Grand Total</td>
+                                            <td class="px-4 py-2 border" id="grand-total-price" colspan="3"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        
+                            <!-- Actions -->
+                            <div class="flex justify-between space-x-2 mt-4">
+                                <button type="button" class="bg-red-700 text-white px-4 py-2 rounded flex items-center space-x-2">
+                                    <a href="{% url 'pack_form' merchant_id=product.package_merchant.id %}" class="flex items-center space-x-2 font-semibold">
+                                        <i class="fas fa-times"></i>
+                                        <span>Cancel</span>
+                                    </a>
+                                </button>
+                                <button type="submit" class="bg-green-700 text-white px-4 py-2 rounded flex items-center space-x-2 font-semibold">
+                                    <i class="fas fa-save"></i>
+                                    <span>Save</span>
+                                </button>
+                            </div>
+                            <!-- <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded">Save</button> -->
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+<script>
+    function calculateCommissionAndTotal() {
+    // Adult Prices
+    const adultSellingPrice = parseFloat(document.getElementById('adult_selling_price').value) || 0;
+    const adultAgentPrice = parseFloat(document.getElementById('adult_agent_price').value) || 0;
+    const adultNumber = parseInt(document.getElementById('adult_number').value) || 0;
+
+    const adultCommissionPriceField = document.getElementById('adult_commission_price');
+    const adultCommissionPercentField = document.getElementById('adult_commission_percent');
+    const adultTotalPriceField = document.getElementById('adult-total-price');
+    const adultPricePerPersonField = document.getElementById('adult-price-per-person');
+    const adultNumberField = document.getElementById('adult-number'); // For table update
+
+    // Calculate adult commission and totals
+    const adultCommissionPrice = adultSellingPrice - adultAgentPrice;
+    const adultCommissionPercent = adultSellingPrice > 0 ? (adultCommissionPrice / adultSellingPrice) * 100 : 0;
+    const adultTotalPrice = adultSellingPrice * adultNumber;
+
+    // Update adult fields
+    adultCommissionPriceField.value = adultCommissionPrice.toFixed(2);
+    adultCommissionPercentField.value = `${adultCommissionPercent.toFixed(2)}%`;
+    adultTotalPriceField.innerText = adultTotalPrice.toFixed(2);
+    adultPricePerPersonField.innerText = adultSellingPrice.toFixed(2);
+    adultNumberField.innerText = adultNumber; // Update table number column
+
+    // Children Prices
+    const childrenSellingPrice = parseFloat(document.getElementById('children_selling_price').value) || 0;
+    const childrenAgentPrice = parseFloat(document.getElementById('children_agent_price').value) || 0;
+    const childrenNumber = parseInt(document.getElementById('children_number').value) || 0;
+
+    const childrenCommissionPriceField = document.getElementById('children_commission_price');
+    const childrenCommissionPercentField = document.getElementById('children_commission_percent');
+    const childrenTotalPriceField = document.getElementById('children-total-price');
+    const childrenPricePerPersonField = document.getElementById('children-price-per-person');
+    const childrenNumberField = document.getElementById('children-number'); // For table update
+
+    // Calculate children commission and totals
+    const childrenCommissionPrice = childrenSellingPrice - childrenAgentPrice;
+    const childrenCommissionPercent = childrenSellingPrice > 0 ? (childrenCommissionPrice / childrenSellingPrice) * 100 : 0;
+    const childrenTotalPrice = childrenSellingPrice * childrenNumber;
+
+    // Update children fields
+    childrenCommissionPriceField.value = childrenCommissionPrice.toFixed(2);
+    childrenCommissionPercentField.value = `${childrenCommissionPercent.toFixed(2)}%`;
+    childrenTotalPriceField.innerText = childrenTotalPrice.toFixed(2);
+    childrenPricePerPersonField.innerText = childrenSellingPrice.toFixed(2);
+    childrenNumberField.innerText = childrenNumber; // Update table number column
+
+    // Grand Total
+    const grandTotal = adultTotalPrice + childrenTotalPrice;
+    document.getElementById('grand-total-price').innerText = grandTotal.toFixed(2);
+}
+    </script>
+    <!-- JavaScript for Edit & Delete Buttons -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const productImageInput = document.getElementById("product_image[]");
+        const previewContainer = document.getElementById("preview-container");
+        const previewImage = document.getElementById("product-preview");
+        const editImageBtn = document.getElementById("edit-image-btn");
+        const deleteImageBtn = document.getElementById("delete-image-btn");
+
+        // Edit Button - Allow user to upload a new image
+        editImageBtn.addEventListener("click", function () {
+            productImageInput.click();
+        });
+
+        // When a new file is selected, update the preview
+        productImageInput.addEventListener("change", function (event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    previewImage.src = e.target.result;
+                    previewContainer.classList.remove("hidden");
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Delete Button - Remove preview and clear input
+        deleteImageBtn.addEventListener("click", function () {
+            previewImage.src = "";
+            previewContainer.classList.add("hidden");
+            productImageInput.value = ""; // Clear file input
+        });
+    });
+</script>
+<!-- JavaScript to Handle Image Preview and Deletion -->
+<script>
+    document.getElementById("product_image[]").addEventListener("change", function(event) {
+        const file = event.target.files[0]; // Get selected file
+        const previewImage = document.getElementById("preview_image_1");
+        const imageName = document.getElementById("image_name");
+        const deleteBtn = document.getElementById("delete-image-btn");
+    
+        if (file) {
+            // Validate file type
+            const allowedExtensions = ["image/jpeg", "image/png", "image/gif", "image/webp"];
+            if (!allowedExtensions.includes(file.type)) {
+                alert("Invalid file type. Please select a JPG, PNG, GIF, or WEBP image.");
+                event.target.value = ""; // Reset file input
+                return;
+            }
+    
+            // Validate file size (400KB limit)
+            if (file.size > 400 * 1024) {
+                alert("File size exceeds 400KB. Please select a smaller image.");
+                event.target.value = ""; // Reset file input
+                return;
+            }
+    
+            // Display file name
+            imageName.textContent = file.name;
+    
+            // Show preview
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                previewImage.src = e.target.result;
+                previewImage.classList.remove("hidden");
+            };
+            reader.readAsDataURL(file);
+    
+            // Show delete button
+            deleteBtn.classList.remove("hidden");
+        }
+    });
+    
+    // Handle Delete Image Button
+    document.getElementById("delete-image-btn").addEventListener("click", function() {
+        document.getElementById("product_image[]").value = ""; // Clear file input
+        document.getElementById("preview_image_1").src = ""; // Remove image preview
+        document.getElementById("preview_image_1").classList.add("hidden"); // Hide image
+        document.getElementById("image_name").textContent = ""; // Remove file name
+        this.classList.add("hidden"); // Hide delete button
+    });
+    </script>
+{% endblock %}

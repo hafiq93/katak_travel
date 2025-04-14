@@ -19,7 +19,7 @@
                         <form method="POST" action="{% if package and package.id %}{% url 'pack_list_add' id=package.id %}{% else %}{% url 'pack_list_add' %}{% endif %}">
                             {% csrf_token %}
                             <!-- Package Name -->
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
                                 <div class="mb-4 col-span-1 md:col-span-2">
                                     <label for="hotel_name" class="block text-gray-700 font-semibold">Package Name:</label>
                                     <input type="text" id="hotel_name" name="hotel_name" 
@@ -31,6 +31,18 @@
                                     <input type="text" id="code" name="code" 
                                         value="{% if package %}{{ package.code }}{% else %}{% endif %}" 
                                         required class="mt-1 p-2 border border-gray-300 rounded w-full " required >
+                                </div>
+                                <div class="mb-4 col-span-1">
+                                    <label for="merchant_type" class="block text-gray-700 font-semibold">Category (Merchant Type):</label>
+                                    <select id="merchant_type" name="merchant_type" class="mt-1 p-2 border border-gray-300 rounded w-full" required>
+                                        <option value="" disabled selected>Select a category</option>
+                                        {% for type in merchant_types %}
+                                            <option value="{{ type.id }}"
+                                                {% if package and package.pack_categories.first.merchant_type.id == type.id %}selected{% endif %}>
+                                                {{ type.name }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
                                 </div>
                             </div>
                             <div class="grid grid-cols-2 md:grid-cols-4 gap-4">

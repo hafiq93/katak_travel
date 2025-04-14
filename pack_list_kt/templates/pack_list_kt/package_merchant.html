@@ -4,6 +4,38 @@
 <html>
     {% include 'base_kt/admin_header.html' %}
     <body>
+        <!-- Subheader -->
+        <div class="bg-green-500 h-8 flex items-center justify-start px-4 shadow space-x-2">
+            <!-- Home Icon with URL -->
+            <a href="{% url 'admin-dashboard' %}" class="text-white flex items-center">
+                <i class="fa-solid fa-house mr-1"></i> <!-- Font Awesome Home Icon -->
+               
+                
+            </a>
+            <span class="text-white">></span>
+            <!-- Dashboard -->
+            <a href="{% url 'admin-dashboard' %}" class="text-md font-semibold text-white">
+                Home
+            </a>
+            <span class="text-white">></span>
+        
+            <!-- Dashboard -->
+            <a href="{% url 'package_dashboard' %}" class="text-md font-semibold text-white">
+                Dashboard
+            </a>
+            <span class="text-white">></span>
+        
+            <!-- List Package -->
+            <a href="{% url 'package_list' %}" class="text-md font-semibold text-white">
+                Package
+            </a>
+            <span class="text-white">></span>
+        
+            <!-- List Merchant -->
+            <a href="{% if package and package.id %}{% url 'pack_merchant' id=package.id %}{% else %}{% url 'pack_merchant' %}{% endif %}" class="text-md font-semibold text-white">
+                Add Package
+            </a>
+        </div>
         <div class="flex h-screen">
             <!-- Main Content -->
             <div class="p-4 bg-gray-100 w-full">
@@ -15,11 +47,11 @@
                                 List Merchant in Package
                             </a>
                         </li>
-                        <li class="mr-1">
+                        <!-- <li class="mr-1">
                             <a href="{% if package and package.id %}{% url 'pack_merchant' id=package.id %}{% else %}{% url 'pack_merchant' %}{% endif %}" class="bg-green-500 inline-block px-4 py-2 text-white font-semibold border-lg border-l border-t border-r rounded-t focus:outline-none ">
                                 Add Package
                             </a>
-                        </li>
+                        </li> -->
                        
                     
                     </ul>
@@ -120,7 +152,7 @@
                         
 
                             
-                            <!-- Product Details Section -->
+                          <!-- Product Details Section -->
                                               
                             <div class="grid grid-cols-1 gap-4 mb-4">
                                 <h3 class="text-xl font-bold mb-4">Product Details</h3>
@@ -128,11 +160,11 @@
                                 <!-- Product Details Form -->
                                 <div id="product-details-section">
                                     <!-- Add Product Button -->
-                                    <button type="button" id="add-product-btn" 
+                                    <!-- <button type="button" id="add-product-btn" 
                                         class="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 font-semibold mb-4"
-                                        onclick="addProduct()">Add Product</button>
+                                        onclick="addProduct()">Add Product</button> -->
                         
-                                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4 product-entry" data-id="1">
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4 product-entry" data-id="1">
                                         <div class="md:col-span-1">
                                             <label for="product_name" class="block text-gray-700 font-semibold">Product Name:</label>
                                             <input type="text" id="product_name" name="product_name[]" 
@@ -142,28 +174,31 @@
                                             <textarea id="product_description" name="product_description[]" 
                                                 class="mt-1 p-2 border border-gray-300 rounded w-full" rows="3" required></textarea>
                         
-                                            <button type="button" class="bg-red-700 text-white py-2 px-4 rounded hover:bg-red-600 font-semibold mt-4"
-                                                onclick="deleteProduct(this)">Delete Product</button>
+                                         
+                                                <div>
+                                                    <label for="product_image" class="block text-gray-700 font-semibold mt-4">Image:</label>
+                                                    <input type="file" id="product_image" name="product_image[]" accept="image/jpeg, image/png, image/gif, image/webp"
+                                                        class="mt-1 p-2 border border-gray-300 rounded w-full" onchange="previewImage(this)" required>
+                                                    <p class="text-xs text-gray-600">
+                                                        File size must not exceed 400KB, only allow .jpg .jpeg .png .gif .webp file type
+                                                        <br>Recommend size 400x300(px); 640x480(px)SD / ratio 4:3
+                                                    </p>
+                                                    <div id="image-actions-1" class="flex gap-2 mt-2 hidden">
+                                                        <button type="button" class="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-600" onclick="editImage(this)">Edit</button>
+                                                        <button type="button" class="bg-red-500 text-white py-1 px-3 rounded hover:bg-red-600" onclick="deleteImage(this)">Delete</button>
+                                                    </div>
+                                                </div>
+                                                <!-- <button type="button" class="bg-red-700 text-white py-2 px-4 rounded hover:bg-red-600 font-semibold mt-4"
+                                                onclick="deleteProduct(this)">Delete Product</button> -->
                                         </div>
                                         
-                                        <div>
-                                            <label for="product_image" class="block text-gray-700 font-semibold">Image:</label>
-                                            <input type="file" id="product_image" name="product_image[]" accept="image/jpeg, image/png, image/gif, image/webp"
-                                                class="mt-1 p-2 border border-gray-300 rounded w-full" onchange="previewImage(this)" required>
-                                            <p class="text-xs text-gray-600">
-                                                File size must not exceed 400KB, only allow .jpg .jpeg .png .gif .webp file type
-                                                <br>Recommend size 400x300(px); 640x480(px)SD / ratio 4:3
-                                            </p>
-                                            <div id="image-actions-1" class="flex gap-2 mt-2 hidden">
-                                                <button type="button" class="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-600" onclick="editImage(this)">Edit</button>
-                                                <button type="button" class="bg-red-500 text-white py-1 px-3 rounded hover:bg-red-600" onclick="deleteImage(this)">Delete</button>
-                                            </div>
-                                        </div>
+                                        
                                         
                                         <div>
                                             <div class="relative w-full">
+                                                <!-- For displaying image name -->
                                                 <label class="font-semibold">Image Result:</label>
-                                                <p id="image_name" class="text-sm text-gray-700 "></p> <!-- For displaying image name -->
+                                                <p id="image_name" class="text-sm text-gray-700 "></p> 
                                                 <div id="preview-container-1" class="bg-gray-100 border rounded p-2 h-80">
                                                     <img id="preview_image_1" class="object-scale-down w-full h-full  ">
                                                 </div>
@@ -171,7 +206,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> 
                                 
                 
                             <div class="flex justify-between mt-4">
@@ -294,7 +329,7 @@ function addProduct() {
     const productCount = section.querySelectorAll('.product-entry').length + 1;
 
     const newProduct = `
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4 product-entry" data-id="${productCount}">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4 product-entry" data-id="${productCount}">
             <div class="md:col-span-1">
                 <label for="product_name_${productCount}" class="block text-gray-700 font-semibold">Product Name:</label>
                 <input type="text" id="product_name_${productCount}" name="product_name[]" 
@@ -304,25 +339,28 @@ function addProduct() {
                 <textarea id="product_description_${productCount}" name="product_description[]" 
                     class="mt-1 p-2 border border-gray-300 rounded w-full" rows="3" required></textarea>
 
+                <div>
+                    <label for="product_image_${productCount}" class="block text-gray-700 font-semibold mt-4">Image:</label>
+                    <input type="file" id="product_image_${productCount}" name="product_image[]" 
+                        accept="image/jpeg, image/png, image/gif, image/webp"
+                        class="mt-1 p-2 border border-gray-300 rounded w-full" 
+                        onchange="previewImage(this)" required>
+                    <p class="text-xs text-gray-600">
+                        File size must not exceed 400KB, only allow .jpg .jpeg .png .gif .webp file type
+                        <br>Recommend size 400x300(px); 640x480(px)SD / ratio 4:3
+                    </p>
+                    <div id="image-actions-${productCount}" class="flex gap-2 mt-2 hidden">
+                        <button type="button" class="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-600" onclick="editImage(this)">Edit</button>
+                        <button type="button" class="bg-red-500 text-white py-1 px-3 rounded hover:bg-red-600" onclick="deleteImage(this)">Delete</button>
+                    </div>
+                </div>
+       
+
                 <button type="button" class="bg-red-700 text-white py-2 px-4 rounded hover:bg-red-600 font-semibold mt-4"
                     onclick="deleteProduct(this)">Delete Product</button>
             </div>
 
-            <div>
-                <label for="product_image_${productCount}" class="block text-gray-700 font-semibold">Image:</label>
-                <input type="file" id="product_image_${productCount}" name="product_image[]" 
-                    accept="image/jpeg, image/png, image/gif, image/webp"
-                    class="mt-1 p-2 border border-gray-300 rounded w-full" 
-                    onchange="previewImage(this)" required>
-                <p class="text-xs text-gray-600">
-                    File size must not exceed 400KB, only allow .jpg .jpeg .png .gif .webp file type
-                    <br>Recommend size 400x300(px); 640x480(px)SD / ratio 4:3
-                </p>
-                <div id="image-actions-${productCount}" class="flex gap-2 mt-2 hidden">
-                    <button type="button" class="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-600" onclick="editImage(this)">Edit</button>
-                    <button type="button" class="bg-red-500 text-white py-1 px-3 rounded hover:bg-red-600" onclick="deleteImage(this)">Delete</button>
-                </div>
-            </div>
+            
 
             <div>
                 <div class="relative w-full">

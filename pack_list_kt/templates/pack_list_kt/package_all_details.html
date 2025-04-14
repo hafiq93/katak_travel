@@ -1,0 +1,784 @@
+{% block content %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'src/styles.css' %}">
+<html>
+    {% include 'base_kt/admin_header.html' %}
+    <body>
+      
+        <!-- Subheader -->
+        <div class="bg-green-500 h-8 flex items-center justify-start px-4 shadow space-x-2">
+            <!-- Home Icon with URL -->
+            <a href="{% url 'admin-dashboard' %}" class="text-white flex items-center text-sm">
+                <i class="fa-solid fa-house mr-1 text-sm"></i> <!-- Font Awesome Home Icon -->
+               
+                
+            </a>
+            <span class="text-white text-sm">></span>
+            <!-- Dashboard -->
+            <a href="{% url 'admin-dashboard' %}" class="text-sm font-semibold text-white">
+                Home
+            </a>
+            <span class="text-white text-sm">></span>
+        
+            <!-- Dashboard -->
+            <a href="{% url 'package_dashboard' %}" class="text-sm font-semibold text-white">
+                Dashboard
+            </a>
+            <span class="text-white text-sm">></span>
+        
+            <!-- List Package -->
+            <a href="{% url 'package_list' %}" class="text-sm font-semibold text-white">
+                Package
+            </a>
+            <span class="text-white text-sm">></span>
+        
+            <!-- List Merchant -->
+            <a href="{% url 'pack_price' package_id=package.id %}" class="text-sm font-semibold text-white">
+                Details Package
+            </a>
+        </div>
+  
+        <div class="flex h-min-screen">
+            <!-- Main Content -->
+            <div class="p-2 bg-gray-100 w-full">
+                <div class="rounded-md">
+                    <div class="bg-white p-4 rounded-lg shadow-lg w-full">
+                        <h2 class="text-2xl font-bold mb-4">Details Package</h2>
+
+                        <div class="mb-4 flex items-center justify-between">
+                            <p class="text-lg font-semibold">
+                                Current Status:
+                                <span 
+                                    style="background-color: {{ current_status.color }}; color: white; padding: 5px 10px; border-radius: 3px;">
+                                    {{ current_status.name }}
+                                </span>
+                            </p>
+                            <!-- Check if the current user has either the from_user_role or to_user_role -->
+        
+                           
+                            <button onclick="toggleHistoryModal()" class="text-sm bg-gray-700 text-white px-3 py-1 rounded hover:bg-gray-600">
+                                <i class="fas fa-history mr-1"></i> View History
+                            </button>
+                          
+                        </div>
+
+                        <div class="w-full border-b">
+                        <!-- Merchant Details -->
+                            <p class="text-md font-bold mb-4 ">Merchant Details</p>
+
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                                <div class=" col-span-1 md:col-span-2">
+                                    <label for="hotel_name" class="block text-gray-700 font-semibold">Package Name:</label>
+                                    <input type="text" id="hotel_name" name="hotel_name" 
+                                        value="{% if package %}{{ package.name }}{% else %}{% endif %}" 
+                                        required class="mt-1 p-2 border border-gray-300 rounded w-full bg-gray-100 " disabled>
+                                </div>
+                                <div class=" col-span-1 ">
+                                    <label for="hotel_name" class="block text-gray-700 font-semibold">Package Code:</label>
+                                    <input type="text" id="code" name="code" 
+                                        value="{% if package %}{{ package.code }}{% else %}{% endif %}" 
+                                        required class="mt-1 p-2 border border-gray-300 rounded w-full bg-gray-100 " disabled>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                                <div>
+                                    <label for="merchant_name" class="block text-gray-700 font-semibold">Merchant Name:</label>
+                                    <input type="text" id="merchant_name" name="merchant_name" 
+                                        value="{{ merchant.merchant }}" required class="mt-1 p-2 border border-gray-300 rounded w-full bg-gray-100" disabled>
+                                </div>
+                                <div>
+                                    <label for="merchant_code" class="block text-gray-700 font-semibold">Merchant Code:</label>
+                                    <input type="text" id="merchant_code" name="merchant_code" 
+                                        value="{{ package_merchant.merchant_code }}" class="mt-1 p-2 border border-gray-300 rounded w-full bg-gray-100" disabled>
+                                </div>
+                                <div>
+                                    <label for="merchant_type" class="block text-gray-700 font-semibold">Merchant Type:</label>
+                                    <select id="merchant_type" name="merchant_type" class="mt-1 p-2 border border-gray-300 rounded w-full bg-gray-100 " disabled>
+                                        <option value="">Select Merchant Type</option>
+                                        {% for merchant_type in merchant_types %}
+                                            <option value="{{ merchant_type.id }}" 
+                                                    {% if package_merchant.merchant_type and package_merchant.merchant_type.id == merchant_type.id %} selected {% endif %}>
+                                                {{ merchant_type.name }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                        
+                            </div>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                                <div>
+                                    <label for="street_address" class="block text-gray-700 font-semibold">Address:</label>
+                                    <input type="text" id="street_address" name="street_address" 
+                                        value="{{ merchant.street_address }}" class="mt-1 p-2 border border-gray-300 rounded w-full bg-gray-100" disabled/>
+                                </div>
+                                <div>
+                                    <label for="city" class="block text-gray-700 font-semibold">City:</label>
+                                    <input type="text" id="city" name="city" 
+                                        value="{{ merchant.city }}" class="mt-1 p-2 border border-gray-300 rounded w-full bg-gray-100" disabled/>
+                                </div>
+                            </div>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                                <div>
+                                    <label for="postal_code" class="block text-gray-700 font-semibold">Postcode:</label>
+                                    <input type="text" id="postal_code" name="postal_code" 
+                                        value="{{ merchant.postal_code }}" class="mt-1 p-2 border border-gray-300 rounded w-full bg-gray-100" disabled/>
+                                </div>
+                                <div>
+                                    <label for="state" class="block text-gray-700 font-semibold">State:</label>
+                                    <input type="text" id="state" name="state" 
+                                        value="{{ merchant.state }}" class="mt-1 p-2 border border-gray-300 rounded w-full bg-gray-100" disabled/>
+                                </div>
+                                <div>
+                                    <label for="country" class="block text-gray-700 font-semibold">Country:</label>
+                                    <select id="country" name="country" class="mt-1 p-2 border border-gray-300 rounded w-full bg-gray-100" disabled>
+                                        <option value="">Select Country</option>
+                                        {% for country in countries %}
+                                            <option value="{{ country.country }}" 
+                                                    {% if merchant.country and country.country == merchant.country.country %} selected {% endif %}>
+                                                {{ country.country }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                                <div>
+                                    <label for="contact_person" class="block text-gray-700 font-semibold">Contact Person:</label>
+                                    <input type="text" id="contact_person" name="contact_person" 
+                                        value="{{ merchant.contact_person }}" class="mt-1 p-2 border border-gray-300 rounded w-full bg-gray-100" disabled/>
+                                </div>
+                                <div>
+                                    <label for="contact_number" class="block text-gray-700 font-semibold">Contact Number:</label>
+                                    <input type="text" id="contact_number" name="contact_number" 
+                                        value="{{ merchant.contact_number }}" class="mt-1 p-2 border border-gray-300 rounded w-full bg-gray-100" disabled/>
+                                </div>
+                                <div>
+                                    <label for="email" class="block text-gray-700 font-semibold">Email:</label>
+                                    <input type="email" id="email" name="email"  
+                                        value="{{ merchant.email }}" class="mt-1 p-2 border border-gray-300 rounded w-full bg-gray-100" disabled/>
+                                </div>
+
+                            
+                            </div>
+                            
+                        </div>
+                        
+                        <div id="merchant-sections" class="mt-4  ">
+                            <p class="text-md font-bold mb-4 ">List Merchant in Package</p>
+                         
+
+                       
+
+                            <div class="max-w-full overflow-x-auto">
+                                <table class="w-full table-auto">
+                                    <thead>
+                                        <tr class="bg-green-500 text-white">
+                                            <th class="px-3 py-2 border w-12">No</th>
+                                            <th class="px-3 py-2 border w-12">ID</th>
+                                            <th class="px-3 py-2 border w-3/12">Merchant Name</th>
+                                            <th class="px-3 py-2 border w-1/12">Code</th>
+                                            <th class="px-3 py-2 border w-2/12">Merchant Type</th>
+                                            <th class="px-3 py-2 border w-2/12">Contact Person</th>
+                                            <th class="px-3 py-2 border w-2/12">Contact Number</th>
+                                            <th class="px-3 py-2 border w-3/12">Email</th>
+                                            <th class="px-3 py-2 border w-2/12">Price</th>
+                                            <th class="px-3 py-2 border w-2/12">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for merchant in package_merchants  %}
+                                        <tr data-id="{{ merchant.id }}">
+                                            <td class="px-3 py-1 border text-center w-12">{{ forloop.counter }}</td>
+                                            <td class="px-3 py-1 border w-12">{{ merchant.merchant_list.id}}</td>
+                                            <td class="px-3 py-1 border w-3/12">{{ merchant.merchant_list.merchant }}</td>
+                                            <td class="px-3 py-1 border text-center w-1/12">{{ merchant.merchant_code }}</td>
+                                            <td class="px-3 py-1 border w-2/12">{{ merchant.merchant_type.name }}</td>
+                                            <td class="px-3 py-1 border w-2/12">{{ merchant.merchant_list.contact_person }}</td>
+                                            <td class="px-3 py-1 border w-2/12">{{ merchant.merchant_list.contact_number }}</td>
+                                            <td class="px-3 py-1 border w-3/12">{{ merchant.merchant_list.email }}</td>
+                                            <td class="px-3 py-1 border w-2/12">
+                                                {% if merchant.total_selling_price %}
+                                                    ${{ merchant.total_selling_price }}
+                                                {% else %}
+                                                    -
+                                                {% endif %}
+                                            </td>
+                                            <td class="px-3 py-1 border w-2/12">
+                                                <a onclick="fetchProductDetails('{{ merchant.id }}')"
+                                                    class="group flex items-center justify-center bg-blue-600 text-white p-2 rounded-lg hover:bg-blue-500 shadow-md transition relative">
+                                                    <i class="fa-solid fa-square-caret-right"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <p class="text-lg font-bold mb-4 mt-4">Total Price of Package</p>
+                            <div class="mb-4 grid-cols-1 md:grid grid-cols-6 gap-4">
+                                <div>
+                                    <input type="number" name="total_price" id="total_price" 
+                                        class="w-full px-4 py-2 border rounded bg-gray-100" 
+                                        value="{{ package_total_price|default_if_none:'0.00' }}" readonly />
+                                </div>
+                            </div>
+                            <form method="POST" action="{% url 'send_back' package_id=package.id %}">
+                            {% csrf_token %}
+                            {% if current_user_role == to_user_role %}
+                            <p class="text-lg font-bold mt-4">Status</p>
+                            <div class="mb-4 grid-cols-1 md:grid grid-cols-6 gap-4">
+                                <select name="status" id="status" class="w-full px-4 py-2 border rounded">
+                                    {% for status in statuses %}
+                                        <option value="{{ status.id }}" {% if status == current_status %}selected{% endif %}>
+                                            {{ status.name }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                    
+                            {% endif %}
+
+                             <!-- Confirmation Modal -->
+                            
+                              
+                                <div id="statusConfirmModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black bg-opacity-50">
+                                    <div class="bg-white rounded-lg p-6 w-full max-w-lg shadow-lg">
+                                        <h2 class="text-xl font-bold mb-4">Confirm Status Change</h2>
+                                        <p class="mb-4 text-gray-700" id="confirmText"></p>
+                            
+                                        <label for="send_to" class="block mb-2 font-semibold">Send To:</label>
+                                        <select id="send_to" name="send_to" class="w-full px-3 py-2 border rounded mb-4">
+                                            <option value="" disabled selected>-- Select User --</option>
+                                            {% for userrole in send_back_userroles %}
+                                                <option value="{{ userrole.id }}">
+                                                    {{ userrole.user.username|default:userrole.user.email }} 
+                                                </option>
+                                            {% empty %}
+                                                <option disabled>No users available</option>
+                                            {% endfor %}
+                                        </select>
+                            
+                                        <label for="remarks" class="block mb-2 font-semibold">Remarks:</label>
+                                        <textarea id="remarks" name="remarks" class="w-full px-3 py-2 border rounded mb-4" rows="3" placeholder="Enter any remarks..."></textarea>
+                            
+                                        <div class="flex justify-end space-x-3">
+                                            <button type="button" id="cancelModal" class="bg-red-600 hover:bg-red-500 font-semibold text-white px-4 py-2 rounded">Cancel</button>
+                                            <button type="submit" id="confirmModal" class="bg-green-600 hover:bg-green-500 font-semibold text-white px-4 py-2 rounded">Confirm</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+
+                           
+
+                            
+                      
+                                                    
+                            
+                            
+                            <div class="flex justify-between mt-6">
+                                <div class="flex-space-x-2">
+                                <!-- Back Button -->
+                                <a href="{% url 'pack_price' package_id=package.id %}" class="bg-red-700 text-white px-4 py-2 rounded hover:bg-red-600 mr-2 font-semibold inline-flex items-center">
+                                    <i class="fas fa-arrow-left mr-2"></i> Back
+                                </a>
+                                <a href="{% url 'package_list' %}" 
+                                    class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-400 mr-2 font-semibold inline-flex items-center">
+                                    <i class="fas fa-list-alt mr-2"></i> Package
+                                </a>
+                                
+                            
+                                <!-- New Button aligned to the right -->
+                                
+                                    
+                                </div>
+
+                               
+                                <!-- Next Button -->
+                                <div class="flex space-x-2">
+                                    <div class="justify-start">
+                                        <!-- Show Publish Button if Approved -->
+                                        {% if current_status.name == 'Approved' %}
+                                        <form method="POST" action="{% url 'publish_package' package.id %}">
+                                            {% csrf_token %}
+                                            <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-500 font-semibold inline-flex items-center">
+                                                <i class="fas fa-globe mr-2"></i> Publish to Website
+                                               </button>
+                                        </form>
+                                        {% endif %}
+                                    </div>
+                                    <div class="">
+                                        {% if current_user_role == to_user_role %}
+                                        <button type="button" id="mainStatusButton" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-500 font-semibold inline-flex items-center">
+                                            <i class="fas fa-save mr-2"></i> Save
+                                        </button>
+                                        {% endif %}
+                                    
+                                        <a href="{% url 'package_all_details' package.id %}" 
+                                        class="bg-green-700 text-white px-4 py-2 rounded hover:bg-green-600 font-semibold inline-flex items-center">
+                                            Dashboard
+                                            <i class="fas fa-arrow-right ml-2"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    
+              
+                    
+                </div>
+            </div>
+        </div>
+
+                <!-- Popup Modal (Hidden by Default) -->
+        <!-- Popup Modal -->
+                <!-- Modal -->
+        <div id="productModal" class="hidden fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+            <div class="bg-white p-6 rounded-lg w-9/12 relative shadow-lg max-h-[90vh] overflow-y-auto overflow-x-auto">
+
+                    <!-- Close Button (X) at Top Right -->
+                    <button onclick="document.getElementById('productModal').classList.add('hidden')" class="absolute top-2 right-2 text-gray-600 hover:text-red-500 text-2xl font-bold">
+                    &times;
+                </button>
+
+                <!-- <h2 id="productName" class="text-lg font-bold mb-2">Product Details</h2> -->
+
+                <h2 class="text-xl font-bold mb-4">Product & Pricing Details</h2>
+
+                <!-- <div class="grid grid-cols-1 md:grid-cols-5 gap-4 mb-4">
+                    <div>
+                        <label class="block text-gray-700 font-semibold">Merchant ID:</label>
+                        <input type="text" id="merchant_id" class="mt-1 p-2 border border-gray-300 rounded w-full bg-gray-100" disabled>
+                    </div>
+        
+                    <div class="col-span-2">
+                        <label class="block text-gray-700 font-semibold">Merchant Name:</label>
+                        <input type="text" id="merchant_name" class="mt-1 p-2 border border-gray-300 rounded w-full bg-gray-100" disabled>
+                    </div>
+        
+                    <div>
+                        <label class="block text-gray-700 font-semibold">Merchant Code:</label>
+                        <input type="text" id="merchant_code" class="mt-1 p-2 border border-gray-300 rounded w-full bg-gray-100" disabled>
+                    </div>
+        
+                    <div>
+                        <label class="block text-gray-700 font-semibold">Merchant Type:</label>
+                        <input type="text" id="merchant_type" class="mt-1 p-2 border border-gray-300 rounded w-full bg-gray-100" disabled>
+                    </div>
+                </div> -->
+
+
+                <div class="mb-4">
+            
+                    <div class="overflow-x-auto">
+                        <div class="grid gap-4 grid-cols-1">
+                            <div id="productContainer"></div>
+                        </div>
+                        <div id="summaryContainer" class="mt-6"></div>
+                    </div>
+                </div>
+
+                
+                
+                <!-- <p class="text-lg font-bold mb-4">Total Price of Product(s)</p>
+                <div class="mb-4 grid-cols-1 md:grid grid-cols-6 gap-4">
+                    <div>
+                        <label class="block text-sm font-semibold mb-2">Total Selling Price</label>
+                        <input type="number" name="total_price" id="total_price" 
+                            class="w-full px-4 py-2 border rounded bg-gray-100" 
+                            value="{{ package_item.product_total.total_selling_price|default_if_none:'0.00' }}" readonly />
+                    </div>
+                </div> -->
+                
+          
+
+                <div class="mt-4 flex justify-end space-x-2">
+                   
+                    <button onclick="document.getElementById('productModal').classList.add('hidden')" 
+                            class="bg-red-600 font-semibold text-white px-4 py-2 rounded hover:bg-red-700">
+                            <i class="fa fa-times"></i>
+                        Close
+                    </button>
+                </div>
+            </div>
+        </div>
+
+
+        <div id="historyModal" class="fixed inset-0 z-50 bg-black bg-opacity-50 hidden items-center justify-center">
+            <div class="bg-white rounded-lg shadow-lg w-full max-w-6xl p-4 relative">
+                <h3 class="text-xl font-semibold mb-4">Status History</h3>
+                
+                <button onclick="toggleHistoryModal()" class="absolute top-2 right-2 text-gray-600 hover:text-gray-900">
+                    <i class="fas fa-times"></i>
+                </button>
+        
+                <div class="overflow-x-auto">
+                    <table class="min-w-full table-auto border border-gray-300 text-xs">
+                        <thead class="bg-gray-100">
+                            <tr class="bg-green-600 font-semibold text-white text-xs">
+                                <th class="border px-4 py-2 w-12">No</th> <!-- Fixed width -->
+                                <th class="border px-4 py-2 w-1/5">From </th> <!-- 25% width -->
+                                <!-- <th class="border px-4 py-2 w-1/7">Department</th> 20% width -->
+                                <th class="border px-4 py-2 w-1/6">To</th> <!-- 25% width -->
+                                <th class="border px-4 py-2 w-1/8">Roles</th> <!-- 25% width -->
+                                <th class="border px-4 py-2 w-1/8">Status</th> <!-- 20% width -->
+                                <th class="border px-4 py-2 w-1/4">Remarks</th> <!-- 25% width -->
+                                <th class="border px-4 py-2 w-1/6">Date</th> <!-- 16.6% width -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for log in package_logs %}
+                                <tr>
+                                    <td class="border px-4 py-2 text-center">{{ forloop.counter }}</td>
+                                    <td class="border px-4 py-2">
+                                        <!-- Display the user who sent the package (from_user_role) -->
+                                        {% if log.from_user_role %}
+                                            {{ log.from_user_role.user.username }}
+                                        {% else %}
+                                            N/A
+                                        {% endif %}
+                                    </td>
+                                   
+                                    <!-- <td class="border px-4 py-2"> -->
+                                        <!-- Display the department of the user who sent the package (from_user_role) -->
+                                        <!-- {% if log.from_user_role %}
+                                            {{ log.from_user_role.company.department }}
+                                        {% else %}
+                                            N/A
+                                        {% endif %}
+                                    </td> -->
+
+                                    <td class="border px-4 py-2">
+                                        <!-- Display the role of the user who sent the package (from_user_role) -->
+                                        {% if log.from_user_role %}
+                                            {{ log.to_user_role.user.username }}
+                                        {% else %}
+                                            N/A
+                                        {% endif %}
+                                    </td>
+                                    <td class="border px-4 py-2">
+                                        <!-- Display the role of the user who sent the package (from_user_role) -->
+                                        {% if log.from_user_role %}
+                                            {{ log.to_user_role.role.role_name }}
+                                        {% else %}
+                                            N/A
+                                        {% endif %}
+                                    </td>
+                                    <td class="border px-4 py-2 font-semibold" style="background-color: {{ log.status.color }}; color: white;">
+                                        <!-- Display the status of the package -->
+                                        {{ log.status }}
+                                    </td>
+                                    <td class="border px-4 py-2">
+                                        <!-- Display the remarks for this log entry -->
+                                        {% if log.remarks %}
+                                            {{ log.remarks }}
+                                        {% else %}
+                                            N/A
+                                        {% endif %}
+                                    </td>
+                                    <td class="border px-4 py-2">
+                                        <!-- Display the timestamp of when the status was updated -->
+                                        {{ log.updated_at|date:"d M Y, h:i A" }}
+                                    </td>
+                                </tr>
+                            {% empty %}
+                                <tr>
+                                    <td colspan="7" class="border px-4 py-2 text-center text-gray-500">No history available.</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+
+    </body>
+</html>
+<!-- JavaScript -->
+<!-- JavaScript -->
+<script>
+function fetchProductDetails(merchantId) {
+    fetch(`/package/api/merchant/${merchantId}/`)
+        .then(response => response.json())
+        .then(data => {
+            console.log("Merchant Data:", data);  // Debugging
+            console.log("API Response:", data);
+
+            // ✅ Read merchant_id only once
+            if (data.merchant) {
+                const merchantId = data.merchant.merchant_id;
+
+                document.getElementById("merchant_id").value = data.merchant.merchant_id || "";
+                document.getElementById("merchant_name").value = data.merchant.merchant_name || "";
+                document.getElementById("merchant_code").value = data.merchant.merchant_code || "N/A";
+                document.getElementById("merchant_type").value = data.merchant.merchant_type || "";
+            } else {
+                console.warn("Merchant data is missing.");
+            }
+
+            let productContainer = document.getElementById("productContainer");
+            productContainer.innerHTML = ""; // Clear previous content
+
+            if (!data.products || data.products.length === 0) {
+                productContainer.innerHTML = "<p class='text-gray-500'>No products available.</p>";
+            } else {
+                let productListHtml = `<div class="space-y-4">`; // Add space between products
+
+                data.products.forEach(product => {
+                    let productImage = product.image ? product.image : "/static/images/no-image.jpg"; 
+
+                    let productHtml = `
+                        <div class="bg-white shadow-lg rounded-lg border overflow-hidden p-4">
+                            <div class="grid md:grid-cols-2 gap-4">
+                                <div>
+                                    <img class="h-64 w-full object-cover rounded" src="${productImage}" alt="${product.name}">
+                                </div>
+                                <div class="px-2">
+                                    <table class="table-auto w-full">
+                                        <tbody>
+                                            <tr>
+                                                <td class="px-2 py-2 border text-white bg-yellow-500 font-semibold">Product ID</td>
+                                                <td class="px-2 py-2 border">${product.id}</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="px-2 py-2 border text-white bg-green-500 font-semibold">Product Name</td>
+                                                <td class="px-2 py-2 border">${product.name}</td>
+                                            </tr>
+                                            <tr class="h-36">
+                                                <td class="px-2 py-2 border text-white bg-blue-500 font-semibold">Description</td>
+                                                <td class="px-2 py-2 border align-top">${product.description || "No description"}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="mt-4 flex justify-center items-center">
+                                <table class="w-full border-collapse border">
+                                    <thead class="bg-gray-100">
+                                        <tr class="bg-green-500 text-white">
+                                            <th class="border p-2">Category</th>
+                                            <th class="border p-2">Selling Price</th>
+                                            <th class="border p-2">Agent Price</th>
+                                            <th class="border p-2">Profit</th>
+                                            <th class="border p-2">Number</th>
+                                            <th class="border p-2">Total</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        ${product.pricing && product.pricing.length > 0 
+                                            ? product.pricing.map(price => {
+                                                let total = (parseFloat(price.selling_price || 0) * parseInt(price.number || 0)).toFixed(2);
+                                                return `
+                                                    <tr class="border">
+                                                        <td class="border px-4 py-2 font-semibold text-white ${getCategoryColor(price.category)}">${price.category}</td>
+                                                        <td class="border px-4 py-2 text-center">RM${price.selling_price || "0.00"}</td>
+                                                        <td class="border px-4 py-2 text-center">RM${price.agent_price || "0.00"}</td>
+                                                        <td class="px-4 py-2 flex justify-center items-center space-x-10">
+                                                            <span>RM${price.commission_price || "0.00"}</span>
+                                                            <span>${price.commission_percent || "0"}%</span>
+                                                        </td>
+                                                        <td class="border px-4 py-2 text-center">${price.number || "0"}</td>
+                                                        <td class="border px-4 py-2 text-center">RM${total}</td>
+                                                    </tr>
+                                                `;
+                                            }).join('')
+                                            : `<tr><td colspan="6" class="text-center py-2">No pricing available</td></tr>`}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    `;
+
+                    productListHtml += productHtml;
+                });
+
+                productListHtml += `</div>`; // Close the space-y container
+                productContainer.innerHTML = productListHtml;
+            }
+
+            // ✅ Update Summary
+            if (data.products.length > 0) {
+                updateSummaryTable(data.products);
+            } else {
+                console.warn("No products to summarize.");
+            }
+
+            // ✅ Show Modal
+            document.getElementById('productModal').classList.remove('hidden');
+        })
+        .catch(error => {
+            console.error("Error fetching merchant details:", error);
+            alert("Failed to load merchant details. Please try again.");
+        });
+}
+
+function updateSummaryTable(products) {
+    let totalAdultPrice = 0;
+    let totalChildrenPrice = 0;
+    let grandTotal = 0;
+
+    products.forEach(product => {
+        totalAdultPrice += parseFloat(product.total_adult_price) || 0;
+        totalChildrenPrice += parseFloat(product.total_children_price) || 0;
+        grandTotal += parseFloat(product.grand_total_price) || 0;
+    });
+
+    let summaryContainer = document.getElementById("summaryContainer");
+    summaryContainer.innerHTML = `
+        <h3 class="text-xl font-bold mt-6">Total Pricing Summary</h3>
+        <table class="table-auto w-full">
+            <thead>
+                <tr class="bg-green-500 text-white">
+                    <th class="px-4 py-2 border">Category</th>
+                    <th class="px-4 py-2 border">Total Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="px-4 py-2 border font-semibold">Total Adult Price</td>
+                    <td class="px-4 py-2 border">RM${totalAdultPrice.toFixed(2)}</td>
+                </tr>
+                <tr>
+                    <td class="px-4 py-2 border font-semibold">Total Children Price</td>
+                    <td class="px-4 py-2 border">RM${totalChildrenPrice.toFixed(2)}</td>
+                </tr>
+                <tr>
+                    <td class="px-4 py-2 border font-semibold bg-gray-100">Grand Total</td>
+                    <td class="px-4 py-2 border bg-gray-100">RM${grandTotal.toFixed(2)}</td>
+                </tr>
+            </tbody>
+        </table>
+    `;
+}
+</script>
+
+<script>
+    function getCategoryColor(category) {
+        switch (category.toLowerCase()) {
+            case 'adult':
+                return 'bg-yellow-500';
+            case 'children':
+                return 'bg-purple-500';
+            case 'senior':
+                return 'bg-blue-500';
+            case 'student':
+                return 'bg-green-500';
+            default:
+                return 'bg-gray-500'; // Default color for unknown categories
+        }
+    }
+    </script>
+
+<script>
+    function toggleHistoryModal() {
+        const modal = document.getElementById("historyModal");
+        modal.classList.toggle("hidden");
+        modal.classList.toggle("flex");
+    }
+</script>
+
+
+<style>
+#modalOverlay {
+    overflow-y: auto; /* Enable scrolling if needed */
+}
+
+#modalOverlay .modal-content {
+    max-height: 90vh; /* Limit height to viewport */
+    overflow-y: auto; /* Enable scrolling inside the modal */
+}
+</style>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const statusSelect = document.getElementById('status');
+      const mainButton = document.getElementById('mainStatusButton');
+      const modal = document.getElementById('statusConfirmModal');
+      const confirmModalBtn = document.getElementById('confirmModal');
+      const cancelModalBtn = document.getElementById('cancelModal');
+      const confirmText = document.getElementById('confirmText');
+      const form = mainButton.closest('form');
+      const sendBackButton = document.getElementById('sendBackButton');
+  
+      function updateButton() {
+          const status = statusSelect.options[statusSelect.selectedIndex].text.trim();
+          mainButton.className = "px-4 py-2 rounded font-semibold inline-flex items-center";
+  
+          if (status === "Draft") {
+              mainButton.innerHTML = '<i class="fas fa-save mr-2"></i> Save Draft';
+              mainButton.classList.add("bg-blue-600", "text-white", "hover:bg-blue-500");
+          } else if (status === "Pending") {
+              mainButton.innerHTML = '<i class="fas fa-paper-plane mr-2"></i> Submit for Approval';
+              mainButton.classList.add("bg-yellow-600", "text-white", "hover:bg-yellow-500");
+          } else if (status === "Approved") {
+              mainButton.innerHTML = '<i class="fas fa-check-circle mr-2"></i> Approved';
+              mainButton.classList.add("bg-green-600", "text-white", "hover:bg-green-500");
+          } else if (["Rejected"].includes(status)) {
+              mainButton.innerHTML = '<i class="fas fa-ban mr-2"></i> Update Status';
+              mainButton.classList.add("bg-red-600", "text-white", "hover:bg-red-500");
+          } else if (status === "Disabled") {
+              mainButton.innerHTML = '<i class="fas fa-eye-slash mr-2"></i> Disabled';
+              mainButton.classList.add("bg-purple-500", "text-white", "hover:bg-purple-400");
+          } else {
+              mainButton.innerHTML = '<i class="fas fa-save mr-2"></i> Save';
+              mainButton.classList.add("bg-blue-600", "text-white", "hover:bg-blue-500");
+          }
+      }
+  
+      updateButton();
+      statusSelect.addEventListener('change', updateButton);
+  
+      mainButton.addEventListener('click', function () {
+          const statusText = statusSelect.options[statusSelect.selectedIndex].text.trim();
+          if (["Pending", "Approved", "Rejected"].includes(statusText)) {
+              confirmText.textContent = `Are you sure you want to submit this form with status "${statusText}"?`;
+              modal.classList.remove('hidden');
+              modal.classList.add('flex');
+          } else {
+              form.submit();
+          }
+      });
+  
+      cancelModalBtn.addEventListener('click', function () {
+          modal.classList.add('hidden');
+      });
+  
+      confirmModalBtn.addEventListener('click', function () {
+          const sendToId = document.getElementById('send_to').value;
+          const remarks = document.getElementById('remarks').value;
+  
+          // If the status is Rejected or needs to be sent back, send to the previous role
+          if (statusSelect.value === 'Rejected') {
+              sendToId = document.getElementById('send_to').value || fromUserRoleId; // Get previous role ID if applicable
+          }
+  
+          // Optionally, you can send this data to the server via AJAX before submitting
+          console.log(`Send to user ID: ${sendToId}`);
+          console.log(`Remarks: ${remarks}`);
+  
+          modal.classList.add('hidden');
+          form.submit(); // Submit the form after confirmation
+      });
+  
+      // Implementing send back functionality for "send-back" action (If needed)
+      sendBackButton.addEventListener('click', function() {
+          // Trigger the send-back action
+          const previousRoleId = fromUserRoleId; // You can use the actual `from_user_role` ID here
+          sendToId = previousRoleId;
+  
+          // Optionally, add confirmation modal logic for sending back
+          confirmText.textContent = `Are you sure you want to send this package back to the previous role?`;
+          modal.classList.remove('hidden');
+          modal.classList.add('flex');
+      });
+  });
+  </script>
+{% endblock %}

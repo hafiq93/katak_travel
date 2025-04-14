@@ -11,7 +11,7 @@
                     <div class="bg-white p-6 rounded-lg shadow-lg w-full">
                         <h2 class="text-2xl font-bold mb-4">Details Product and Price</h2>
                       
-                        <form method="POST" action="" enctype="multipart/form-data">
+                        <form href="{% url 'products_details' product.id %}" enctype="multipart/form-data">
                             {% csrf_token %}
                             <!-- Merchant Details -->
                            
@@ -25,21 +25,14 @@
                                             <label for="product_name" class="block text-gray-700 font-semibold">Product Name:</label>
                                             <input type="text" id="product_name" name="product_name"
                                                    value="{{ product.product_name }}"
-                                                   class="mt-1 p-2 border border-gray-300 rounded w-full" required>
+                                                   class="mt-1 p-2 border border-gray-300 rounded w-ful bg-gray-100 w-full" disabled/>
 
                                             
 
                                             <label for="product_description" class="block text-gray-700 font-semibold mt-4">Description:</label>
                                             <textarea id="product_description" name="product_description"
-                                                      class="mt-1 p-2 border border-gray-300 rounded w-full" rows="3" required>{{ product.product_description }}</textarea>
+                                                      class="mt-1 p-2 border border-gray-300 rounded w-full bg-gray-100" rows="3"  disabled>{{ product.product_description }}</textarea>
                                         
-                                                      <label for="product_image" class="block text-gray-700 font-semibold mt-4">Image:</label>
-                                            <input type="file" id="product_image" name="product_image" accept="image/*"
-                                                    class="mt-1 p-2 border border-gray-300 rounded w-full">
-                                            <p class="text-xs text-gray-600">
-                                                File size must not exceed 400KB, only allow .jpg, .jpeg, .png, .gif, .webp file types
-                                                <br>Recommend size 400x300(px); 640x480(px) SD / ratio 4:3
-                                            </p>
                                         </div>
                             
                                        
@@ -70,22 +63,22 @@
                                 <div class="grid grid-cols-1 md:grid-cols-4 gap-4" id="adult-row">
                                     <div>
                                         <label for="adult_selling_price" class="block text-gray-700 font-semibold">Selling Price</label>
-                                        <input type="number" id="adult_selling_price" name="adult_selling_price" class="mt-1 p-2 border border-gray-500 rounded w-full selling-price" value="{{ adult_selling_price }}" oninput="calculateCommissionAndTotal()" />
+                                        <input type="number" id="adult_selling_price" name="adult_selling_price" class="mt-1 p-2 border border-gray-500 rounded w-full selling-price bg-gray-100" value="{{ adult_selling_price }}" oninput="calculateCommissionAndTotal()" disabled/>
                                     </div>
                                     <div>
                                         <label for="adult_agent_price" class="block text-gray-700 font-semibold">Agent Price</label>
-                                        <input type="number" id="adult_agent_price" name="adult_agent_price" class="mt-1 p-2 border border-gray-500 rounded w-full agent-price" value="{{ adult_agent_price }}" oninput="calculateCommissionAndTotal()" />
+                                        <input type="number" id="adult_agent_price" name="adult_agent_price" class="mt-1 p-2 border border-gray-500 rounded w-full agent-price bg-gray-100" value="{{ adult_agent_price }}" oninput="calculateCommissionAndTotal()" disabled/>
                                     </div>
                                     <div>
                                         <label for="adult_commission_price" class="block text-gray-700 font-semibold">Profit Amount</label>
                                         <div class="flex space-x-2">
-                                            <input type="number" id="adult_commission_price" name="adult_commission_price" value="{{ adult_commission_price }}" class="mt-1 p-2 border border-gray-500 rounded w-full bg-gray-100 commission-price" readonly />
+                                            <input type="number" id="adult_commission_price" name="adult_commission_price" value="{{ adult_commission_price }}" class="mt-1 p-2 border border-gray-500 rounded w-full bg-gray-100 commission-price " readonly />
                                             <input type="text" id="adult_commission_percent" name="adult_commission_percent" value="{{ adult_commission_percent }}%" class="mt-1 p-2 border border-gray-500 rounded w-full bg-gray-100 commission-percent" readonly />
                                         </div>
                                     </div>
                                     <div>
                                         <label for="adult_number" class="block text-gray-700 font-semibold">Number of Adults</label>
-                                        <input type="number" id="adult_number" name="adult_number" class="mt-1 p-2 border border-gray-500 rounded w-full" value="{{ adult_number }}" oninput="calculateCommissionAndTotal()" />
+                                        <input type="number" id="adult_number" name="adult_number" class="mt-1 p-2 border border-gray-500 rounded w-full bg-gray-100" value="{{ adult_number }}" oninput="calculateCommissionAndTotal()" disabled/>
                                         <p class="text-xs text-gray-600">Total of adults</p>
                                     </div>
                                 </div>
@@ -95,11 +88,11 @@
                                 <div class="grid grid-cols-1 md:grid-cols-4 gap-4" id="children-row">
                                     <div>
                                         <label for="children_selling_price" class="block text-gray-700 font-semibold">Selling Price</label>
-                                        <input type="number" id="children_selling_price" name="children_selling_price" class="mt-1 p-2 border border-gray-500 rounded w-full selling-price" value="{{ children_selling_price }}" oninput="calculateCommissionAndTotal()" />
+                                        <input type="number" id="children_selling_price" name="children_selling_price" class="mt-1 p-2 border border-gray-500 rounded w-full selling-price bg-gray-100" value="{{ children_selling_price }}" oninput="calculateCommissionAndTotal()" disabled/>
                                     </div>
                                     <div>
                                         <label for="children_agent_price" class="block text-gray-700 font-semibold">Agent Price</label>
-                                        <input type="number" id="children_agent_price" name="children_agent_price" class="mt-1 p-2 border border-gray-500 rounded w-full agent-price" value="{{ children_agent_price }}" oninput="calculateCommissionAndTotal()" />
+                                        <input type="number" id="children_agent_price" name="children_agent_price" class="mt-1 p-2 border border-gray-500 rounded w-full agent-price bg-gray-100" value="{{ children_agent_price }}" oninput="calculateCommissionAndTotal()" disabled/>
                                     </div>
                                     <div>
                                         <label for="children_commission_price" class="block text-gray-700 font-semibold">Profit Amount</label>
@@ -110,7 +103,7 @@
                                     </div>
                                     <div>
                                         <label for="children_number" class="block text-gray-700 font-semibold">Number of Children</label>
-                                        <input type="number" id="children_number" name="children_number" class="mt-1 p-2 border border-gray-500 rounded w-full" value="{{ children_number }}" oninput="calculateCommissionAndTotal()" />
+                                        <input type="number" id="children_number" name="children_number" class="mt-1 p-2 border border-gray-500 rounded w-full bg-gray-100" value="{{ children_number }}" oninput="calculateCommissionAndTotal()" disabled/>
                                         <p class="text-xs text-gray-600">Total of children</p>
                                     </div>
                                 </div>
@@ -122,7 +115,6 @@
                                         <tr class="bg-green-500">
                                             <th class="px-4 py-2 border text-white w-64">Description</th>
                                             <th class="px-4 py-2 border text-white w-64">Price Per Person</th>
-                                            <th class="px-4 py-2 border text-white w-48">Number</th>
                                             <th class="px-4 py-2 border text-white w-48">Total</th>
                                         </tr>
                                     </thead>
@@ -130,18 +122,16 @@
                                         <tr>
                                             <td class="px-4 py-2 border text-white bg-yellow-500 font-semibold">Adult Price</td>
                                             <td class="px-4 py-2 border" id="adult-price-per-person">{{ adult_selling_price }}</td>
-                                            <td class="px-4 py-2 border" id="adult-number">{{ adult_number }}</td>
                                             <td class="px-4 py-2 border" id="adult-total-price">{{ total_adult_price }}</td>
                                         </tr>
                                         <tr>
                                             <td class="px-4 py-2 border text-white bg-purple-500 font-semibold">Children Price</td>
                                             <td class="px-4 py-2 border" id="children-price-per-person">{{ children_selling_price }}</td>
-                                            <td class="px-4 py-2 border" id="children-number">{{ children_number }}</td>
                                             <td class="px-4 py-2 border" id="children-total-price">{{ total_children_price }}</td>
                                         </tr>
                                         <tr>
                                             <td class="px-4 py-2 border font-bold bg-sky-500 text-white">Grand Total</td>
-                                            <td class="px-4 py-2 border" id="grand-total-price" colspan="3">{{ grand_total_price }}</td>
+                                            <td class="px-4 py-2 border" id="grand-total-price" colspan="2">{{ grand_total_price }}</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -156,9 +146,11 @@
                                     <span>Cancel</span>
                                 </a>
                             </button>
-                            <button type="submit" class="bg-green-700 text-white px-4 py-2 rounded flex items-center space-x-2 font-semibold">
-                                <i class="fas fa-save"></i>z`
-                                <span>Save</span>
+                            <button type="button" class="bg-blue-700 text-white px-4 py-2 rounded flex items-center space-x-2 font-semibold">
+                                <a href="{% url 'add_price' product.id %}" class="flex items-center space-x-2 font-semibold">
+                                    <i class="fas fa-pen mr-2"></i>
+                                    <span>Edit</span>
+                                </a>
                             </button>
                         </div>
                         <!-- <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded">Save</button> -->
@@ -170,57 +162,5 @@
 </body>
 </html>
 
-<script>
-    function calculateCommissionAndTotal() {
-    // Adult Prices
-    const adultSellingPrice = parseFloat(document.getElementById('adult_selling_price').value) || 0;
-    const adultAgentPrice = parseFloat(document.getElementById('adult_agent_price').value) || 0;
-    const adultNumber = parseInt(document.getElementById('adult_number').value) || 0;
 
-    const adultCommissionPriceField = document.getElementById('adult_commission_price');
-    const adultCommissionPercentField = document.getElementById('adult_commission_percent');
-    const adultTotalPriceField = document.getElementById('adult-total-price');
-    const adultPricePerPersonField = document.getElementById('adult-price-per-person');
-    const adultNumberField = document.getElementById('adult-number'); // For table update
-
-    // Calculate adult commission and totals
-    const adultCommissionPrice = adultSellingPrice - adultAgentPrice;
-    const adultCommissionPercent = adultSellingPrice > 0 ? (adultCommissionPrice / adultSellingPrice) * 100 : 0;
-    const adultTotalPrice = adultSellingPrice * adultNumber;
-
-    // Update adult fields
-    adultCommissionPriceField.value = adultCommissionPrice.toFixed(2);
-    adultCommissionPercentField.value = `${adultCommissionPercent.toFixed(2)}%`;
-    adultTotalPriceField.innerText = adultTotalPrice.toFixed(2);
-    adultPricePerPersonField.innerText = adultSellingPrice.toFixed(2);
-    adultNumberField.innerText = adultNumber; // Update table number column
-
-    // Children Prices
-    const childrenSellingPrice = parseFloat(document.getElementById('children_selling_price').value) || 0;
-    const childrenAgentPrice = parseFloat(document.getElementById('children_agent_price').value) || 0;
-    const childrenNumber = parseInt(document.getElementById('children_number').value) || 0;
-
-    const childrenCommissionPriceField = document.getElementById('children_commission_price');
-    const childrenCommissionPercentField = document.getElementById('children_commission_percent');
-    const childrenTotalPriceField = document.getElementById('children-total-price');
-    const childrenPricePerPersonField = document.getElementById('children-price-per-person');
-    const childrenNumberField = document.getElementById('children-number'); // For table update
-
-    // Calculate children commission and totals
-    const childrenCommissionPrice = childrenSellingPrice - childrenAgentPrice;
-    const childrenCommissionPercent = childrenSellingPrice > 0 ? (childrenCommissionPrice / childrenSellingPrice) * 100 : 0;
-    const childrenTotalPrice = childrenSellingPrice * childrenNumber;
-
-    // Update children fields
-    childrenCommissionPriceField.value = childrenCommissionPrice.toFixed(2);
-    childrenCommissionPercentField.value = `${childrenCommissionPercent.toFixed(2)}%`;
-    childrenTotalPriceField.innerText = childrenTotalPrice.toFixed(2);
-    childrenPricePerPersonField.innerText = childrenSellingPrice.toFixed(2);
-    childrenNumberField.innerText = childrenNumber; // Update table number column
-
-    // Grand Total
-    const grandTotal = adultTotalPrice + childrenTotalPrice;
-    document.getElementById('grand-total-price').innerText = grandTotal.toFixed(2);
-}
-    </script>
 {% endblock %}

@@ -42,138 +42,381 @@
             <!-- Main Content -->
             <div class="p-4 bg-gray-100 w-full">
                   <!-- Tabs Navigation -->
-                  <div class="mb-2">
-                    <ul class="flex border-b">
-                        <li class="mr-1">
-                            <li class="mr-1">
-                                <a href="{% url 'pack_price' package_id=package.id %}" class="bg-green-500 inline-block px-4 py-2 text-white font-semibold border-lg border-l border-t border-r rounded-t focus:outline-none">
-                                    List Merchant in Package
-                                </a>
-                            </li>
-                            <a href="{% if package and package.id %}{% url 'pack_merchant' id=package.id %}{% else %}{% url 'pack_merchant' %}{% endif %}" class="bg-white inline-block px-4 py-2 text-green-500 font-semibold border-lg hover:text-green-700 focus:outline-none ">
-                                Add Package
-                            </a>
-                        </li>
-                        
-                    
-                    </ul>
-                </div>
-                <div class="rounded-md">
-                    <div class="bg-white p-6 rounded-lg shadow-lg w-full">
-                        <h2 class="text-2xl font-bold mb-4">List Package</h2>
-                        
-                        <div id="merchant-sections" class="mt-4  ">
-                            <p class="text-md font-bold mb-4 ">List Merchant in Package</p>
-                            <!-- Add a wrapper div with overflow-x-auto -->
-                        <!-- Add a wrapper div with fixed width and overflow-x-auto -->
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-                                <div class=" col-span-1 md:col-span-2">
-                                    <label for="hotel_name" class="block text-gray-700 font-semibold">Package Name:</label>
-                                    <input type="text" id="hotel_name" name="hotel_name" 
-                                        value="{% if package %}{{ package.name }}{% else %}{% endif %}" 
-                                        required class="mt-1 p-2 border border-gray-300 rounded w-full bg-gray-100 " readonly>
-                                </div>
-                                <div class=" col-span-1 ">
-                                    <label for="hotel_name" class="block text-gray-700 font-semibold">Package Code:</label>
-                                    <input type="text" id="code" name="code" 
-                                        value="{% if package %}{{ package.code }}{% else %}{% endif %}" 
-                                        required class="mt-1 p-2 border border-gray-300 rounded w-full bg-gray-100 " readonly>
-                                </div>
-                            </div>
-
-                            <div class="flex space-x-2 justify-end items-center mb-4">
-                                <a href="{% if package and package.id %}{% url 'pack_merchant' id=package.id %}{% else %}{% url 'pack_merchant' %}{% endif %}" 
-                                    class="bg-purple-700 text-white px-4 py-2 rounded hover:bg-purple-600 font-semibold inline-flex items-center">
-                                    <i class="fas fa-user-plus mr-2"></i> Add Merchant
-                                    </a>
-                            </div>
-
-                            <div class="max-w-full overflow-x-auto">
-                                <table class="w-full table-auto">
-                                    <thead>
-                                        <tr class="bg-green-500 text-white">
-                                            <th class="px-4 py-2 border w-12">No</th>
-                                            <th class="px-4 py-2 border w-3/12">Merchant Name</th>
-                                            <th class="px-4 py-2 border w-1/12">Code</th>
-                                            <th class="px-4 py-2 border w-1/12">Merchant Type</th>
-                                            <th class="px-4 py-2 border w-2/12">Contact Person</th>
-                                            <th class="px-4 py-2 border w-2/12">Contact Number</th>
-                                            <th class="px-4 py-2 border w-3/12">Email</th>
-                                            <th class="px-4 py-2 border w-2/12">Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {% for merchant in package.package_merchants.all %}
-                                        <tr data-id="{{ merchant.id }}">
-                                            <td class="px-4 py-2 border text-center">{{ forloop.counter }}</td>
-                                            <td class="px-4 py-2 border">{{ merchant.merchant_list.merchant }}</td>
-                                            <td class="px-4 py-2 border text-center">{{ merchant.merchant_code }}</td>
-                                            <td class="px-4 py-2 border">{{ merchant.merchant_type.name }}</td>
-                                            <td class="px-4 py-2 border">{{ merchant.merchant_list.contact_person }}</td>
-                                            <td class="px-4 py-2 border">{{ merchant.merchant_list.contact_number }}</td>
-                                            <td class="px-4 py-2 border">{{ merchant.merchant_list.email }}</td>
-                                            <td class="px-4 py-2 border">
-                                                <div class="flex justify-between space-x-2">
-                                                    <!-- <button class="edit-btn bg-green-700 text-white px-2 py-1 rounded hover:bg-green-600 font-semibold flex items-center">
-                                                        <a href="{% url 'pack_form' merchant.id %}" class="inline-flex items-center">
-                                                            <i class="fas fa-eye mr-2"></i>Detail
-                                                        </a>
-                                                    </button> -->
-                                                    <button class="edit-btn bg-blue-700 text-white px-2 py-1 rounded hover:bg-blue-600 font-semibold flex items-center">
-                                                        <a href="{% url 'pack_form' merchant.id %}" class="inline-flex items-center">
-                                                            <i class="fas fa-pen mr-2"></i>Edit
-                                                        </a>
-                                                    </button>
-                                                    <button class="delete-btn bg-red-700 text-white px-2 py-1 rounded hover:bg-red-600 font-semibold flex items-center">
-                                                        <i class="fas fa-trash-alt mr-2"></i>Delete
-                                                    </button>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        {% endfor %}
-                                    </tbody>
-                                </table>
-                            </div>
-
-                          
+                <div class="mb-2">
+               
+                    <div class="rounded-md">
+                        <div class="bg-white p-6 rounded-lg shadow-lg w-full">
+                            <h2 class="text-2xl font-bold mb-4">List Package</h2>
                             
-                        
-                            <div class="flex justify-between mt-6">
-                                <div class="flex-space-x-2">
-                                <!-- Back Button -->
-                                <a href="{% url 'pack_list_add' package.id %}" class="bg-red-700 text-white px-4 py-2 rounded hover:bg-red-600 mr-2 font-semibold inline-flex items-center">
-                                    <i class="fas fa-arrow-left mr-2"></i> Back
-                                </a>
-                                <a href="{% url 'package_list' %}" 
-                                    class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-400 mr-2 font-semibold inline-flex items-center">
-                                    <i class="fas fa-list-alt mr-2"></i> Package
-                                </a>
-                                
-                            
-                                <!-- New Button aligned to the right -->
-                                
+                            <div id="merchant-sections" class="mt-4  ">
+                                <p class="text-md font-bold mb-4 ">List Merchant in Package</p>
+                                    <div class="w-full border-b mb-2">
+                                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                                            <div class=" col-span-1 md:col-span-2">
+                                                <label for="hotel_name" class="block text-gray-700 font-semibold">Package Name:</label>
+                                                <input type="text" id="hotel_name" name="hotel_name" 
+                                                    value="{% if package %}{{ package.name }}{% else %}{% endif %}" 
+                                                    required class="mt-1 p-2 border border-gray-300 rounded w-full bg-gray-100 " disabled>
+                                            </div>
+                                            <div class=" col-span-1 ">
+                                                <label for="hotel_name" class="block text-gray-700 font-semibold">Package Code:</label>
+                                                <input type="text" id="code" name="code" 
+                                                    value="{% if package %}{{ package.code }}{% else %}{% endif %}" 
+                                                    required class="mt-1 p-2 border border-gray-300 rounded w-full bg-gray-100 " disabled>
+                                            </div>
+                                        </div>
+                
+                                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                                            <div>
+                                                <label for="merchant_name" class="block text-gray-700 font-semibold">Merchant Name:</label>
+                                                <input type="text" id="merchant_name" name="merchant_name" 
+                                                    value="{{ merchant.merchant }}" required class="mt-1 p-2 border border-gray-300 rounded w-full bg-gray-100" disabled>
+                                            </div>
+                                            <div>
+                                                <label for="merchant_code" class="block text-gray-700 font-semibold">Merchant Code:</label>
+                                                <input type="text" id="merchant_code" name="merchant_code" 
+                                                    value="{{ package_merchant.merchant_code }}" class="mt-1 p-2 border border-gray-300 rounded w-full bg-gray-100" disabled>
+                                            </div>
+                                            <div>
+                                                <label for="merchant_type" class="block text-gray-700 font-semibold">Merchant Type:</label>
+                                                <select id="merchant_type" name="merchant_type" class="mt-1 p-2 border border-gray-300 rounded w-full bg-gray-100 " disabled>
+                                                    <option value="">Select Merchant Type</option>
+                                                    {% for merchant_type in merchant_types %}
+                                                        <option value="{{ merchant_type.id }}" 
+                                                                {% if package_merchant.merchant_type and package_merchant.merchant_type.id == merchant_type.id %} selected {% endif %}>
+                                                            {{ merchant_type.name }}
+                                                        </option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
                                     
-                                </div>
-                            
-                                <!-- Next Button -->
-                                <div class="flex space-x-2">
-                                    
-                                    <a href="" 
-                                       class="bg-green-700 text-white px-4 py-2 rounded hover:bg-green-600 font-semibold inline-flex items-center">
-                                        Next
-                                        <i class="fas fa-arrow-right ml-2"></i>
+                                        </div>
+                                            
+                                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                                            <div>
+                                                <label for="street_address" class="block text-gray-700 font-semibold">Address:</label>
+                                                <input type="text" id="street_address" name="street_address" 
+                                                    value="{{ merchant.street_address }}" class="mt-1 p-2 border border-gray-300 rounded w-full bg-gray-100" disabled/>
+                                            </div>
+                                            <div>
+                                                <label for="city" class="block text-gray-700 font-semibold">City:</label>
+                                                <input type="text" id="city" name="city" 
+                                                    value="{{ merchant.city }}" class="mt-1 p-2 border border-gray-300 rounded w-full bg-gray-100" disabled/>
+                                            </div>
+                                        </div>
+                                            
+                                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                                            <div>
+                                                <label for="postal_code" class="block text-gray-700 font-semibold">Postcode:</label>
+                                                <input type="text" id="postal_code" name="postal_code" 
+                                                    value="{{ merchant.postal_code }}" class="mt-1 p-2 border border-gray-300 rounded w-full bg-gray-100" disabled/>
+                                            </div>
+                                            <div>
+                                                <label for="state" class="block text-gray-700 font-semibold">State:</label>
+                                                <input type="text" id="state" name="state" 
+                                                    value="{{ merchant.state }}" class="mt-1 p-2 border border-gray-300 rounded w-full bg-gray-100" disabled/>
+                                            </div>
+                                            <div>
+                                                <label for="country" class="block text-gray-700 font-semibold">Country:</label>
+                                                <select id="country" name="country" class="mt-1 p-2 border border-gray-300 rounded w-full bg-gray-100" disabled>
+                                                    <option value="">Select Country</option>
+                                                    {% for country in countries %}
+                                                        <option value="{{ country.country }}" 
+                                                                {% if merchant.country and country.country == merchant.country.country %} selected {% endif %}>
+                                                            {{ country.country }}
+                                                        </option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
+                                            
+                                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                                            <div>
+                                                <label for="contact_person" class="block text-gray-700 font-semibold">Contact Person:</label>
+                                                <input type="text" id="contact_person" name="contact_person" 
+                                                    value="{{ merchant.contact_person }}" class="mt-1 p-2 border border-gray-300 rounded w-full bg-gray-100" disabled/>
+                                            </div>
+                                            <div>
+                                                <label for="contact_number" class="block text-gray-700 font-semibold">Contact Number:</label>
+                                                <input type="text" id="contact_number" name="contact_number" 
+                                                    value="{{ merchant.contact_number }}" class="mt-1 p-2 border border-gray-300 rounded w-full bg-gray-100" disabled/>
+                                            </div>
+                                            <div>
+                                                <label for="email" class="block text-gray-700 font-semibold">Email:</label>
+                                                <input type="email" id="email" name="email"  
+                                                    value="{{ merchant.email }}" class="mt-1 p-2 border border-gray-300 rounded w-full bg-gray-100" disabled/>
+                                            </div>
+            
+                                        
+                                        </div>
+                                        <div class="flex justify-end mb-2">
+                                            <a href="" 
+                                            class="group flex items-center gap-2 bg-blue-600 text-white font-semibold px-4 py-2 rounded-md hover:bg-blue-500 shadow-md transition relative">
+                                                <i class="fas fa-pen"></i>
+                                                <span>Edit</span>
+                                            </a>
+                                        </div>
+                                    </div>
+
+                                <div class="mb-2  rounded-lg flex justify-between items-center">
+                                    <!-- Legend Section (Left) -->
+                                    <div class="flex items-center space-x-4">
+                                        <p class="font-bold ">Legend:</p>
+                                        <div class="flex items-center space-x-2">
+                                            <i class="fas fa-eye text-green-600"></i>
+                                            <span>View Details</span>
+                                        </div>
+                                        <div class="flex items-center space-x-2">
+                                            <i class="fas fa-pen text-blue-600"></i>
+                                            <span>Edit</span>
+                                        </div>
+                                        <!-- <div class="flex items-center space-x-2">
+                                            <i class="fas fa-copy text-yellow-500"></i>
+                                            <span>Duplicate</span>
+                                        </div> -->
+                                        <div class="flex items-center space-x-2">
+                                            <i class="fas fa-trash-alt text-red-600"></i>
+                                            <span>Delete</span>
+                                        </div>
+                                    </div>
+                                
+                                    <!-- Add Merchant Button (Right) -->
+                                    <a href="{% if package and package.id %}{% url 'pack_merchant' id=package.id %}{% else %}{% url 'pack_merchant' %}{% endif %}" 
+                                        class="bg-purple-700 text-white px-4 py-2 rounded hover:bg-purple-600 font-semibold inline-flex items-center">
+                                        <i class="fas fa-user-plus mr-2"></i> Add Merchant
                                     </a>
                                 </div>
+
+                                <div class="max-w-full overflow-x-auto">
+                                    <table class="w-full table-auto">
+                                        <thead>
+                                            <tr class="bg-green-500 text-white">
+                                                <th class="px-3 py-2 border w-12">No</th>
+                                                <th class="px-3 py-2 border w-12">ID</th>
+                                                <th class="px-3 py-2 border w-3/12">Merchant Name</th>
+                                                <th class="px-3 py-2 border w-1/12">Code</th>
+                                                <th class="px-3 py-2 border w-2/12">Merchant Type</th>
+                                                <th class="px-3 py-2 border w-2/12">Contact Person</th>
+                                                <th class="px-3 py-2 border w-2/12">Contact Number</th>
+                                                <th class="px-3 py-2 border w-3/12">Email</th>
+                                                <th class="px-3 py-2 border w-2/12">Price</th>
+                                                <th class="px-3 py-2 border w-2/12">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for merchant in package_merchants  %}
+                                            <tr data-id="{{ merchant.id }}">
+                                                <td class="px-3 py-1 border text-center w-12">{{ forloop.counter }}</td>
+                                                <td class="px-3 py-1 border w-12">{{ merchant.merchant_list.id}}</td>
+                                                <td class="px-3 py-1 border w-3/12">{{ merchant.merchant_list.merchant }}</td>
+                                                <td class="px-3 py-1 border text-center w-1/12">{{ merchant.merchant_code }}</td>
+                                                <td class="px-3 py-1 border w-2/12">{{ merchant.merchant_type.name }}</td>
+                                                <td class="px-3 py-1 border w-2/12">{{ merchant.merchant_list.contact_person }}</td>
+                                                <td class="px-3 py-1 border w-2/12">{{ merchant.merchant_list.contact_number }}</td>
+                                                <td class="px-3 py-1 border w-3/12">{{ merchant.merchant_list.email }}</td>
+                                                <td class="px-3 py-1 border w-2/12">
+                                                    {% if merchant.total_selling_price %}
+                                                        ${{ merchant.total_selling_price }}
+                                                    {% else %}
+                                                        -
+                                                    {% endif %}
+                                                </td>
+                                                <td class="px-3 py-1 border w-2/12">
+                                                    <div class="flex space-x-2 pt-2">
+                                                        <!-- View Details -->
+                                                        <div class="flex-1">
+                                                            <a href="{% url 'pack_form' merchant.id %}" 
+                                                               class="group flex items-center justify-center w-full bg-green-600 text-white p-2 rounded-lg hover:bg-green-500 shadow-md transition relative">
+                                                                <i class="fas fa-eye"></i>
+                                                                <span class="font-semibold absolute bottom-full mb-2 px-2 py-1 text-xs text-white bg-black rounded opacity-0 group-hover:opacity-100 transition">
+                                                                    View Details
+                                                                </span>
+                                                            </a>
+                                                        </div>
+                                                
+                                                        <!-- Edit -->
+                                                        <div class="flex-1">
+                                                            <a href="{% url 'pack_form' merchant.id %}" 
+                                                               class="group flex items-center justify-center w-full bg-blue-600 text-white p-2 rounded-lg hover:bg-blue-500 shadow-md transition relative">
+                                                                <i class="fas fa-pen"></i>
+                                                                <span class="font-semibold absolute bottom-full mb-2 px-2 py-1 text-xs text-white bg-black rounded opacity-0 group-hover:opacity-100 transition">
+                                                                    Edit
+                                                                </span>
+                                                            </a>
+                                                        </div>
+                                                
+                                                        <!-- Delete -->
+                                                        <div class="flex-1">
+                                                            <form method="POST" action="{% url 'delete_merchant_new' merchant.id %}" 
+                                                                  onsubmit="return confirmDelete();" class="w-full">
+                                                                {% csrf_token %}
+                                                                <button type="submit" 
+                                                                        class="group flex items-center justify-center w-full bg-red-600 text-white p-2 rounded-lg hover:bg-red-500 shadow-md transition relative">
+                                                                    <i class="fas fa-trash-alt"></i>
+                                                                    <span class="absolute bottom-full mb-2 px-2 py-1 text-xs text-white bg-black rounded opacity-0 group-hover:opacity-100 transition">
+                                                                        Delete
+                                                                    </span>
+                                                                </button>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <p class="text-lg font-bold mt-4">Total Price of Package</p>
+                                <div class="mb-4 grid-cols-1 md:grid grid-cols-6 gap-4">
+                                    <div>
+                                        <input type="number" name="total_price" id="total_price" 
+                                            class="w-full px-4 py-2 border rounded bg-gray-100" 
+                                            value="{{ package_total_price|default_if_none:'0.00' }}" readonly />
+                                    </div>
+                                </div>
+
+                               
+                                 
+                                <form method="POST" action="{% url 'update_package_status' package.id %}">
+                                    {% csrf_token %}
+                                    
+                                    <p class="text-lg font-bold mt-4">Status</p>
+                                    <div class="mb-4 grid-cols-1 md:grid grid-cols-6 gap-4">
+                                        <select name="status" id="status" class="w-full px-4 py-2 border rounded">
+                                            {% for status in statuses %}
+                                                <option value="{{ status.id }}" {% if status == current_status %}selected{% endif %}>
+                                                    {{ status.name }}
+                                                </option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                
+                                    <div class="flex justify-between mt-6">
+                                        <div class="flex-space-x-2">
+                                            <a href="{% url 'pack_list_add' package.id %}" class="bg-red-700 text-white px-4 py-2 rounded hover:bg-red-600 mr-2 font-semibold inline-flex items-center">
+                                                <i class="fas fa-arrow-left mr-2"></i> Back
+                                            </a>
+                                            <a href="{% url 'package_list' %}" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-400 mr-2 font-semibold inline-flex items-center">
+                                                <i class="fas fa-list-alt mr-2"></i> Package
+                                            </a>
+                                        </div>
+                                
+                                        <div class="flex space-x-2">
+                                            <button type="button" id="mainStatusButton" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-500 font-semibold inline-flex items-center">
+                                                <i class="fas fa-save mr-2"></i> Save
+                                            </button>
+                                        </div>
+                                    </div>
+                                
+                                    <!-- Confirmation Modal -->
+                                    <div id="statusConfirmModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black bg-opacity-50">
+                                        <div class="bg-white rounded-lg p-6 w-full max-w-lg shadow-lg">
+                                            <h2 class="text-xl font-bold mb-4">Confirm Status Change</h2>
+                                            <p class="mb-4 text-gray-700" id="confirmText"></p>
+                                
+                                            <label for="send_to" class="block mb-2 font-semibold">Send To:</label>
+                                            <select id="send_to" name="send_to" class="w-full px-3 py-2 border rounded mb-4">
+                                                <option value="" disabled selected>-- Select User --</option>
+                                                {% for userrole in send_to_userroles %}
+                                                    <option value="{{ userrole.id }}">
+                                                        {{ userrole.user.username|default:userrole.user.email }} ({{ userrole.role.role_name }})
+                                                    </option>
+                                                {% empty %}
+                                                    <option disabled>No users available</option>
+                                                {% endfor %}
+                                            </select>
+                                
+                                            <label for="remarks" class="block mb-2 font-semibold">Remarks:</label>
+                                            <textarea id="remarks" name="remarks" class="w-full px-3 py-2 border rounded mb-4" rows="3" placeholder="Enter any remarks..."></textarea>
+                                
+                                            <div class="flex justify-end space-x-3">
+                                                <button type="button" id="cancelModal" class="bg-red-600 hover:bg-red-500 font-semibold text-white px-4 py-2 rounded">Cancel</button>
+                                                <button type="button" id="confirmModal" class="bg-green-600 hover:bg-green-500 font-semibold text-white px-4 py-2 rounded">Confirm</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>
-              
-                    
                 </div>
             </div>
         </div>
     </body>
 </html>
 
+<script>
+    function confirmDelete() {
+        console.log("Delete confirmation triggered"); // Debugging
+        return confirm('Are you sure you want to delete this merchant?');
+    }
+
+    function confirmDuplicate() {
+        return confirm("Are you sure you want to duplicate this merchant?");
+    }
+    </script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const statusSelect = document.getElementById('status');
+        const mainButton = document.getElementById('mainStatusButton');
+        const modal = document.getElementById('statusConfirmModal');
+        const confirmModalBtn = document.getElementById('confirmModal');
+        const cancelModalBtn = document.getElementById('cancelModal');
+        const confirmText = document.getElementById('confirmText');
+        const form = mainButton.closest('form');
+
+        function updateButton() {
+            const status = statusSelect.options[statusSelect.selectedIndex].text.trim();
+            mainButton.className = "px-4 py-2 rounded font-semibold inline-flex items-center";
+
+            if (status === "Draft") {
+                mainButton.innerHTML = '<i class="fas fa-save mr-2"></i> Save Draft';
+                mainButton.classList.add("bg-blue-600", "text-white", "hover:bg-blue-500");
+            } else if (status === "Pending") {
+                mainButton.innerHTML = '<i class="fas fa-paper-plane mr-2"></i> Submit for Approval';
+                mainButton.classList.add("bg-yellow-600", "text-white", "hover:bg-yellow-500");
+            } else if (status === "Approved") {
+                mainButton.innerHTML = '<i class="fas fa-check-circle mr-2"></i> Approved';
+                mainButton.classList.add("bg-green-600", "text-white", "hover:bg-green-500");
+            } else if (status === "Published") {
+                mainButton.innerHTML = '<i class="fas fa-globe mr-2"></i> Publish to Website';
+                mainButton.classList.add("bg-green-700", "text-white", "hover:bg-green-600");
+            } else if (["Rejected"].includes(status)) {
+                mainButton.innerHTML = '<i class="fas fa-ban mr-2"></i> Update Status';
+                mainButton.classList.add("bg-red-600", "text-white", "hover:bg-red-500");
+            } else if (status === "Disabled") {
+                mainButton.innerHTML = '<i class="fas fa-eye-slash mr-2"></i> Disabled';
+                mainButton.classList.add("bg-purple-500", "text-white", "hover:bg-purple-400");
+            } else {
+                mainButton.innerHTML = '<i class="fas fa-save mr-2"></i> Save';
+                mainButton.classList.add("bg-blue-600", "text-white", "hover:bg-blue-500");
+            }
+        }
+
+        updateButton();
+        statusSelect.addEventListener('change', updateButton);
+
+        mainButton.addEventListener('click', function () {
+            const statusText = statusSelect.options[statusSelect.selectedIndex].text.trim();
+            if (["Pending", "Approved", "Rejected"].includes(statusText)) {
+                confirmText.textContent = `Are you sure you want to submit this form with status "${statusText}"?`;
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+            } else {
+                form.submit();
+            }
+        });
+
+        cancelModalBtn.addEventListener('click', function () {
+            modal.classList.add('hidden');
+        });
+
+        confirmModalBtn.addEventListener('click', function () {
+            modal.classList.add('hidden');
+            form.submit();
+        });
+    });
+</script>
 
 {% endblock %}
