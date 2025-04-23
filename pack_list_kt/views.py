@@ -1,6 +1,6 @@
 from django.contrib.auth.decorators import user_passes_test
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Package, PackageItem, PackageType, Location,MerchantPackage,PackageMerchant,ProductDetails,ProductItemTotal,PackageItemTotalLink,PackageLog,PackCategory  
+from .models import Package, PackageItem, PackageType, Location,MerchantPackage,PackageMerchant,ProductDetails,ProductItemTotal,PackageItemTotalLink,PackageLog,PackCategory,PackageMainImage, PackageOtherImage  
 from admin_kt.models import  MainMerchant, MerchantType, Status,Roles,UserRole
 from user_kt.models import User
 from django.utils import timezone
@@ -29,20 +29,19 @@ def admin_required(user):
 @user_passes_test(admin_required, login_url='/login/')
 def pack_list_add(request, id=None):
     if request.method == "POST":
-        name = request.POST.get('hotel_name')  # Package name
+        name = request.POST.get('hotel_name')
         min_pax = int(request.POST.get('min_pax'))
         max_pax = int(request.POST.get('max_pax'))
         description = request.POST.get('description', '')
-        info = request.POST.get('info', '')  # New field for info
-        date_of_travel = request.POST.get('date_of_travel', '')  # New field for date_of_travel
+        info = request.POST.get('info', '')
+        date_of_travel = request.POST.get('date_of_travel', '')
         start_date = request.POST.get('start_date')
         end_date = request.POST.get('end_date')
         code = request.POST.get('code')
+        user_pic = request.user
 
-        user_pic = request.user  # Set the user who created the package
-
-        location_country = request.POST.get('location')  # Get country (location)
-        city_name = request.POST.get('city')  # City
+        location_country = request.POST.get('location')
+        city_name = request.POST.get('city')
 
         merchant_type_id = request.POST.get('merchant_type')
         merchant_type = None
@@ -62,29 +61,35 @@ def pack_list_add(request, id=None):
         elif min_pax > max_pax:
             messages.error(request, 'Minimum Pax cannot be greater than Maximum Pax.')
         else:
-            if id:  # Update an existing package
-                package = Package.objects.get(id=id)
+            if id:
+                try:
+                    package = Package.objects.get(id=id)
+                except Package.DoesNotExist:
+                    messages.error(request, 'Package not found.')
+                    return redirect('pack_list_add')
+
                 package.name = name
                 package.location = location
                 package.city = city_name
                 package.min_pax = min_pax
                 package.max_pax = max_pax
                 package.description = description
-                package.info = info  # Update info
-                package.date_of_travel = date_of_travel  # Update date_of_travel
+                package.info = info
+                package.date_of_travel = date_of_travel
                 package.start_date = start_date
                 package.end_date = end_date
                 package.code = code
-                package.user_pic = user_pic  # Ensure this is set during update
+                package.user_pic = user_pic
                 package.save()
 
-                # Delete and recreate PackCategory
+                # Update merchant type
                 PackCategory.objects.filter(package=package).delete()
                 if merchant_type:
                     PackCategory.objects.create(package=package, merchant_type=merchant_type)
 
                 messages.success(request, 'Package updated successfully!')
-            else:  # Create a new package
+
+            else:
                 package = Package.objects.create(
                     name=name,
                     location=location,
@@ -93,25 +98,30 @@ def pack_list_add(request, id=None):
                     max_pax=max_pax,
                     code=code,
                     description=description,
-                    info=info,  # Save info
-                    date_of_travel=date_of_travel,  # Save date_of_travel
+                    info=info,
+                    date_of_travel=date_of_travel,
                     start_date=start_date,
                     end_date=end_date,
-                    user_pic=user_pic,  # Set the user who created the package
+                    user_pic=user_pic,
                 )
+
                 if merchant_type:
                     PackCategory.objects.create(package=package, merchant_type=merchant_type)
 
                 messages.success(request, 'Package added successfully!')
-            
-            # Redirect back to the same page with the newly created or updated package
+
             return redirect('pack_list_add', id=package.id)
 
-    # Fetch package for pre-population of the form if ID exists
+    # GET request
     package = None
+    main_image = None
+    other_images = []
+
     if id:
         try:
             package = Package.objects.get(id=id)
+            main_image = PackageMainImage.objects.filter(package=package).first()
+            other_images = PackageOtherImage.objects.filter(package=package)
         except Package.DoesNotExist:
             package = None
 
@@ -122,10 +132,82 @@ def pack_list_add(request, id=None):
     return render(request, 'pack_list_kt/package_add.html', {
         'package_types': package_types,
         'locations': locations,
-        'package': package,  # Pass the current package to the template
         'merchant_types': merchant_types,
+        'package': package,
+        'main_image': main_image,
+        'other_images': other_images,
     })
 
+
+def upload_main_images(request, package_id):
+    if request.method == 'POST' and request.FILES.get('main_image'):
+        image = request.FILES['main_image']
+        try:
+            package = Package.objects.get(id=package_id)
+        except Package.DoesNotExist:
+            return JsonResponse({'success': False, 'message': 'Package not found'})
+
+        # Delete existing image if it exists
+        PackageMainImage.objects.filter(package=package).delete()
+
+        # Save the new image
+        package_main_image = PackageMainImage(package=package, image=image)
+        package_main_image.save()  # Automatically handles created_at and updated_at
+
+        return JsonResponse({'success': True, 'image_url': package_main_image.image.url})
+
+    return JsonResponse({'success': False})
+
+def upload_other_images(request, package_id): 
+    if request.method == 'POST' and request.FILES.getlist('other_images[]'):
+        image_urls = []
+        try:
+            package = Package.objects.get(id=package_id)
+        except Package.DoesNotExist:
+            return JsonResponse({'success': False, 'message': 'Package not found'})
+
+        for img in request.FILES.getlist('other_images[]'):
+            package_other_image = PackageOtherImage(package=package, image=img)
+            package_other_image.save()
+            image_urls.append(package_other_image.image.url)
+
+        # Include all existing images to refresh the front-end
+        existing_images_qs = PackageOtherImage.objects.filter(package=package)
+        existing_images = [
+            {'id': img.id, 'url': img.image.url}
+            for img in existing_images_qs
+        ]
+
+        return JsonResponse({
+            'success': True,
+            'image_urls': image_urls,
+            'existing_images': existing_images,
+        })
+
+    return JsonResponse({'success': False})
+
+
+def delete_main_image(request, image_id):
+    if request.method == "DELETE":
+        try:
+            image = PackageMainImage.objects.get(id=image_id)
+            image.delete()
+            return JsonResponse({"success": True})
+        except PackageMainImage.DoesNotExist:
+            return JsonResponse({"success": False, "error": "Image not found"}, status=404)
+    return JsonResponse({"success": False, "error": "Invalid request"}, status=405)
+
+
+# @csrf_exempt
+def delete_image(request, image_id):
+    if request.method == "DELETE" or request.method == "POST":  # For safer handling
+        try:
+            img = PackageOtherImage.objects.get(id=image_id)
+            img.delete()
+            return JsonResponse({'success': True})
+        except PackageOtherImage.DoesNotExist:
+            return JsonResponse({'success': False, 'error': 'Not found'}, status=404)
+    return JsonResponse({'success': False, 'error': 'Invalid method'}, status=405)
 
 def active_packages(request):
     packages = Package.objects.filter(status='active', end_date__gte=timezone.now().date())

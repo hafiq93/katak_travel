@@ -9,6 +9,8 @@ from admin_kt.models import MainMerchant, MerchantType, Status, UserRole
 import random
 import string
 from decimal import Decimal
+from ckeditor.fields import RichTextField
+
 # from django_countries.fields import CountryField  # Optional for country selection
 
 class Location(models.Model):
@@ -43,12 +45,6 @@ class PackageType(models.Model):
     def __str__(self):
         return self.name
 
-# class Status(models.Model):
-#     name = models.CharField(max_length=50, unique=True)
-#     color = models.CharField(max_length=7, default="#FFFFFF")
-
-#     def __str__(self):
-#         return self.name
 
 class Package(models.Model):
     STATUS_CHOICES = [
@@ -68,8 +64,8 @@ class Package(models.Model):
     
 
     person = models.CharField(max_length=100, blank=True, null=True)
-    description = models.TextField()
-    info = models.TextField(blank=True, null=True)
+    description = RichTextField(blank=True, null=True)
+    info = RichTextField(blank=True, null=True)
     date_of_travel = models.TextField(blank=True, null=True)
 
     # Duration fields
@@ -124,6 +120,29 @@ class Package(models.Model):
 
     def __str__(self):
         return self.name
+
+class PackageMainImage(models.Model):
+    package = models.OneToOneField('Package', on_delete=models.CASCADE, related_name='main_image')
+    image = models.ImageField(upload_to='packages/main/')
+    created_at = models.DateTimeField(auto_now_add=True,blank=True, null=True)  # Automatically set when the object is created
+    updated_at = models.DateTimeField(auto_now=True,blank=True, null=True)      # Automatically set when the object is updated
+
+    def __str__(self):
+        return f"Main image for {self.package.name}"
+
+
+class PackageOtherImage(models.Model):
+    package = models.ForeignKey('Package', on_delete=models.CASCADE, related_name='other_images')
+    image = models.ImageField(upload_to='packages/others/')
+    order = models.PositiveSmallIntegerField(default=1)  # 1 to 4
+    created_at = models.DateTimeField(auto_now_add=True,blank=True, null=True)  # Automatically set when the object is created
+    updated_at = models.DateTimeField(auto_now=True,blank=True, null=True)      # Automatically set when the object is updated
+
+    class Meta:
+        ordering = ['order']
+
+    def __str__(self):
+        return f"Image {self.order} for {self.package.name}"
 
 class PackageMerchant(models.Model):
     package = models.ForeignKey('Package', related_name="package_merchants", on_delete=models.CASCADE)
