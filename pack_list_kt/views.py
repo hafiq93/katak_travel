@@ -430,7 +430,23 @@ def pack_price(request, package_id):
     countries = Location.objects.all()
     package_merchant = package.package_merchants.first()
     if not package_merchant:
-        return redirect('error_page')
+        return render(request, 'pack_list_kt/package_price.html', {
+            'package': package,
+            'merchant_types': merchant_types,
+            'package_merchants': [],
+            'package_total_price': 0.00,
+            'package_merchant': None,
+            'merchant': None,
+            'product_details': [],
+            'package_items': [],
+            'product': None,
+            'product_total': None,
+            'countries': countries,
+            'statuses': Status.objects.all(),
+            'current_status': package.pack_status,
+            'send_to_userroles': [],
+            'error_message': "No merchant found for this package.",
+        })
 
     merchant = package_merchant.merchant_list
     statuses = Status.objects.all()
