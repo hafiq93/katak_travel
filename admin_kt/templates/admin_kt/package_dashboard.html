@@ -7,50 +7,31 @@
     {% include 'base_kt/admin_header.html' %}
 
     <body>
-        <div class="flex">
+        <div class="flex w-full min-h-screen">
            
             <!-- Main Content -->
-            <div class=" p-4 bg-gray-100 h-screen">
+            <div class=" p-4 bg-gray-100 w-full">
 
                 <!-- First Row (Metrics in One Row) -->
                 <div class="rounded-md">
                     <!-- Grid layout with 1 row and 6 columns -->
                     <div class="grid grid-cols-1 sm:grid-cols-4 gap-4">
-                        <!-- First Column -->
                         <div class="bg-green-500 p-4 rounded-md">
-                            <h3 class="text-md font-semibold mb-2 text-white">Total Sale</h3>
-                            <p>Some additional data for metric 1 can go here.</p>
+                            <h3 class="text-md font-semibold mb-2 text-white">Total Packages</h3>
+                            <p class="text-white text-lg font-bold">{{ total_packages }}</p>
                         </div>
-            
-                        <!-- Second Column -->
                         <div class="bg-blue-500 p-4 rounded-md">
-                            <h3 class="text-md font-semibold mb-2 text-white">Total Customer</h3>
-                            <p>Some additional data for metric 2 can go here.</p>
+                            <h3 class="text-md font-semibold mb-2 text-white">Active Packages</h3>
+                            <p class="text-white text-lg font-bold">{{ active_packages }}</p>
                         </div>
-            
-                        <!-- Third Column -->
                         <div class="bg-red-500 p-4 rounded-md">
-                            <h3 class="text-md font-semibold mb-2 text-white">Total Merchant</h3>
-                            <p>Some additional data for metric 3 can go here.</p>
+                            <h3 class="text-md font-semibold mb-2 text-white">Expired Packages</h3>
+                            <p class="text-white text-lg font-bold">{{ expired_packages }}</p>
                         </div>
-            
-                        <!-- Fourth Column -->
                         <div class="bg-purple-500 p-4 rounded-md">
-                            <h3 class="text-md font-semibold mb-2">Metric 4</h3>
-                            <p>Some additional data for metric 4 can go here.</p>
+                            <h3 class="text-md font-semibold mb-2 text-white">Merchants</h3>
+                            <p class="text-white text-lg font-bold">{{ total_merchants }}</p>
                         </div>
-            
-                        <!-- Fifth Column -->
-                        <!-- <div class="bg-orange-500 p-4 rounded-md">
-                            <h3 class="text-lg font-semibold mb-2">Metric 5</h3>
-                            <p>Some additional data for metric 5 can go here.</p>
-                        </div> -->
-            
-                        <!-- Sixth Column -->
-                        <!-- <div class="bg-yellow-500 p-4 rounded-md">
-                            <h3 class="text-lg font-semibold mb-2">Metric 6</h3>
-                            <p>Some additional data for metric 6 can go here.</p>
-                        </div> -->
                     </div>
                 </div>
             
@@ -64,8 +45,36 @@
             
                     <!-- Second Column, First Row: Sales Breakdown -->
                     <div class="bg-white shadow-md p-6 rounded-md">
-                        <h2 class="text-2xl font-bold mb-4">Merchant Status</h2>
-                        <p>Sales breakdown can go here.</p>
+                        <h2 class="text-2xl font-bold mb-4">Package Status Distribution</h2>
+                    
+                        <div class="flex flex-col md:flex-row gap-6 items-start justify-between">
+                            <!-- Chart -->
+                            <div class="flex justify-center items-center w-full md:w-1/2">
+                                <canvas id="statusChart" width="200" height="200"></canvas>
+                            </div>
+                    
+                            <!-- Status Grid -->
+                            <div class="w-full md:w-1/2 mt-6 md:mt-0">
+                                <h3 class="text-lg font-semibold mb-4">Packages by Status</h3>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    {% for row in status_table %}
+                                    <div class="border rounded-lg p-4 shadow-sm text-white" style="background-color: {{ row.color }}">
+                                        <div class="flex items-center mb-2" >
+                                            <div class="h-3 rounded-full" ></div>
+                                            <h4 class="text-md font-bold text-white">{{ row.name }}</h4>
+                                        </div>
+                                        <p class="text-sm text-white">
+                                            Total Packages: <span class="font-medium">{{ row.count }}</span>
+                                        </p>
+                                    </div>
+                                    {% empty %}
+                                    <div class="col-span-full text-center text-gray-500">
+                                        No data available.
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             
@@ -73,8 +82,37 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
                     <!-- First Column, Second Row: Customer Feedback -->
                     <div class="bg-white shadow-md p-4 rounded-md">
-                        <h2 class="text-2xl font-bold mb-4">Hotel status</h2>
-                        <p>Display customer feedback here.</p>
+                        <h2 class="text-xl font-semibold mb-4">Top Packages by Merchant Involvement</h2>
+                        <div class="overflow-x-auto  mt-6">
+                            <table class="min-w-full divide-y divide-gray-200">
+                                <thead class="bg-green-500">
+                                    <tr>
+                                        <th scope="col" class="px-6 py-3 text-left text-sm font-semibold text-white uppercase tracking-wider">
+                                            Package Name
+                                        </th>
+                                        <th scope="col" class="px-6 py-3 text-left text-sm font-semibold text-white uppercase tracking-wider">
+                                            Number of Merchants
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody class="bg-white divide-y divide-gray-100">
+                                    {% for pkg in merchant_involvement %}
+                                    <tr class="hover:bg-green-50 transition-colors">
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                                            {{ pkg.name }}
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                                            {{ pkg.merchant_count }}
+                                        </td>
+                                    </tr>
+                                    {% empty %}
+                                    <tr>
+                                        <td colspan="2" class="px-6 py-4 text-sm text-gray-500">No data available.</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
             
                     <!-- Second Column, Second Row: Another Sales Breakdown -->
@@ -110,6 +148,43 @@
             scales: {
                 y: {
                     beginAtZero: true
+                }
+            }
+        }
+    });
+</script>
+<script>
+    // Prepare the data passed from the view
+    var statusLabels = {{ status_labels|safe }};  // Labels for the statuses
+    var statusData = {{ status_data|safe }};  // Count data for each status
+    var statusColors = {{ status_colors|safe }};  // Colors for each status
+
+    // Create the chart
+    var ctx = document.getElementById('statusChart').getContext('2d');
+    var statusChart = new Chart(ctx, {
+        type: 'pie',  // You can change this to 'bar', 'doughnut', etc.
+        data: {
+            labels: statusLabels,  // Use the status labels
+            datasets: [{
+                label: 'Package Status',
+                data: statusData,  // Use the data count
+                backgroundColor: statusColors,  // Use the status colors
+                borderColor: statusColors,  // Border color matching the status colors
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(tooltipItem) {
+                            return tooltipItem.label + ': ' + tooltipItem.raw + ' Packages';
+                        }
+                    }
                 }
             }
         }
