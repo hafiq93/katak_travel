@@ -97,6 +97,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django_browser_reload.middleware.BrowserReloadMiddleware',
+    'main_kt.middleware.RedirectAllToHomeMiddleware',  # Add this line
     # 'admin_kt.middleware.AnalyticsMiddleware',
     
 ]
