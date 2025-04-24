@@ -5,28 +5,28 @@ from django.contrib import messages
 from django.urls import reverse
 from .models import User, Profile
 from django.contrib.auth.hashers import make_password
+from django.http import Http404
 
 def user_login(request):
+    # For testing: raise 404 to simulate the page being unavailable
+    raise Http404("Login page is not available.")
+
     if request.method == 'POST':
         email = request.POST.get('email')
         password = request.POST.get('password')
 
-      
         user = authenticate(request, username=email, password=password)
 
         if user is not None:
-        
             if user.is_superuser or user.is_staff:
                 auth_login(request, user)  # Log in admin or staff user
                 return redirect('admin-dashboard')  # Redirect to admin dashboard
             else:
-                # Non-admin users get logged in and redirected to homepage
-                auth_login(request, user)
+                auth_login(request, user)  # Log in normal user
                 return redirect('home')  # Redirect to homepage
         else:
-       
             messages.error(request, "Invalid credentials.")  # Show error message
-    
+
     return render(request, 'user_kt/login.html')  # Your login template
 
 def user_register(request):
