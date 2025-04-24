@@ -25,27 +25,32 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-+s6*ap0wm#q+0&k35r7^1s(&$40ya()@&6yt!)me^!ay__na1m'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False  
+DEBUG=False
 
-ALLOWED_HOSTS = ['kataktravel.com', 'www.kataktravel.com'] 
+ALLOWED_HOSTS = ['kataktravel.com','www.kataktravel.com']
 
 CSRF_TRUSTED_ORIGINS = [
     'https://kataktravel.com', 
     'https://www.kataktravel.com'
 ]
 
-# Development settings (SSL, cookies, HSTS)
-SECURE_SSL_REDIRECT = True  # Redirect all HTTP traffic to HTTPS in production
-SESSION_COOKIE_SECURE = True  # Only send session cookies over HTTPS
-CSRF_COOKIE_SECURE = True     # Only send CSRF cookies over HTTPS
+# Redirect HTTP to HTTPS
+SECURE_SSL_REDIRECT = True
+
+# Set secure cookies
+SESSION_COOKIE_SECURE = False
+CSRF_COOKIE_SECURE = False
 
 # Prevent clickjacking
-X_FRAME_OPTIONS = 'DENY'  # Safe to use in production
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+X_FRAME_OPTIONS = 'DENY'
 
-# HSTS (Only for production, enables secure connection enforcement)
+# Use HSTS (HTTP Strict Transport Security)
 SECURE_HSTS_SECONDS = 31536000  # 1 year
-SECURE_HSTS_INCLUDE_SUBDOMAINS = True  # Apply HSTS to subdomains
-SECURE_HSTS_PRELOAD = True  # Allows preload in browsers
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True
+
 
 # Application definition
 
@@ -75,7 +80,6 @@ INSTALLED_APPS = [
     # 'cart_kt',
     'user_kt',
     'base_kt',
-    # 'error_kt',
     'page',
     'analytics_kt',
     'package_kt',

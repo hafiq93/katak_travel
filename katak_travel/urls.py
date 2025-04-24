@@ -36,6 +36,8 @@ urlpatterns = [
     path('api/', include('package_kt.urls')),  # Include the API URLs
     path('analytics/', include('analytics_kt.urls')),
     path('package/', include('pack_list_kt.urls')),
+    # path('product/', include('product_kt.urls')),
+    # path('cart/', include('cart_kt.urls')),
     path('data/', include('data_api_kt.urls')),  # Correct path
     
     # path("hotel/", include("hote_kt.urls")),
