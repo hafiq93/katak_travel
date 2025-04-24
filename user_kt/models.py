@@ -3,7 +3,7 @@ from django.contrib.auth.models import AbstractUser
 from django.db.models.signals import post_save
 from shortuuid.django_fields import ShortUUIDField
 import datetime 
-
+from django.core.exceptions import ValidationError
 # Create your models here.
 GENDER = (
   
@@ -18,14 +18,18 @@ IDENTITY_TYPE = (
 
 )
 
+def validate_username(value):
+    if not re.match("^[a-zA-Z0-9_]+$", value):
+        raise ValidationError("Username can only contain letters, numbers, and underscores.")
+
 def user_directory_path(instance, filename):
     ext = filename.split(".")[-1] #name of image.jpg
     filename = "%s.%s" %(instance.user.id, filename) #name
     return "user_{0}/{1}".format(instance.user.id,filename) #user_1,
 
-
+    
 class User(AbstractUser):
-    username = models.CharField(max_length=500, null=True, blank=True)
+    username = models.CharField(max_length=12, null=True, blank=True,validators=[validate_username])
     email = models.EmailField(unique=True)
     phone = models.CharField(max_length=100, null=True, blank=True)
     gender = models.CharField(max_length=20, choices=GENDER, null=True, blank=True)
