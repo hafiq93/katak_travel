@@ -69,7 +69,7 @@ INSTALLED_APPS = [
     'core',
     'main_kt',
     'main_pack_kt',  # Ensure this is added
-    # 'product_kt',
+    'product_kt',
     'user_kt',
     'base_kt',
     'page',
@@ -98,7 +98,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django_browser_reload.middleware.BrowserReloadMiddleware',
-    # 'main_kt.middleware.RedirectAllToHomeMiddleware',  # Add this line
+    'main_kt.middleware.RedirectAllToHomeMiddleware',  # Add this line
     # 'admin_kt.middleware.AnalyticsMiddleware',
     
 ]
@@ -218,7 +218,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'user_kt.User'
 
 # In settings.py (safe for development)
-# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 
 
